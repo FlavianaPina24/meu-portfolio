@@ -196,6 +196,111 @@ footer { margin-top: 50px; padding: 20px; font-size: 0.9rem; color: #94a3b8; }
 
 .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: #38bdf8; }
 
+/* Estilos do Pop-up de Sucesso */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.9); /* Fundo escuro com transparência */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.popup.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.popup-content {
+    background-color: #1e293b;
+    padding: 40px;
+    border-radius: 8px;
+    text-align: center;
+    border-top: 4px solid #38bdf8;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    width: 90%;
+}
+
+.popup-content i { font-size: 3rem; color: #38bdf8; margin-bottom: 15px; }
+.popup-content h3 { color: #f1f5f9; margin-top: 0; }
+.popup-content p { color: #94a3b8; margin-bottom: 20px; }
+
+/* Estilos para Feedbacks/Depoimentos */
+.feedback-card {
+    background: #1e293b;
+    padding: 30px;
+    border-radius: 8px;
+    border-top: 4px solid #38bdf8;
+    text-align: left;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feedback-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+.quote-icon {
+    font-size: 3rem;
+    color: rgba(56, 189, 248, 0.15); /* Azul clarinho quase transparente */
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.feedback-author {
+    margin-top: 20px;
+    border-top: 1px solid #334155;
+    padding-top: 15px;
+}
+
+.feedback-author strong { display: block; color: #f1f5f9; }
+.feedback-author span { color: #94a3b8; font-size: 0.85rem; }
+
+/* Estilos para Páginas de Artigo */
+.article-content {
+    text-align: left;
+    line-height: 1.8;
+    color: #cbd5e1;
+}
+.article-content h2 { color: #f1f5f9; margin-top: 40px; border-bottom: 1px solid #334155; padding-bottom: 10px; }
+.article-content p { margin-bottom: 20px; font-size: 1.1rem; }
+
+/* Imagens interativas nos artigos */
+.article-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 20px 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.article-content img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 10px 25px rgba(56, 189, 248, 0.3); /* Sombra azulada com o tema */
+}
+
+/* Animação Fade-In (Seções aparecendo ao rolar) */
+.fade-in {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 @media (max-width: 768px) {
     ul, .grid-skills {
         grid-template-columns: 1fr;

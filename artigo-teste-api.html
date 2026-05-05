@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia de Testes de API para Iniciantes | Flaviana Pina</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html"><i class="fas fa-arrow-left"></i> Voltar ao Portfólio</a>
+    </nav>
+
+    <main class="container article-content fade-in visible">
+        <h1>Guia de Testes de API para Iniciantes com Postman</h1>
+        <p>Por <strong>Flaviana Pina</strong> | Business Analyst & QA</p>
+        
+        <p>A arquitetura da maioria dos sistemas modernos é baseada em APIs (Application Programming Interfaces). Garantir que a comunicação entre o front-end e o back-end (ou entre microsserviços) funcione corretamente é uma das habilidades mais valorizadas em um QA hoje. Uma das melhores ferramentas para começar (e escalar) esses testes é o <strong>Postman</strong>.</p>
+
+        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Código de programação e APIs na tela" title="Desenvolvimento e Teste de APIs">
+
+        <h2>1. Conheça os Verbos HTTP</h2>
+        <p>Antes de testar, é preciso entender o que a API deve fazer. Os métodos mais comuns são:
+        <br><br>
+        <strong>- GET:</strong> Busca uma informação (ex: consultar o saldo do cliente).<br>
+        <strong>- POST:</strong> Cria um novo registro (ex: cadastrar um novo usuário no sistema).<br>
+        <strong>- PUT / PATCH:</strong> Atualiza um registro existente.<br>
+        <strong>- DELETE:</strong> Remove uma informação.
+        </p>
+
+        <h2>2. Valide sempre o Status Code (Teste de Contrato)</h2>
+        <p>O teste mais básico e importante de uma API é verificar se o servidor respondeu o que era esperado. Códigos como <code>200 (OK)</code> ou <code>201 (Created)</code> indicam sucesso. Já os da família <code>400</code> indicam erros enviados pelo cliente, e <code>500</code> indicam erros do servidor. No Postman, você automatiza essa validação na aba "Tests" com um simples comando: <code>pm.response.to.have.status(200);</code>.</p>
+
+        <h2>3. Validação do Corpo da Resposta (Payload)</h2>
+        <p>Não basta a API retornar "Sucesso", os dados também precisam estar corretos. Se você fez um GET buscando o cliente "João", a API não pode retornar a "Maria". Utilizando JavaScript dentro do Postman, transformamos a resposta em um objeto legível (JSON) e validamos campos específicos: <code>pm.expect(jsonData.nome).to.eql("João");</code>.</p>
+
+        <h2>4. Indo além: Newman e Integração Contínua</h2>
+        <p>O Postman é incrível para criar e debugar os cenários de teste, mas a verdadeira automação acontece quando integramos tudo em uma pipeline de CI/CD (como Azure DevOps). Para isso, exportamos nossa Collection e usamos o <strong>Newman</strong>, a versão de linha de comando do Postman, garantindo que a qualidade seja validada a cada novo deploy da equipe de desenvolvimento.</p>
+
+        <h2>Conclusão</h2>
+        <p>Testar APIs é testar o "cérebro" da aplicação antes mesmo que exista uma tela pronta. Comece garantindo que os contratos estão sendo respeitados, avance para a validação dos dados de negócio e, por fim, automatize a execução contínua.</p>
+
+        <br>
+        <a href="index.html#contact" class="btn-link">Gostou do conteúdo? Vamos conversar!</a>
+    </main>
+
+    <footer>
+        <div class="social-links">
+            <a href="https://github.com/FlavianaPina24" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/flaviana-pina-3848a39a" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <p>© 2026 - flavianapina.com.br</p>
+    </footer>
+
+    <script>
+        // Aplica fade-in quando a página carrega
+        window.addEventListener('load', () => {
+            document.querySelector('.article-content').classList.add('visible');
+        });
+    </script>
+</body>
+</html>

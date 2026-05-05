@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boas Práticas em QA Automation | Flaviana Pina</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html"><i class="fas fa-arrow-left"></i> Voltar ao Portfólio</a>
+    </nav>
+
+    <main class="container article-content fade-in visible">
+        <h1>Boas Práticas em QA Automation com Robot Framework</h1>
+        <p>Por <strong>Flaviana Pina</strong> | Business Analyst & QA</p>
+        
+        <p>A automação de testes não é apenas sobre escrever scripts que clicam em botões na tela; é sobre criar uma rede de segurança sustentável, escalável e de fácil manutenção para a aplicação. Durante minha atuação em projetos bancários e de telecomunicações na IBM, o <strong>Robot Framework</strong> tem sido um aliado poderoso. Abaixo, compartilho algumas práticas fundamentais para elevar o nível da sua automação.</p>
+
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Placa de circuito representando automação e tecnologia" title="Automação de Software">
+
+        <h2>1. Utilize a Abordagem BDD (Behavior-Driven Development)</h2>
+        <p>O Robot Framework brilha quando utilizamos sua sintaxe baseada em Gherkin (Given/When/Then). Isso permite que os casos de teste sirvam como documentação viva. Escrever testes que P.Os, Desenvolvedores e o próprio cliente consigam ler e validar reduz significativamente o ruído de comunicação e os falsos positivos.</p>
+
+        <h2>2. Separação de Responsabilidades (Page Object Model)</h2>
+        <p>Nunca misture localizadores (XPath, CSS Selectors) com a lógica de negócio dos seus testes. Em nossa estruturação, mantemos arquivos separados:
+        <br><br>
+        <strong>- Arquivos de Variáveis:</strong> Apenas os mapeamentos de elementos da tela.<br>
+        <strong>- Arquivos de Keywords:</strong> As ações e interações com esses elementos.<br>
+        <strong>- Arquivos de Test Cases:</strong> Onde a regra de negócio acontece, chamando apenas as Keywords de alto nível.
+        </p>
+        <p>Se uma tela do sistema mudar, você só precisa atualizar os localizadores em um único lugar, não em todos os testes.</p>
+
+        <h2>3. Indepêndencia dos Cenários de Teste</h2>
+        <p>Um dos maiores erros na automação é criar um teste que depende do resultado do teste anterior. Se o teste A falhar, o teste B também falhará, gerando um efeito dominó. Cada cenário deve ser autossuficiente: ele mesmo cria sua massa de dados (usando <em>Setup</em>) e limpa tudo que sujou (usando <em>Teardown</em>) no banco de dados ou via API.</p>
+
+        <h2>4. Evite o uso de 'Sleep'</h2>
+        <p>Usar comandos estáticos como <code>Sleep 5s</code> torna sua suíte de testes lenta e instável (flaky). Em vez disso, utilize as Expected Conditions nativas do Robot ou Selenium, como <code>Wait Until Element Is Visible</code> ou <code>Wait Until Page Contains Element</code>. Assim, o robô avança imediatamente no momento em que o elemento aparece, ganhando performance.</p>
+
+        <h2>Conclusão</h2>
+        <p>Implementar automação de qualidade exige visão arquitetônica. Ferramentas como o Robot Framework, integradas a pipelines de CI/CD (como Azure DevOps), proporcionam uma visão contínua da saúde da aplicação, mas apenas se o código for tratado com o mesmo rigor e padrão exigidos do código-fonte do desenvolvimento.</p>
+
+        <br>
+        <a href="index.html#contact" class="btn-link">Gostou do conteúdo? Vamos conversar!</a>
+    </main>
+
+    <footer>
+        <div class="social-links">
+            <a href="https://github.com/FlavianaPina24" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/flaviana-pina-3848a39a" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <p>© 2026 - flavianapina.com.br</p>
+    </footer>
+
+    <script>
+        // Aplica fade-in quando a página carrega
+        window.addEventListener('load', () => {
+            document.querySelector('.article-content').classList.add('visible');
+        });
+    </script>
+</body>
+</html>
