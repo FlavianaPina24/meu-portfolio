@@ -369,10 +369,15 @@ body.light-mode .feedback-author strong, body.light-mode .popup-content h3 { col
     }
 
     /* Esconde os links no mobile apenas onde há o botão hamburger */
-    .hamburger-btn ~ a, .hamburger-btn ~ .btn-theme {
+    .hamburger-btn ~ a {
         display: none; 
     }
 
     nav.open .hamburger-btn ~ a { display: block; }
-    nav.open .hamburger-btn ~ .btn-theme { display: flex; }
+
+    .btn-theme {
+        position: absolute;
+        top: 15px;
+        left: 20px;
+    }
 }
