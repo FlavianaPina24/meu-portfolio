@@ -289,6 +289,55 @@ footer { margin-top: 50px; padding: 20px; font-size: 0.9rem; color: #94a3b8; }
     box-shadow: 0 10px 25px rgba(56, 189, 248, 0.3); /* Sombra azulada com o tema */
 }
 
+/* Botão Hamburger (Mobile) */
+.hamburger-btn {
+    display: none;
+    background: transparent;
+    border: none;
+    color: #f1f5f9;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+.hamburger-btn:hover { color: #38bdf8; }
+
+/* Botão de Tema (Modo Escuro / Claro) */
+.btn-theme {
+    background: transparent;
+    border: none;
+    color: #f1f5f9;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+}
+.btn-theme:hover { color: #38bdf8; }
+
+/* Modo Claro (Light Mode) - Inclusão e Acessibilidade */
+body.light-mode { background-color: #f8fafc; color: #334155; }
+
+body.light-mode nav { background-color: rgba(255, 255, 255, 0.95); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); }
+body.light-mode nav a, body.light-mode .btn-theme, body.light-mode .hamburger-btn { color: #334155; }
+body.light-mode nav a:hover, body.light-mode nav a.active, body.light-mode .btn-theme:hover, body.light-mode .hamburger-btn:hover { color: #0284c7; }
+body.light-mode nav a::after { background-color: #0284c7; }
+
+body.light-mode h1, body.light-mode h2, body.light-mode .skill-card h3, body.light-mode .timeline-content h3 { color: #0284c7; }
+
+body.light-mode li, body.light-mode .skill-card, body.light-mode .timeline-content, body.light-mode .feedback-card, body.light-mode .popup-content {
+    background-color: #ffffff; color: #334155; border-top-color: #0284c7; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+body.light-mode li { border-left-color: #0284c7; border-top-color: transparent; }
+body.light-mode .timeline-dot { background-color: #ffffff; border-color: #0284c7; }
+body.light-mode .timeline::after { background-color: #0284c7; }
+
+body.light-mode .btn-link { background-color: #0284c7; color: #ffffff; }
+body.light-mode .btn-link:hover { background-color: #0369a1; }
+
+body.light-mode .contact-form input, body.light-mode .contact-form textarea { background-color: #ffffff; color: #334155; border: 1px solid #cbd5e1; }
+body.light-mode .article-content, body.light-mode .feedback-author span, body.light-mode .timeline-date { color: #475569; }
+body.light-mode .article-content h1, body.light-mode .article-content h2 { color: #0f172a; border-bottom-color: #cbd5e1; }
+body.light-mode .feedback-author strong, body.light-mode .popup-content h3 { color: #0f172a; }
+
 /* Animação Fade-In (Seções aparecendo ao rolar) */
 .fade-in {
     opacity: 0;
@@ -308,7 +357,22 @@ footer { margin-top: 50px; padding: 20px; font-size: 0.9rem; color: #94a3b8; }
 
     nav {
         flex-direction: column;
+        align-items: center;
         gap: 15px;
         padding: 15px 0;
     }
+
+    .hamburger-btn {
+        display: block;
+        align-self: flex-end;
+        margin-right: 20px;
+    }
+
+    /* Esconde os links no mobile apenas onde há o botão hamburger */
+    .hamburger-btn ~ a, .hamburger-btn ~ .btn-theme {
+        display: none; 
+    }
+
+    nav.open .hamburger-btn ~ a { display: block; }
+    nav.open .hamburger-btn ~ .btn-theme { display: flex; }
 }

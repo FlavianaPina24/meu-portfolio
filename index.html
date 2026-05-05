@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portfólio de Flaviana Pina - Especialista em Qualidade de Software (QA) e Defesa Cibernética.">
+    <meta property="og:title" content="Flaviana Pina | Business Analyst & QA">
+    <meta property="og:description" content="Confira meu portfólio, projetos de automação, artigos e trajetória profissional na área de Qualidade de Software.">
+    <meta property="og:image" content="https://SEU_USUARIO.github.io/NOME_DO_REPOSITORIO/site2.png">
+    <meta property="og:type" content="website">
     <title>Flaviana Pina | Portfolio</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -13,6 +19,7 @@
     </header>
 
     <nav>
+        <button id="hamburger-btn" class="hamburger-btn" aria-label="Abrir Menu"><i class="fas fa-bars"></i></button>
         <a href="#about">Sobre Mim</a>
         <a href="#skills">Habilidades</a>
         <a href="#projects">Projetos Técnicos</a>
@@ -21,6 +28,7 @@
         <a href="#certifications">Certificações</a>
         <a href="#testimonials">Depoimentos</a>
         <a href="#contact">Contato</a>
+        <button id="theme-toggle" class="btn-theme" aria-label="Alternar Modo Claro/Escuro"><i class="fas fa-sun"></i></button>
     </nav>
 
     <main class="container">
@@ -130,7 +138,7 @@
                     <i class="fas fa-quote-right quote-icon"></i>
                     <p><em>"A Flaviana possui uma visão analítica impressionante. Sua atuação na automação de testes elevou a qualidade das nossas entregas e reduziu significativamente os bugs em produção. Uma excelente Business Analyst!"</em></p>
                     <div class="feedback-author">
-                        <strong>Nome do Colega ou Gestor</strong>
+                       
                         <span>Tech Lead | IBM</span>
                     </div>
                 </div>
@@ -138,7 +146,7 @@
                     <i class="fas fa-quote-right quote-icon"></i>
                     <p><em>"Excelente profissional! Comunicação clara, proativa e com um domínio técnico incrível sobre as ferramentas de QA e metodologias ágeis. Foi um grande prazer trabalhar em equipe com ela nos projetos de telecom."</em></p>
                     <div class="feedback-author">
-                        <strong>Nome do Colega ou PO</strong>
+                        
                         <span>Product Owner | Vtal</span>
                     </div>
                 </div>
@@ -298,6 +306,47 @@
         sections.forEach(section => {
             section.classList.add('fade-in');
             observer.observe(section);
+        });
+
+        // Lógica do Modo Claro / Escuro (Dark/Light Mode)
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = themeToggleBtn.querySelector('i');
+
+        // Verifica se o usuário já havia escolhido o modo claro antes
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+        }
+
+        // Troca o tema ao clicar no botão
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            themeIcon.classList.replace(isLight ? 'fa-sun' : 'fa-moon', isLight ? 'fa-moon' : 'fa-sun');
+        });
+
+        // Lógica do Menu Hamburger (Mobile)
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const headerNav = document.querySelector('nav');
+        const iconHamburger = hamburgerBtn.querySelector('i');
+
+        hamburgerBtn.addEventListener('click', () => {
+            headerNav.classList.toggle('open');
+            if (headerNav.classList.contains('open')) {
+                iconHamburger.classList.replace('fa-bars', 'fa-times');
+            } else {
+                iconHamburger.classList.replace('fa-times', 'fa-bars');
+            }
+        });
+
+        // Fecha o menu automaticamente quando um link é clicado
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                headerNav.classList.remove('open');
+                iconHamburger.classList.replace('fa-times', 'fa-bars');
+            });
         });
     </script>
 </body>
