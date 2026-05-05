@@ -377,7 +377,9 @@ body.light-mode .feedback-author strong, body.light-mode .popup-content h3 { col
 
     .btn-theme {
         position: absolute;
-        top: 15px;
+        top: 18px;
         left: 20px;
+        display: flex !important;
+        z-index: 1001;
     }
 }
