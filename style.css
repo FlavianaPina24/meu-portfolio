@@ -18,6 +18,34 @@ body {
     text-align: center;
 }
 
+/* Aviso de Site em Desenvolvimento */
+.dev-banner {
+    background-color: #f59e0b; /* Cor laranja/âmbar de aviso */
+    color: #0f172a;
+    width: 100%;
+    padding: 12px 40px 12px 20px;
+    text-align: center;
+    position: relative;
+    font-size: 0.95rem;
+    z-index: 1001; /* Fica acima do menu */
+}
+
+.dev-banner button {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #0f172a;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.dev-banner button:hover { opacity: 1; }
+
 header {
     padding: 150px 20px;
     background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%), url('site2.png');
@@ -101,6 +129,22 @@ li { background: #1e293b; padding: 15px; border-radius: 8px; border-left: 4px so
 .skill-card h3 {
     color: #38bdf8;
     margin-top: 0;
+}
+
+/* Tags de Tecnologias nos Projetos */
+.tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 15px 0;
+}
+.tech-tag {
+    background-color: rgba(56, 189, 248, 0.15);
+    color: #38bdf8;
+    font-size: 0.8rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: bold;
 }
 
 .btn-link {
@@ -344,6 +388,7 @@ body.light-mode .contact-form input, body.light-mode .contact-form textarea { ba
 body.light-mode .article-content, body.light-mode .feedback-author span, body.light-mode .timeline-date { color: #475569; }
 body.light-mode .article-content h1, body.light-mode .article-content h2 { color: #0f172a; border-bottom-color: #cbd5e1; }
 body.light-mode .feedback-author strong, body.light-mode .popup-content h3 { color: #0f172a; }
+body.light-mode .tech-tag { background-color: #e0f2fe; color: #0284c7; }
 
 /* Animação Fade-In (Seções aparecendo ao rolar) */
 .fade-in {

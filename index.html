@@ -15,6 +15,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- Aviso de Site em Desenvolvimento -->
+    <div id="dev-banner" class="dev-banner">
+        <span><i class="fas fa-tools"></i> <strong>Aviso:</strong> Este portfólio está em desenvolvimento contínuo e sendo aprimorado.</span>
+        <button onclick="document.getElementById('dev-banner').style.display='none'" aria-label="Fechar aviso"><i class="fas fa-times"></i></button>
+    </div>
+
     <header>
         <h1 class="sr-only">Flaviana Pina - Especialista em Qualidade de Software (QA)</h1>
     </header>
@@ -50,19 +56,39 @@
             </ul>
         </section>
         <section id="projects">
-        <h2>Projetos Técnicos</h2>
-        <div class="grid-skills">
-            <div class="skill-card">
-                <h3>Automação de APIs</h3>
-                <p>Testes automatizados desenvolvidos com <strong>Postman</strong> e <strong>Newman</strong> para validação de contratos e fluxos de Web Services.</p>
-                <a href="https://github.com/FlavianaPina24/" target="_blank" class="btn-link">Ver no GitHub</a>
+            <h2>Projetos Técnicos</h2>
+            <div class="grid-skills">
+                <div class="skill-card">
+                    <h3>Automação E2E (Web/Mobile)</h3>
+                    <p>Framework robusto desenvolvido para testes de ponta a ponta em aplicações bancárias e de telecomunicações, garantindo fluxos críticos.</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Robot Framework</span>
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">BDD</span>
+                    </div>
+                    <a href="https://github.com/FlavianaPina24" target="_blank" class="btn-link">Ver no GitHub</a>
+                </div>
+                <div class="skill-card">
+                    <h3>Validação de Contratos (API)</h3>
+                    <p>Suíte de testes automatizados para validar payloads (JSON), status codes e regras de negócio complexas em microsserviços.</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Postman</span>
+                        <span class="tech-tag">Newman</span>
+                        <span class="tech-tag">Agile</span>
+                    </div>
+                    <a href="https://github.com/FlavianaPina24" target="_blank" class="btn-link">Ver no GitHub</a>
+                </div>
+                <div class="skill-card">
+                    <h3>Qualidade Contínua (CI/CD)</h3>
+                    <p>Implementação de esteira de testes automatizados rodando diretamente na pipeline para garantir a qualidade a cada novo Deploy.</p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Azure DevOps</span>
+                        <span class="tech-tag">Pipelines</span>
+                        <span class="tech-tag">X-ray</span>
+                    </div>
+                    <a href="https://github.com/FlavianaPina24" target="_blank" class="btn-link">Ver no GitHub</a>
+                </div>
             </div>
-            <div class="skill-card">
-                <h3>QA Automation</h3>
-                <p>Framework de testes desenvolvido com <strong>Robot Framework</strong>, focado em garantir a integridade de aplicações web.</p>
-                <a href="https://github.com/FlavianaPina24" target="_blank" class="btn-link">Ver no GitHub</a>
-            </div>
-        </div>
         </section>
 
         <section id="articles">
