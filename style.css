@@ -1,3 +1,7 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 html {
     scroll-behavior: smooth;
     scroll-padding-top: 70px;
@@ -191,7 +195,6 @@ footer { margin-top: 50px; padding: 20px; font-size: 0.9rem; color: #94a3b8; }
     border-radius: 8px;
     color: #f1f5f9;
     font-family: 'Inter', sans-serif;
-    box-sizing: border-box;
 }
 
 .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: #38bdf8; }
@@ -311,6 +314,10 @@ footer { margin-top: 50px; padding: 20px; font-size: 0.9rem; color: #94a3b8; }
     display: flex;
     align-items: center;
 }
+.btn-theme i {
+    pointer-events: none; /* Garante que o toque acione o botão */
+}
+
 .btn-theme:hover { color: #38bdf8; }
 
 /* Modo Claro (Light Mode) - Inclusão e Acessibilidade */
@@ -377,9 +384,22 @@ body.light-mode .feedback-author strong, body.light-mode .popup-content h3 { col
 
     .btn-theme {
         position: absolute;
-        top: 18px;
-        left: 20px;
+        top: 8px;
+        left: 10px;
+        padding: 15px; /* Aumenta significativamente a área de toque */
         display: flex !important;
         z-index: 1001;
     }
+}
+
+/* Classe utilitária para Acessibilidade e SEO (Oculta visualmente, mas legível para robôs) */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
 }

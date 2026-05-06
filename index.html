@@ -16,6 +16,7 @@
 </head>
 <body>
     <header>
+        <h1 class="sr-only">Flaviana Pina - Especialista em Qualidade de Software (QA)</h1>
     </header>
 
     <nav>
@@ -323,7 +324,10 @@
             document.body.classList.toggle('light-mode');
             const isLight = document.body.classList.contains('light-mode');
             
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            try {
+                localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            } catch (e) {}
+            
             themeIcon.classList.replace(isLight ? 'fa-sun' : 'fa-moon', isLight ? 'fa-moon' : 'fa-sun');
         });
 
