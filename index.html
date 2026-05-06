@@ -189,6 +189,9 @@
                 <button onclick="closePopup()" class="btn-link" style="border: none; cursor: pointer;">Fechar</button>
             </div>
         </div>
+
+        <!-- Botão Voltar ao Topo -->
+        <button id="back-to-top" class="back-to-top" aria-label="Voltar ao topo"><i class="fas fa-arrow-up"></i></button>
     </main>
     <footer>
         <div class="social-links">
@@ -351,6 +354,21 @@
                 headerNav.classList.remove('open');
                 iconHamburger.classList.replace('fa-times', 'fa-bars');
             });
+        });
+
+        // Lógica do Botão Voltar ao Topo
+        const backToTopBtn = document.getElementById('back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     </script>
 </body>

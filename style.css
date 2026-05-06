@@ -357,6 +357,31 @@ body.light-mode .feedback-author strong, body.light-mode .popup-content h3 { col
     transform: translateY(0);
 }
 
+/* Botão Voltar ao Topo */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #38bdf8;
+    color: #0f172a;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+    z-index: 999;
+}
+.back-to-top.show { opacity: 1; pointer-events: auto; }
+.back-to-top:hover { background-color: #0284c7; transform: translateY(-5px); }
+
 @media (max-width: 768px) {
     ul, .grid-skills {
         grid-template-columns: 1fr;
