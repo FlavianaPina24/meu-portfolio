@@ -2,6 +2,10 @@
     box-sizing: border-box;
 }
 
+.info-banner h3 {
+    color: #38bdf8;
+}
+
 html {
     scroll-behavior: smooth;
     scroll-padding-top: 70px;
@@ -129,6 +133,15 @@ li { background: #1e293b; padding: 15px; border-radius: 8px; border-left: 4px so
 .skill-card h3 {
     color: #38bdf8;
     margin-top: 0;
+}
+
+.info-banner {
+    background-color: #1e293b;
+    padding: 15px 20px;
+    border-left: 4px solid #38bdf8;
+    border-radius: 8px;
+    text-align: left;
+    margin-bottom: 25px;
 }
 
 /* Tags de Tecnologias nos Projetos */
@@ -374,12 +387,13 @@ body.light-mode nav a, body.light-mode .btn-theme, body.light-mode .hamburger-bt
 body.light-mode nav a:hover, body.light-mode nav a.active, body.light-mode .btn-theme:hover, body.light-mode .hamburger-btn:hover { color: #0284c7; }
 body.light-mode nav a::after { background-color: #0284c7; }
 
-body.light-mode h1, body.light-mode h2, body.light-mode .skill-card h3, body.light-mode .timeline-content h3 { color: #0284c7; }
+body.light-mode h1, body.light-mode h2, body.light-mode .skill-card h3, body.light-mode .timeline-content h3, body.light-mode .info-banner h3 { color: #0284c7; }
 
-body.light-mode li, body.light-mode .skill-card, body.light-mode .timeline-content, body.light-mode .feedback-card, body.light-mode .popup-content {
+body.light-mode li, body.light-mode .skill-card, body.light-mode .timeline-content, body.light-mode .feedback-card, body.light-mode .popup-content, body.light-mode .info-banner {
     background-color: #ffffff; color: #334155; border-top-color: #0284c7; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 body.light-mode li { border-left-color: #0284c7; border-top-color: transparent; }
+body.light-mode .info-banner { border-left-color: #0284c7; }
 body.light-mode .timeline-dot { background-color: #ffffff; border-color: #0284c7; }
 body.light-mode .timeline::after { background-color: #0284c7; }
 
