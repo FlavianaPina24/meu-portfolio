@@ -256,12 +256,14 @@ footer { margin-top: 50px; padding: 20px; font-size: 0.9rem; color: #94a3b8; }
     align-items: center;
     z-index: 2000;
     opacity: 1;
-    transition: opacity 0.3s ease;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .popup.hidden {
     opacity: 0;
     pointer-events: none;
+    visibility: hidden;
 }
 
 .popup-content {
