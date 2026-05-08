@@ -167,6 +167,45 @@ li { background: #1e293b; padding: 15px; border-radius: 8px; border-left: 4px so
 .text-panel p:first-of-type { margin-top: 0; }
 .text-panel p:last-of-type { margin-bottom: 0; }
 
+/* Simulador de Terminal (Fake Run) */
+.terminal-container {
+    background-color: #0f172a;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    margin-bottom: 25px;
+    overflow: hidden;
+    font-family: 'Consolas', 'Courier New', monospace;
+    text-align: left;
+}
+.terminal-header {
+    background-color: #1e293b;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #334155;
+}
+.terminal-btn {
+    width: 12px; height: 12px; border-radius: 50%; margin-right: 8px;
+}
+.terminal-btn.red { background-color: #ef4444; }
+.terminal-btn.yellow { background-color: #eab308; }
+.terminal-btn.green { background-color: #22c55e; }
+.terminal-title {
+    color: #94a3b8; font-size: 0.85rem; margin-left: 10px; font-family: 'Inter', sans-serif;
+}
+.terminal-body {
+    padding: 15px;
+    height: 250px;
+    overflow-y: auto;
+    font-size: 0.9rem;
+    color: #f1f5f9;
+}
+.log-line { margin: 4px 0; opacity: 0; animation: fadeInLog 0.1s forwards; line-height: 1.4; }
+@keyframes fadeInLog { to { opacity: 1; } }
+.cursor-blink { display: inline-block; width: 8px; height: 15px; background-color: #f1f5f9; animation: blink 1s step-end infinite; vertical-align: middle; margin-left: 5px; }
+@keyframes blink { 50% { opacity: 0; } }
+
 /* Tags de Tecnologias nos Projetos */
 .tech-tags {
     display: flex;
