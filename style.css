@@ -144,6 +144,29 @@ li { background: #1e293b; padding: 15px; border-radius: 8px; border-left: 4px so
     margin-bottom: 25px;
 }
 
+/* Bloco de Texto Elegante (Painéis) */
+.text-panel {
+    padding: 25px 0;
+    border-top: 1px solid #334155;
+    border-bottom: 1px solid #334155;
+    line-height: 1.7;
+    margin-bottom: 25px;
+}
+.text-panel.center {
+    text-align: center;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.text-panel hr {
+    border: 0;
+    height: 1px;
+    background-color: #334155;
+    margin: 20px 0;
+}
+.text-panel p:first-of-type { margin-top: 0; }
+.text-panel p:last-of-type { margin-bottom: 0; }
+
 /* Tags de Tecnologias nos Projetos */
 .tech-tags {
     display: flex;
@@ -405,8 +428,11 @@ body.light-mode .article-content, body.light-mode .feedback-author span, body.li
 body.light-mode .article-content h1, body.light-mode .article-content h2 { color: #0f172a; border-bottom-color: #cbd5e1; }
 body.light-mode .feedback-author strong, body.light-mode .popup-content h3 { color: #0f172a; }
 body.light-mode .tech-tag { background-color: #e0f2fe; color: #0284c7; }
-body.light-mode .ba-list li { color: #334155; }
+body.light-mode .ba-list li { color: #334155; background-color: transparent; box-shadow: none; border: none; }
 body.light-mode .vision-video video { border-color: #0284c7; box-shadow: 0 10px 25px rgba(2, 132, 199, 0.2); }
+
+body.light-mode .text-panel { border-color: #e2e8f0; }
+body.light-mode .text-panel hr { background-color: #e2e8f0; }
 
 /* Animação Fade-In (Seções aparecendo ao rolar) */
 .fade-in {
