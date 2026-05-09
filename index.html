@@ -474,6 +474,11 @@
         if ('scrollRestoration' in history) {
             history.scrollRestoration = 'manual';
         }
+        
+        // Limpa a âncora (hash) da URL ao recarregar a página para um início 100% limpo
+        if (window.location.hash) {
+            history.replaceState(null, null, window.location.pathname + window.location.search);
+        }
         window.scrollTo(0, 0);
 
         const sections = document.querySelectorAll('section');
