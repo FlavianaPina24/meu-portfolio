@@ -48,8 +48,7 @@
             <a href="#projects">Projetos Técnicos</a>
             <a href="#ba-qa-vision">Visão BA & QA</a>
             <a href="#articles">Artigos</a>
-            <a href="#experience">Experiência</a>
-            <a href="#certifications">Certificações</a>
+            <a href="#journey">Minha Trajetória</a>
             <a href="#testimonials">Depoimentos</a>
             <a href="#contact">Contato</a>
         </div>
@@ -228,55 +227,65 @@
             </div>
         </section>
 
-        <section id="experience">
-            <h2>Experiência Profissional</h2>
-            <div class="text-panel center" style="padding-top: 20px; padding-bottom: 20px;">
-                <p style="font-size: 1.1rem;"><i class="fas fa-briefcase" style="margin-right: 8px; color: #38bdf8;"></i>Trajetória focada em garantir a qualidade e o sucesso de projetos complexos, unindo a visão estratégica de negócios com a execução técnica de testes.</p>
+        <section id="journey">
+            <h2>Minha Trajetória</h2>
+            
+            <!-- Botões das Abas -->
+            <div class="tabs-header">
+                <button class="tab-btn active" onclick="openTab(event, 'tab-experience')"><i class="fas fa-briefcase"></i> Experiência</button>
+                <button class="tab-btn" onclick="openTab(event, 'tab-certifications')"><i class="fas fa-award"></i> Certificações</button>
             </div>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <h3>Business Analyst & QA</h3>
-                        <span class="timeline-date">Julho 2024 – Setembro 2025 | IBM</span>
-                        <p>Atuação híbrida em projeto bancário, apoiando o ciclo completo de desenvolvimento e qualidade. Redação de regras de negócio junto ao cliente, criação de cenários de testes detalhados e interface direta para validação de requisitos e entregáveis.</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <h3>Analista de Teste (QA)</h3>
-                        <span class="timeline-date">Agosto 2022 – Março 2026 | IBM</span>
-                        <p>Desenvolvimento de robôs para automação de testes na planta da operadora Oi e atuação funcional em projetos para Vtal, Bradesco Callcenter e setor Agro. Elaboração de documentação técnica e execução de testes manuais, exploratórios e de regressão.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <section id="certifications">
-            <h2>Certificações em Destaque</h2>
-            <div class="text-panel center" style="padding-top: 20px; padding-bottom: 20px;">
-                <p style="font-size: 1.1rem;"><i class="fas fa-award" style="margin-right: 8px; color: #38bdf8;"></i>Busca contínua por aprimoramento técnico e metodológico, validada por instituições líderes no mercado de tecnologia.</p>
+            <!-- Conteúdo Aba 1: Experiência -->
+            <div id="tab-experience" class="tab-content active">
+                <div class="text-panel center" style="padding-top: 20px; padding-bottom: 20px;">
+                    <p style="font-size: 1.1rem;"><i class="fas fa-briefcase" style="margin-right: 8px; color: #38bdf8;"></i>Trajetória focada em garantir a qualidade e o sucesso de projetos complexos, unindo a visão estratégica de negócios com a execução técnica de testes.</p>
+                </div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3>Business Analyst & QA</h3>
+                            <span class="timeline-date">Julho 2024 – Setembro 2025 | IBM</span>
+                            <p>Atuação híbrida em projeto bancário, apoiando o ciclo completo de desenvolvimento e qualidade. Redação de regras de negócio junto ao cliente, criação de cenários de testes detalhados e interface direta para validação de requisitos e entregáveis.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3>Analista de Teste (QA)</h3>
+                            <span class="timeline-date">Agosto 2022 – Março 2026 | IBM</span>
+                            <p>Desenvolvimento de robôs para automação de testes na planta da operadora Oi e atuação funcional em projetos para Vtal, Bradesco Callcenter e setor Agro. Elaboração de documentação técnica e execução de testes manuais, exploratórios e de regressão.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="grid-skills">
-                <div class="skill-card">
-                    <h3><i class="fas fa-cloud"></i> Cloud & Infraestrutura</h3>
-                    <p><strong>Microsoft / IBM:</strong> Azure Fundamentals<br>
-                    <strong>Oracle:</strong> Cloud Infrastructure 2025, Data Platform 2025</p>
+
+            <!-- Conteúdo Aba 2: Certificações -->
+            <div id="tab-certifications" class="tab-content">
+                <div class="text-panel center" style="padding-top: 20px; padding-bottom: 20px;">
+                    <p style="font-size: 1.1rem;"><i class="fas fa-award" style="margin-right: 8px; color: #38bdf8;"></i>Busca contínua por aprimoramento técnico e metodológico, validada por instituições líderes no mercado de tecnologia.</p>
                 </div>
-                <div class="skill-card">
-                    <h3><i class="fas fa-shield-alt"></i> Segurança Cibernética</h3>
-                    <p><strong>IBM:</strong> DevSecOps Essentials<br>
-                    <strong>AttackIQ:</strong> Strategic Cybersecurity Management<br>
-                    <strong>Cisco:</strong> Introduction to Cybersecurity</p>
-                </div>
-                <div class="skill-card">
-                    <h3><i class="fas fa-project-diagram"></i> Agilidade & Design</h3>
-                    <p><strong>IBM:</strong> Agile Explorer, Enterprise Design Thinking Practitioner</p>
-                </div>
-                <div class="skill-card">
-                    <h3><i class="fas fa-brain"></i> Inteligência Artificial</h3>
-                    <p><strong>IBM:</strong> Watsonx Foundations, Intro to Intelligent Virtual Agents</p>
+                <div class="grid-skills">
+                    <div class="skill-card">
+                        <h3><i class="fas fa-cloud"></i> Cloud & Infraestrutura</h3>
+                        <p><strong>Microsoft / IBM:</strong> Azure Fundamentals<br>
+                        <strong>Oracle:</strong> Cloud Infrastructure 2025, Data Platform 2025</p>
+                    </div>
+                    <div class="skill-card">
+                        <h3><i class="fas fa-shield-alt"></i> Segurança Cibernética</h3>
+                        <p><strong>IBM:</strong> DevSecOps Essentials<br>
+                        <strong>AttackIQ:</strong> Strategic Cybersecurity Management<br>
+                        <strong>Cisco:</strong> Introduction to Cybersecurity</p>
+                    </div>
+                    <div class="skill-card">
+                        <h3><i class="fas fa-project-diagram"></i> Agilidade & Design</h3>
+                        <p><strong>IBM:</strong> Agile Explorer, Enterprise Design Thinking Practitioner</p>
+                    </div>
+                    <div class="skill-card">
+                        <h3><i class="fas fa-brain"></i> Inteligência Artificial</h3>
+                        <p><strong>IBM:</strong> Watsonx Foundations, Intro to Intelligent Virtual Agents</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -399,6 +408,18 @@
                 }
             });
         });
+
+        // --- Lógica das Abas (Tabs) ---
+        function openTab(evt, tabId) {
+            // Esconde todo o conteúdo
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            // Desmarca todos os botões
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Mostra a aba atual e marca o botão como ativo
+            document.getElementById(tabId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
 
         // Código para interceptar o envio do formulário via Formspree
         const contactForm = document.querySelector('.contact-form');
