@@ -47,6 +47,7 @@
             <a href="#skills">Habilidades</a>
             <a href="#projects">Projetos Técnicos</a>
             <a href="#ba-qa-vision">Visão BA & QA</a>
+            <a href="#business-cases">Cases (BA)</a>
             <a href="#articles">Artigos</a>
             <a href="#journey">Minha Trajetória</a>
             <a href="#testimonials">Depoimentos</a>
@@ -232,6 +233,69 @@
                     <h3>Boas Práticas em QA Automation</h3>
                     <p>Dicas fundamentais que aprendi utilizando Robot Framework para garantir a estabilidade das aplicações web.</p>
                     <a href="artigo-qa-automation.html" class="btn-link">Ler Artigo</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="business-cases">
+            <h2>Cases de Negócio & Artefatos (BA)</h2>
+            <div class="tabs-container">
+                <div class="tabs-header">
+                    <button class="tab-btn active" onclick="openTab(event, 'tab-ba-metrics')"><i class="fas fa-chart-pie"></i> Valor Entregue</button>
+                    <button class="tab-btn" onclick="openTab(event, 'tab-ba-case')"><i class="fas fa-project-diagram"></i> Case de Estudo</button>
+                    <button class="tab-btn" onclick="openTab(event, 'tab-ba-bdd')"><i class="fas fa-file-code"></i> Artefato: BDD</button>
+                </div>
+
+                <!-- Aba 1: Métricas de Valor -->
+                <div id="tab-ba-metrics" class="tab-content active">
+                    <div class="text-panel center" style="padding-top: 20px; padding-bottom: 20px;">
+                        <p style="font-size: 1.1rem;"><i class="fas fa-chart-line" style="margin-right: 8px; color: #38bdf8;"></i>Métricas focadas na entrega de valor, otimização de processos e alinhamento entre as áreas de Negócio e Desenvolvimento.</p>
+                    </div>
+                    <div class="qa-dashboard fade-in visible">
+                        <div class="metric-card">
+                            <i class="fas fa-sitemap" style="color: #38bdf8;"></i>
+                            <h4>Processos Mapeados</h4>
+                            <span class="metric-value" style="color: #38bdf8;">15+</span>
+                        </div>
+                        <div class="metric-card">
+                            <i class="fas fa-arrow-down" style="color: #22c55e;"></i>
+                            <h4>Redução de Retrabalho</h4>
+                            <span class="metric-value" style="color: #22c55e;">~30%</span>
+                        </div>
+                        <div class="metric-card">
+                            <i class="fas fa-users-cog" style="color: #eab308;"></i>
+                            <h4>User Stories Escritas</h4>
+                            <span class="metric-value" style="color: #eab308;">100+</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aba 2: Case de Estudo -->
+                <div id="tab-ba-case" class="tab-content">
+                    <div class="skill-card" style="padding: 30px; text-align: left;">
+                        <h3 style="font-size: 1.3rem; margin-bottom: 15px; color: #38bdf8;"><i class="fas fa-briefcase"></i> Otimização do Ciclo de Qualidade no Setor Bancário</h3>
+                        <p><strong><i class="fas fa-exclamation-circle" style="color:#ef4444;"></i> O Desafio:</strong> Falta de clareza nos requisitos iniciais gerava alto índice de bugs encontrados apenas na fase final de testes, atrasando as entregas (Gargalo no fluxo).</p>
+                        <p style="margin: 15px 0;"><strong><i class="fas fa-search" style="color:#eab308;"></i> A Análise (BA):</strong> Realizei o mapeamento do processo "As-Is" e identifiquei a ausência de critérios de aceite formais. Propus a transição para o modelo "To-Be" utilizando BDD (Behavior-Driven Development) desde as sessões de refinamento.</p>
+                        <p><strong><i class="fas fa-check-circle" style="color:#22c55e;"></i> Solução & Resultado:</strong> Capacitação do time de Produto e QA para escreverem histórias em conjunto. Resultado: Redução de 30% no retrabalho e mudança da cultura para o Shift-Left Testing (testar desde a concepção).</p>
+                    </div>
+                </div>
+
+                <!-- Aba 3: Artefato BDD -->
+                <div id="tab-ba-bdd" class="tab-content">
+                    <div class="skill-card" style="padding: 25px; text-align: left;">
+                        <p style="margin-top:0; margin-bottom:20px; font-size:1.05rem;">Exemplo de tangibilização de uma regra de negócio complexa em um artefato executável e compreensível para humanos e robôs (Gherkin).</p>
+                        <div style="background-color: #0f172a; padding: 20px; border-radius: 8px; border-left: 4px solid #22c55e; font-family: 'Consolas', monospace; color: #f1f5f9; font-size: 0.95rem; overflow-x: auto; line-height: 1.7; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);">
+                            <span style="color: #38bdf8; font-weight: bold;">Funcionalidade:</span> Transferência via PIX<br>
+                            &nbsp;&nbsp;<span style="color: #94a3b8;">Como um</span> cliente do banco<br>
+                            &nbsp;&nbsp;<span style="color: #94a3b8;">Quero</span> realizar transferências instantâneas<br>
+                            &nbsp;&nbsp;<span style="color: #94a3b8;">Para</span> pagar contas e enviar dinheiro a contatos<br><br>
+                            &nbsp;&nbsp;<span style="color: #eab308; font-weight: bold;">Cenário:</span> Transferência com saldo suficiente<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #22c55e; font-weight: bold;">Dado</span> que meu saldo atual é de <span style="color: #f87171;">"R$ 500,00"</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #22c55e; font-weight: bold;">Quando</span> eu realizo um PIX de <span style="color: #f87171;">"R$ 100,00"</span> para a chave <span style="color: #f87171;">"qa@banco.com"</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #22c55e; font-weight: bold;">Então</span> a transferência deve ser <span style="color: #38bdf8;">"Aprovada"</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #22c55e; font-weight: bold;">E</span> meu novo saldo deve ser <span style="color: #f87171;">"R$ 400,00"</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
