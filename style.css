@@ -206,6 +206,39 @@ li { background: #1e293b; padding: 15px; border-radius: 8px; border-left: 4px so
 .cursor-blink { display: inline-block; width: 8px; height: 15px; background-color: #f1f5f9; animation: blink 1s step-end infinite; vertical-align: middle; margin-left: 5px; }
 @keyframes blink { 50% { opacity: 0; } }
 
+/* QA Metrics Dashboard */
+.qa-dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+    width: 100%;
+}
+.metric-card {
+    background-color: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 20px 10px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+.metric-card:hover { transform: translateY(-3px); }
+.metric-card i { font-size: 2rem; margin-bottom: 10px; }
+.metric-card h4 {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    margin: 0 0 5px 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+}
+.metric-card .metric-value {
+    font-size: 1.8rem;
+    font-weight: bold;
+    display: block;
+}
+
 /* Tags de Tecnologias nos Projetos */
 .tech-tags {
     display: flex;
@@ -471,6 +504,7 @@ body.light-mode .ba-list li { color: #334155; background-color: transparent; box
 body.light-mode .vision-video video { border-color: #0284c7; box-shadow: 0 10px 25px rgba(2, 132, 199, 0.2); }
 
 body.light-mode .text-panel { border-color: #e2e8f0; }
+body.light-mode .metric-card { background-color: #ffffff; border-color: #e2e8f0; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); }
 body.light-mode .text-panel hr { background-color: #e2e8f0; }
 
 /* Animação Fade-In (Seções aparecendo ao rolar) */
