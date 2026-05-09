@@ -372,6 +372,12 @@
             </div>
         </div>
 
+        <!-- Easter Egg: Caça ao Bug -->
+        <div id="easter-egg-bug" class="hidden-bug"><i class="fas fa-bug"></i></div>
+        <div id="easter-egg-toast" class="toast hidden">
+            <i class="fas fa-search"></i> Opa! Nenhum bug escapa da Flaviana. Você encontrou um Easter Egg!
+        </div>
+
         <!-- Botão Voltar ao Topo -->
         <button id="back-to-top" class="back-to-top" aria-label="Voltar ao topo"><i class="fas fa-arrow-up"></i></button>
     </main>
@@ -400,6 +406,12 @@
     </footer>
 
     <script>
+        // Força o site a sempre carregar no topo absoluto (ignora o histórico de rolagem do navegador)
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
+
         const sections = document.querySelectorAll('section');
         const navLinks = document.querySelectorAll('nav a');
 
@@ -782,6 +794,38 @@
                 btnStart.style.display = 'none'; // Esconde o botão ao ser clicado
                 setTimeout(typeWriter, 200); // Dá o start na digitação do robô!
             });
+        });
+
+        // --- Lógica do Easter Egg (Caça ao Bug) ---
+        let easterEggBuffer = '';
+        
+        window.addEventListener('keydown', (e) => {
+            easterEggBuffer += e.key.toLowerCase();
+            // Mantém apenas as últimas 3 letras digitadas
+            if (easterEggBuffer.length > 3) {
+                easterEggBuffer = easterEggBuffer.substring(easterEggBuffer.length - 3);
+            }
+            // Se o usuário digitou "bug"
+            if (easterEggBuffer === 'bug') {
+                const bugElement = document.getElementById('easter-egg-bug');
+                const toastElement = document.getElementById('easter-egg-toast');
+                
+                // Faz o bug correr
+                bugElement.classList.remove('hidden-bug');
+                bugElement.classList.add('run-bug');
+                
+                // Mostra a notificação após 1 segundo
+                setTimeout(() => { toastElement.classList.remove('hidden'); }, 1000);
+                
+                // Esconde tudo e reseta após 6 segundos
+                setTimeout(() => {
+                    toastElement.classList.add('hidden');
+                    bugElement.classList.remove('run-bug');
+                    bugElement.classList.add('hidden-bug');
+                }, 6000);
+                
+                easterEggBuffer = ''; // Reseta o buffer
+            }
         });
     </script>
 </body>
