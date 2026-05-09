@@ -2,6 +2,34 @@
     box-sizing: border-box;
 }
 
+/* Custom Scrollbar (Barra de Rolagem Estilizada) */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #0f172a; }
+::-webkit-scrollbar-thumb { background: #334155; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #38bdf8; }
+
+/* Barra de Progresso de Leitura */
+.scroll-progress-container {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 4px;
+    background-color: transparent; z-index: 9999; pointer-events: none;
+}
+.scroll-progress-bar {
+    height: 100%; width: 0%;
+    background-color: #38bdf8; box-shadow: 0 0 10px #38bdf8;
+}
+
+/* Preloader Hacker */
+.preloader {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: #0f172a; z-index: 10000;
+    display: flex; justify-content: center; align-items: center;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+.preloader.hidden { opacity: 0; visibility: hidden; }
+.preloader-content { text-align: center; color: #38bdf8; font-family: 'Consolas', 'Courier New', monospace; font-size: 1.2rem; }
+.typing-text::after { content: '█'; animation: blink 1s step-end infinite; margin-left: 5px; }
+
 .info-banner h3 {
     color: #38bdf8;
 }
@@ -55,6 +83,7 @@ header {
     background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%), url('site2.png');
     background-size: cover;
     background-position: center;
+    background-attachment: fixed; /* EFEITO PARALLAX AQUI! */
     width: 100%;
 }
 
@@ -63,12 +92,18 @@ nav {
     top: 0;
     width: 100%;
     background-color: rgba(15, 23, 42, 0.95);
-    padding: 20px 0;
+    padding: 15px 5%;
     z-index: 1000;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-menu {
+    display: flex;
     gap: 30px;
+    align-items: center;
 }
 
 nav a {
@@ -206,6 +241,41 @@ li { background: #1e293b; padding: 15px; border-radius: 8px; border-left: 4px so
 .cursor-blink { display: inline-block; width: 8px; height: 15px; background-color: #f1f5f9; animation: blink 1s step-end infinite; vertical-align: middle; margin-left: 5px; }
 @keyframes blink { 50% { opacity: 0; } }
 
+/* Carrossel de Ferramentas */
+.carousel-container {
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    margin-top: 40px;
+    padding: 20px 0;
+    background: linear-gradient(90deg, rgba(15,23,42,1) 0%, rgba(30,41,59,1) 50%, rgba(15,23,42,1) 100%);
+    border-radius: 8px;
+    border: 1px solid #334155;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+}
+.carousel-track {
+    display: inline-block;
+    animation: scrollCarousel 20s linear infinite;
+}
+.carousel-track:hover {
+    animation-play-state: paused;
+}
+.carousel-track span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #94a3b8;
+    margin: 0 30px;
+    transition: color 0.3s;
+}
+.carousel-track span:hover { color: #38bdf8; }
+@keyframes scrollCarousel {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
 /* QA Metrics Dashboard */
 .qa-dashboard {
     display: grid;
@@ -271,17 +341,95 @@ li { background: #1e293b; padding: 15px; border-radius: 8px; border-left: 4px so
     background-color: #0284c7;
 }
 
-footer { margin-top: 50px; padding: 20px; font-size: 0.9rem; color: #94a3b8; }
+/* Efeito de Pulso Luminoso para Call to Action */
+.pulse-btn { animation: pulse-glow 2s infinite; }
+@keyframes pulse-glow {
+    0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(56, 189, 248, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
+}
+body.light-mode .pulse-btn { animation: pulse-glow-light 2s infinite; }
+@keyframes pulse-glow-light { 0% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.5); } 70% { box-shadow: 0 0 0 15px rgba(2, 132, 199, 0); } 100% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0); } }
+
+/* Estilos do Rodapé (Footer) */
+footer {
+    background-color: #1e293b;
+    margin-top: 60px;
+    padding: 60px 20px 30px; /* Aumenta o respiro interno da caixa */
+    color: #94a3b8;
+    border-top: 1px solid #334155;
+    font-size: 0.95rem;
+    text-align: left;
+}
+
+.footer-container {
+    max-width: 1000px; /* Amplia a largura total do rodapé */
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly; /* Distribui as duas colunas elegantemente no centro */
+    gap: 40px;
+    margin-bottom: 30px;
+}
+
+.footer-section {
+    min-width: 250px;
+    flex: 1;
+    max-width: 350px;
+}
+
+.footer-section h3 {
+    color: #f1f5f9;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.footer-section h3::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 40px;
+    height: 3px;
+    background-color: #38bdf8;
+    border-radius: 2px;
+}
+
+.footer-section p { line-height: 1.6; }
+
+.footer-links { display: flex; flex-direction: column; gap: 12px; }
+
+.footer-links a {
+    color: #94a3b8;
+    text-decoration: none;
+    transition: color 0.3s ease, padding-left 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.footer-links a i { font-size: 0.8rem; color: #38bdf8; transition: transform 0.3s ease; }
+.footer-links a:hover { color: #38bdf8; padding-left: 8px; }
+.footer-links a:hover i { transform: translateX(3px); }
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #334155;
+    font-size: 0.9rem;
+}
 
 .social-links {
-    margin-bottom: 15px;
+    display: flex;
+    gap: 15px;
 }
 
 .social-links a {
     display: inline-block;
     color: #94a3b8;
     font-size: 1.5rem;
-    margin: 0 10px;
     transition: color 0.3s ease, transform 0.3s ease;
 }
 
@@ -506,6 +654,20 @@ body.light-mode .vision-video video { border-color: #0284c7; box-shadow: 0 10px 
 body.light-mode .text-panel { border-color: #e2e8f0; }
 body.light-mode .metric-card { background-color: #ffffff; border-color: #e2e8f0; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); }
 body.light-mode .text-panel hr { background-color: #e2e8f0; }
+body.light-mode .carousel-container { background: linear-gradient(90deg, rgba(248,250,252,1) 0%, rgba(226,232,240,1) 50%, rgba(248,250,252,1) 100%); border-color: #e2e8f0; box-shadow: inset 0 0 15px rgba(0,0,0,0.05); }
+body.light-mode .carousel-track span { color: #475569; }
+body.light-mode .carousel-track span:hover { color: #0284c7; }
+
+body.light-mode ::-webkit-scrollbar-track { background: #f8fafc; }
+body.light-mode ::-webkit-scrollbar-thumb { background: #cbd5e1; }
+body.light-mode ::-webkit-scrollbar-thumb:hover { background: #0284c7; }
+body.light-mode .scroll-progress-bar { background-color: #0284c7; box-shadow: 0 0 10px #0284c7; }
+
+body.light-mode footer { background-color: #ffffff; border-top-color: #e2e8f0; color: #475569; }
+body.light-mode .footer-section h3 { color: #0f172a; }
+body.light-mode .footer-bottom { border-top-color: #e2e8f0; }
+body.light-mode .footer-links a { color: #475569; }
+body.light-mode .footer-links a:hover { color: #0284c7; }
 
 /* Animação Fade-In (Seções aparecendo ao rolar) */
 .fade-in {
@@ -550,33 +712,31 @@ body.light-mode .text-panel hr { background-color: #e2e8f0; }
     }
 
     nav {
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-        padding: 15px 0;
+        padding: 15px 20px;
     }
 
-    .hamburger-btn {
+    .hamburger-btn, .btn-theme {
         display: block;
-        align-self: flex-end;
-        margin-right: 20px;
+        z-index: 1002; /* Fica acima do menu lateral */
     }
 
-    /* Esconde os links no mobile apenas onde há o botão hamburger */
-    .hamburger-btn ~ a {
-        display: none; 
-    }
-
-    nav.open .hamburger-btn ~ a { display: block; }
-
-    .btn-theme {
-        position: absolute;
-        top: 8px;
-        left: 10px;
-        padding: 15px; /* Aumenta significativamente a área de toque */
-        display: flex !important;
+    .nav-menu {
+        position: fixed;
+        top: 0;
+        right: -280px; /* Começa escondido fora da tela */
+        width: 250px;
+        height: 100vh;
+        background-color: rgba(15, 23, 42, 0.98);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        justify-content: center;
+        transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 1001;
+        box-shadow: -5px 0 25px rgba(0,0,0,0.6);
     }
+
+    nav.open .nav-menu { right: 0; } /* Desliza para dentro da tela! */
+    body.light-mode .nav-menu { background-color: rgba(255, 255, 255, 0.98); }
 }
 
 /* Classe utilitária para Acessibilidade e SEO (Oculta visualmente, mas legível para robôs) */
