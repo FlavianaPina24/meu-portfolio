@@ -485,6 +485,9 @@ footer {
 .timeline-date { color: #94a3b8; font-size: 0.9rem; font-weight: bold; display: block; margin-bottom: 10px; }
 
 /* Abas Internas (Tabs) */
+.tabs-container {
+    width: 100%;
+}
 .tabs-header {
     display: flex;
     justify-content: center;

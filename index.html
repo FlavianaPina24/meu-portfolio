@@ -188,20 +188,29 @@
                         </div>
                     </div>
 
-                    <div style="display: flex; flex-direction: column; gap: 25px;">
-                        <div class="skill-card" style="padding: 20px;">
-                            <h3 style="margin-bottom: 10px; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;"><i class="fas fa-keyboard"></i> Formulário de Contato</h3>
-                            <p style="font-size: 0.95rem; margin-bottom: 15px; line-height: 1.5;">O robô mapeia os campos de texto dinamicamente, centraliza a câmera de forma suave e digita os dados simulando a interação de um usuário real.</p>
-                            <video controls muted playsinline style="width: 100%; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
-                                <source src="demo-formulario.webm#t=1.0" type="video/webm">
-                            </video>
+                    <div class="tabs-container">
+                        <div class="tabs-header" style="margin-top: 25px;">
+                            <button class="tab-btn active" onclick="openTab(event, 'tab-video-form')"><i class="fas fa-keyboard"></i> Video Formulário</button>
+                            <button class="tab-btn" onclick="openTab(event, 'tab-video-modal')"><i class="fas fa-window-restore"></i> Video Modal Pop-up E2E</button>
                         </div>
-                        <div class="skill-card" style="padding: 20px;">
-                            <h3 style="margin-bottom: 10px; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;"><i class="fas fa-window-restore"></i> Interação Modal E2E</h3>
-                            <p style="font-size: 0.95rem; margin-bottom: 15px; line-height: 1.5;">A automação abre o pop-up, espera as animações carregarem, preenche os dados utilizando boas práticas de <code>data-testid</code> e valida o fechamento da janela no sistema.</p>
-                            <video controls muted playsinline style="width: 100%; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
-                                <source src="demo-modal.webm#t=1.0" type="video/webm">
-                            </video>
+
+                        <div id="tab-video-form" class="tab-content active">
+                            <div class="skill-card" style="padding: 20px;">
+                                <h3 style="margin-bottom: 10px; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;"><i class="fas fa-keyboard"></i> Formulário de Contato</h3>
+                                <p style="font-size: 0.95rem; margin-bottom: 15px; line-height: 1.5;">O robô mapeia os campos de texto dinamicamente, centraliza a câmera de forma suave e digita os dados simulando a interação de um usuário real.</p>
+                                <video controls muted playsinline style="width: 100%; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+                                    <source src="demo-formulario.webm#t=1.0" type="video/webm">
+                                </video>
+                            </div>
+                        </div>
+                        <div id="tab-video-modal" class="tab-content">
+                            <div class="skill-card" style="padding: 20px;">
+                                <h3 style="margin-bottom: 10px; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;"><i class="fas fa-window-restore"></i> Interação Modal E2E</h3>
+                                <p style="font-size: 0.95rem; margin-bottom: 15px; line-height: 1.5;">A automação abre o pop-up, espera as animações carregarem, preenche os dados utilizando boas práticas de <code>data-testid</code> e valida o fechamento da janela no sistema.</p>
+                                <video controls muted playsinline style="width: 100%; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+                                    <source src="demo-modal.webm#t=1.0" type="video/webm">
+                                </video>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -229,62 +238,63 @@
 
         <section id="journey">
             <h2>Minha Trajetória</h2>
-            
-            <!-- Botões das Abas -->
-            <div class="tabs-header">
-                <button class="tab-btn active" onclick="openTab(event, 'tab-experience')"><i class="fas fa-briefcase"></i> Experiência</button>
-                <button class="tab-btn" onclick="openTab(event, 'tab-certifications')"><i class="fas fa-award"></i> Certificações</button>
-            </div>
-
-            <!-- Conteúdo Aba 1: Experiência -->
-            <div id="tab-experience" class="tab-content active">
-                <div class="text-panel center" style="padding-top: 20px; padding-bottom: 20px;">
-                    <p style="font-size: 1.1rem;"><i class="fas fa-briefcase" style="margin-right: 8px; color: #38bdf8;"></i>Trajetória focada em garantir a qualidade e o sucesso de projetos complexos, unindo a visão estratégica de negócios com a execução técnica de testes.</p>
+            <div class="tabs-container">
+                <!-- Botões das Abas -->
+                <div class="tabs-header">
+                    <button class="tab-btn active" onclick="openTab(event, 'tab-experience')"><i class="fas fa-briefcase"></i> Experiência</button>
+                    <button class="tab-btn" onclick="openTab(event, 'tab-certifications')"><i class="fas fa-award"></i> Certificações</button>
                 </div>
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-content">
-                            <h3>Business Analyst & QA</h3>
-                            <span class="timeline-date">Julho 2024 – Setembro 2025 | IBM</span>
-                            <p>Atuação híbrida em projeto bancário, apoiando o ciclo completo de desenvolvimento e qualidade. Redação de regras de negócio junto ao cliente, criação de cenários de testes detalhados e interface direta para validação de requisitos e entregáveis.</p>
+
+                <!-- Conteúdo Aba 1: Experiência -->
+                <div id="tab-experience" class="tab-content active">
+                    <div class="text-panel center" style="padding-top: 20px; padding-bottom: 20px;">
+                        <p style="font-size: 1.1rem;"><i class="fas fa-briefcase" style="margin-right: 8px; color: #38bdf8;"></i>Trajetória focada em garantir a qualidade e o sucesso de projetos complexos, unindo a visão estratégica de negócios com a execução técnica de testes.</p>
+                    </div>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3>Business Analyst & QA</h3>
+                                <span class="timeline-date">Julho 2024 – Setembro 2025 | IBM</span>
+                                <p>Atuação híbrida em projeto bancário, apoiando o ciclo completo de desenvolvimento e qualidade. Redação de regras de negócio junto ao cliente, criação de cenários de testes detalhados e interface direta para validação de requisitos e entregáveis.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3>Analista de Teste (QA)</h3>
+                                <span class="timeline-date">Agosto 2022 – Março 2026 | IBM</span>
+                                <p>Desenvolvimento de robôs para automação de testes na planta da operadora Oi e atuação funcional em projetos para Vtal, Bradesco Callcenter e setor Agro. Elaboração de documentação técnica e execução de testes manuais, exploratórios e de regressão.</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-content">
-                            <h3>Analista de Teste (QA)</h3>
-                            <span class="timeline-date">Agosto 2022 – Março 2026 | IBM</span>
-                            <p>Desenvolvimento de robôs para automação de testes na planta da operadora Oi e atuação funcional em projetos para Vtal, Bradesco Callcenter e setor Agro. Elaboração de documentação técnica e execução de testes manuais, exploratórios e de regressão.</p>
-                        </div>
-                    </div>
                 </div>
-            </div>
 
-            <!-- Conteúdo Aba 2: Certificações -->
-            <div id="tab-certifications" class="tab-content">
-                <div class="text-panel center" style="padding-top: 20px; padding-bottom: 20px;">
-                    <p style="font-size: 1.1rem;"><i class="fas fa-award" style="margin-right: 8px; color: #38bdf8;"></i>Busca contínua por aprimoramento técnico e metodológico, validada por instituições líderes no mercado de tecnologia.</p>
-                </div>
-                <div class="grid-skills">
-                    <div class="skill-card">
-                        <h3><i class="fas fa-cloud"></i> Cloud & Infraestrutura</h3>
-                        <p><strong>Microsoft / IBM:</strong> Azure Fundamentals<br>
-                        <strong>Oracle:</strong> Cloud Infrastructure 2025, Data Platform 2025</p>
+                <!-- Conteúdo Aba 2: Certificações -->
+                <div id="tab-certifications" class="tab-content">
+                    <div class="text-panel center" style="padding-top: 20px; padding-bottom: 20px;">
+                        <p style="font-size: 1.1rem;"><i class="fas fa-award" style="margin-right: 8px; color: #38bdf8;"></i>Busca contínua por aprimoramento técnico e metodológico, validada por instituições líderes no mercado de tecnologia.</p>
                     </div>
-                    <div class="skill-card">
-                        <h3><i class="fas fa-shield-alt"></i> Segurança Cibernética</h3>
-                        <p><strong>IBM:</strong> DevSecOps Essentials<br>
-                        <strong>AttackIQ:</strong> Strategic Cybersecurity Management<br>
-                        <strong>Cisco:</strong> Introduction to Cybersecurity</p>
-                    </div>
-                    <div class="skill-card">
-                        <h3><i class="fas fa-project-diagram"></i> Agilidade & Design</h3>
-                        <p><strong>IBM:</strong> Agile Explorer, Enterprise Design Thinking Practitioner</p>
-                    </div>
-                    <div class="skill-card">
-                        <h3><i class="fas fa-brain"></i> Inteligência Artificial</h3>
-                        <p><strong>IBM:</strong> Watsonx Foundations, Intro to Intelligent Virtual Agents</p>
+                    <div class="grid-skills">
+                        <div class="skill-card">
+                            <h3><i class="fas fa-cloud"></i> Cloud & Infraestrutura</h3>
+                            <p><strong>Microsoft / IBM:</strong> Azure Fundamentals<br>
+                            <strong>Oracle:</strong> Cloud Infrastructure 2025, Data Platform 2025</p>
+                        </div>
+                        <div class="skill-card">
+                            <h3><i class="fas fa-shield-alt"></i> Segurança Cibernética</h3>
+                            <p><strong>IBM:</strong> DevSecOps Essentials<br>
+                            <strong>AttackIQ:</strong> Strategic Cybersecurity Management<br>
+                            <strong>Cisco:</strong> Introduction to Cybersecurity</p>
+                        </div>
+                        <div class="skill-card">
+                            <h3><i class="fas fa-project-diagram"></i> Agilidade & Design</h3>
+                            <p><strong>IBM:</strong> Agile Explorer, Enterprise Design Thinking Practitioner</p>
+                        </div>
+                        <div class="skill-card">
+                            <h3><i class="fas fa-brain"></i> Inteligência Artificial</h3>
+                            <p><strong>IBM:</strong> Watsonx Foundations, Intro to Intelligent Virtual Agents</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -411,10 +421,13 @@
 
         // --- Lógica das Abas (Tabs) ---
         function openTab(evt, tabId) {
-            // Esconde todo o conteúdo
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            // Desmarca todos os botões
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // Encontra o container pai do conjunto de abas
+            const tabContainer = evt.currentTarget.closest('.tabs-container');
+
+            // Esconde todo o conteúdo DENTRO do container
+            tabContainer.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            // Desmarca todos os botões DENTRO do container
+            tabContainer.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             
             // Mostra a aba atual e marca o botão como ativo
             document.getElementById(tabId).classList.add('active');
