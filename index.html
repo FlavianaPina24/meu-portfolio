@@ -165,7 +165,7 @@
                     </div>
                     
                     <!-- Terminal Simulator -->
-                    <div id="terminal-simulator" class="terminal-container hidden">
+                    <div id="terminal-simulator" class="terminal-container">
                         <div class="terminal-header">
                             <span class="terminal-btn red"></span>
                             <span class="terminal-btn yellow"></span>
@@ -478,16 +478,25 @@
     </footer>
 
     <script>
-        // Força o site a sempre carregar no topo absoluto (ignora o histórico de rolagem do navegador)
-        if ('scrollRestoration' in history) {
-            history.scrollRestoration = 'manual';
+        // Verifica se o usuário está voltando de um artigo (a URL terá um #hash)
+        const isReturningFromArticle = window.location.hash !== '';
+
+        if (!isReturningFromArticle) {
+            // F5 ou Primeiro Acesso: Força o topo absoluto e prepara o preloader
+            if ('scrollRestoration' in history) {
+                history.scrollRestoration = 'manual';
+            }
+            window.scrollTo(0, 0);
+        } else {
+            // Voltando do artigo: Restaura o comportamento natural de rolagem para a seção
+            if ('scrollRestoration' in history) {
+                history.scrollRestoration = 'auto';
+            }
+            // Limpa a URL silenciosamente 1 segundo após o navegador rolar até a seção
+            setTimeout(() => {
+                history.replaceState(null, null, window.location.pathname + window.location.search);
+            }, 1000);
         }
-        
-        // Limpa a âncora (hash) da URL ao recarregar a página para um início 100% limpo
-        if (window.location.hash) {
-            history.replaceState(null, null, window.location.pathname + window.location.search);
-        }
-        window.scrollTo(0, 0);
 
         const sections = document.querySelectorAll('section');
         const navLinks = document.querySelectorAll('nav a');
@@ -865,7 +874,13 @@
         }
 
         // --- Lógica do Preloader (Tela de Carregamento) ---
-        window.addEventListener('load', () => {
+        // Executado imediatamente para evitar que o botão fique inativo caso a internet demore a carregar imagens
+        if (isReturningFromArticle) {
+            // Se estiver voltando de um artigo, oculta o preloader e escreve o título instantaneamente
+            document.getElementById('preloader').style.display = 'none';
+            document.getElementById('hero-typewriter').innerHTML = "Olá, eu sou a <span class='highlight'>Flaviana Pina</span>";
+            document.getElementById('hero-subtitle').style.opacity = '1';
+        } else {
             const btnStart = document.getElementById('btn-start-preloader');
             const preloaderText = document.getElementById('preloader-text');
             const textToType = "> start portfolio_flaviana_pina...";
@@ -881,7 +896,7 @@
                         preloaderText.innerHTML = "> start portfolio_flaviana_pina... <span style='color:#22c55e;'>[BUILD OK]</span>";
                         setTimeout(() => {
                             document.getElementById('preloader').classList.add('hidden');
-                        setTimeout(startHeroTypewriter, 800); // Inicia o texto do título após a tela preta sumir!
+                            setTimeout(startHeroTypewriter, 800); // Inicia o texto do título após a tela preta sumir!
                         }, 600); // Aguarda meio segundo para o usuário ler o [OK] antes de sumir
                     }, 400);
                 }
@@ -891,7 +906,7 @@
                 btnStart.style.display = 'none'; // Esconde o botão ao ser clicado
                 setTimeout(typeWriter, 200); // Dá o start na digitação do robô!
             });
-        });
+        }
 
         // --- Lógica do Easter Egg (Caça ao Bug) ---
         let easterEggBuffer = '';

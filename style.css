@@ -282,9 +282,8 @@ li:hover {
     font-size: 0.9rem;
     color: #f1f5f9;
     word-wrap: break-word; /* Evita que códigos longos vazem da tela */
-    white-space: pre-wrap;
 }
-.log-line { margin: 4px 0; opacity: 0; animation: fadeInLog 0.1s forwards; line-height: 1.4; }
+.log-line { margin: 4px 0; opacity: 0; animation: fadeInLog 0.1s forwards; line-height: 1.4; white-space: pre-wrap; }
 @keyframes fadeInLog { to { opacity: 1; } }
 .cursor-blink { display: inline-block; width: 8px; height: 15px; background-color: #f1f5f9; animation: blink 1s step-end infinite; vertical-align: middle; margin-left: 5px; }
 @keyframes blink { 50% { opacity: 0; } }
