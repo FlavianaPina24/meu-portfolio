@@ -27,7 +27,13 @@
     transition: opacity 0.8s ease, visibility 0.8s ease;
 }
 .preloader.hidden { opacity: 0; visibility: hidden; }
-.preloader-content { text-align: center; color: #38bdf8; font-family: 'Consolas', 'Courier New', monospace; font-size: 1.2rem; }
+.preloader-content {
+    text-align: center; color: #38bdf8;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 1.2rem;
+    padding: 0 20px; /* Evita que o texto encoste nas bordas do celular */
+    word-break: break-word; /* Garante que o texto quebre linhas perfeitamente */
+}
 .typing-text::after { content: '█'; animation: blink 1s step-end infinite; margin-left: 5px; }
 
 .info-banner h3 {
@@ -802,6 +808,10 @@ body.light-mode .tab-btn.active { background-color: #0284c7; color: #ffffff; bor
 @media (max-width: 768px) {
     ul, .grid-skills {
         grid-template-columns: 1fr;
+    }
+
+    .preloader-content {
+        font-size: 0.95rem; /* Fonte menor no terminal hacker para telas móveis */
     }
 
     nav {
