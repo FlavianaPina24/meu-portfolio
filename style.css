@@ -94,6 +94,32 @@ header {
     background-position: center;
     background-attachment: fixed; /* EFEITO PARALLAX AQUI! */
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-content {
+    text-align: center;
+    z-index: 2; /* Garante que fique sobreposto ao fundo */
+}
+
+.typewriter-container {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #f1f5f9;
+    margin-bottom: 10px;
+    min-height: 3.5rem; /* Evita que a tela pule */
+}
+
+.hero-typewriter-text .highlight { color: #38bdf8; }
+.hero-cursor { color: #38bdf8; animation: blink 1s step-end infinite; margin-left: 5px; }
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: #cbd5e1;
+    margin: 0;
 }
 
 nav {
@@ -746,6 +772,10 @@ body.light-mode .btn-link:hover { background-color: #0369a1; }
 body.light-mode .contact-form input, body.light-mode .contact-form textarea { background-color: #ffffff; color: #334155; border: 1px solid #cbd5e1; }
 body.light-mode .article-content, body.light-mode .feedback-author span, body.light-mode .timeline-date { color: #475569; }
 body.light-mode .article-content h1, body.light-mode .article-content h2 { color: #0f172a; border-bottom-color: #cbd5e1; }
+
+body.light-mode .typewriter-container { color: #0f172a; }
+body.light-mode .hero-typewriter-text .highlight { color: #0284c7; }
+body.light-mode .hero-subtitle { color: #475569; }
 body.light-mode .feedback-author strong, body.light-mode .popup-content h3 { color: #0f172a; }
 body.light-mode .tech-tag { background-color: #e0f2fe; color: #0284c7; }
 body.light-mode .ba-list li { color: #334155; background-color: transparent; box-shadow: none; border: none; }
@@ -811,6 +841,9 @@ body.light-mode .tab-btn.active { background-color: #0284c7; color: #ffffff; bor
 .back-to-top:hover { background-color: #0284c7; transform: translateY(-5px); }
 
 @media (max-width: 768px) {
+    .typewriter-container { font-size: 1.6rem; min-height: 2.5rem; }
+    .hero-subtitle { font-size: 1rem; }
+
     ul, .grid-skills {
         grid-template-columns: 1fr;
     }

@@ -38,6 +38,12 @@
 
     <header>
         <h1 class="sr-only">Flaviana Pina - Especialista em Qualidade de Software (QA)</h1>
+        <div class="hero-content">
+            <div class="typewriter-container">
+                <span id="hero-typewriter" class="hero-typewriter-text"></span><span class="hero-cursor">█</span>
+            </div>
+            <p id="hero-subtitle" class="hero-subtitle" style="opacity: 0; transition: opacity 1s ease;">QA Engineer & Business Analyst</p>
+        </div>
     </header>
 
     <nav>
@@ -837,6 +843,25 @@
             doc.save(nomeArquivo);
         }
 
+        // --- Lógica da Máquina de Escrever do Título (Hero) ---
+        function startHeroTypewriter() {
+            const heroText = "Olá, eu sou a Flaviana Pina";
+            const heroElement = document.getElementById('hero-typewriter');
+            let heroIndex = 0;
+            
+            function type() {
+                if (heroIndex < heroText.length) {
+                    heroElement.innerHTML += heroText.charAt(heroIndex);
+                    heroIndex++;
+                    setTimeout(type, 100); // Velocidade de digitação do título
+                } else {
+                    heroElement.innerHTML = "Olá, eu sou a <span class='highlight'>Flaviana Pina</span>";
+                    document.getElementById('hero-subtitle').style.opacity = '1'; // Faz o subtítulo aparecer suavemente
+                }
+            }
+            type();
+        }
+
         // --- Lógica do Preloader (Tela de Carregamento) ---
         window.addEventListener('load', () => {
             const btnStart = document.getElementById('btn-start-preloader');
@@ -854,6 +879,7 @@
                         preloaderText.innerHTML = "> start portfolio_flaviana_qa... <span style='color:#22c55e;'>[BUILD OK]</span>";
                         setTimeout(() => {
                             document.getElementById('preloader').classList.add('hidden');
+                        setTimeout(startHeroTypewriter, 800); // Inicia o texto do título após a tela preta sumir!
                         }, 600); // Aguarda meio segundo para o usuário ler o [OK] antes de sumir
                     }, 400);
                 }
