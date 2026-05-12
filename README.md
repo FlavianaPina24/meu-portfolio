@@ -21,7 +21,6 @@ Em vez de recuar, convidei o Google Gemini para ser meu "Pair Programmer". Utili
 
 Acredito fortemente que a transparência é o nosso maior diferencial no mercado. Ter a sinceridade de reconhecer onde somos especialistas e usar a Inteligência Artificial como alavanca para construir produtos com excelência técnica é a minha visão sobre o QA moderno.
 
-Convido vocês a acessarem meu novo portfólio! Na seção "Visão BA & QA", adicionei vídeos do meu robô Playwright executando a automação na prática. 💻👇
 Convido vocês a acessarem meu novo portfólio! Na seção "Visão BA & QA", adicionei vídeos do meu robô Playwright em ação, e na aba "Artigos" compartilhei tutoriais práticos sobre testes de API. 💻👇
 
 🔗 **Acesse aqui:** flavianapina24.github.io/meu-portfolio
