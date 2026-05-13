@@ -1015,10 +1015,16 @@
                 }
             }
             
-            btnStart.addEventListener('click', () => {
-                btnStart.style.display = 'none'; // Esconde o botão ao ser clicado
-                setTimeout(typeWriter, 200); // Dá o start na digitação do robô!
-            });
+            // Auto-start Inteligente: O robô do Google não clica em botões!
+            // Se ninguém clicar em 800ms, o sistema inicia sozinho para não prejudicar o SEO.
+            const startHackerEffect = () => {
+                if (btnStart.style.display !== 'none') {
+                    btnStart.style.display = 'none';
+                    setTimeout(typeWriter, 200);
+                }
+            };
+            btnStart.addEventListener('click', startHackerEffect);
+            setTimeout(startHackerEffect, 800);
         }
 
         // --- Lógica do Easter Egg (Caça ao Bug) ---
