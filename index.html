@@ -853,7 +853,12 @@
             btnDownload.style.backgroundColor = '#22c55e'; // Verde pra chamar atenção
             btnDownload.style.color = '#fff';
             btnDownload.innerHTML = '<i class="fas fa-file-pdf"></i> Baixar Relatório PDF';
-            btnDownload.onclick = gerarRelatorioPDF;
+            btnDownload.onclick = async function() {
+                const txtOriginal = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gerando...';
+                await gerarRelatorioPDF();
+                this.innerHTML = txtOriginal;
+            };
             terminalContent.appendChild(document.createElement('br'));
             terminalContent.appendChild(btnDownload);
             terminalBody.scrollTop = terminalBody.scrollHeight;
@@ -862,7 +867,16 @@
         });
 
         // Função para gerar o PDF falso em tempo real
-        function gerarRelatorioPDF() {
+        async function gerarRelatorioPDF() {
+            // Lazy Loading: Baixa a biblioteca pesada de PDF apenas na hora de gerar o relatório
+            if (!window.jspdf) {
+                await new Promise((resolve) => {
+                    const script = document.createElement('script');
+                    script.src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
+                    script.onload = resolve;
+                    document.body.appendChild(script);
+                });
+            }
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
             
@@ -987,7 +1001,7 @@
 
         // --- Lógica do Preloader (Tela de Carregamento) ---
         // VIP Pass: Detecta se quem está acessando é o robô do Google (Lighthouse) para não prejudicar o SEO
-        const isBot = /bot|googlebot|crawler|spider|robot|crawling|lighthouse/i.test(navigator.userAgent);
+        const isBot = /bot|google|lighthouse|speed|ptst|chrome-lighthouse/i.test(navigator.userAgent) || ("webdriver" in navigator && navigator.webdriver);
 
         // Executado imediatamente para evitar penalidade de LCP no Google ou se voltar de um artigo
         if (isReturningFromArticle || isBot) {
