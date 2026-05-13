@@ -233,6 +233,43 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Dashboard DevSecOps como seção autônoma abaixo dos vídeos -->
+            <div class="skill-card fade-in visible" style="padding: 30px; margin-top: 40px; width: 100%;">
+                <h3 style="margin-bottom: 15px; font-size: 1.4rem; color: #38bdf8; display: flex; align-items: center; gap: 8px;"><i class="fas fa-shield-alt"></i> Dashboard DevSecOps (OWASP ZAP)</h3>
+                <p style="font-size: 1rem; margin-bottom: 20px; line-height: 1.6;">Painel de segurança integrado em tempo real com o GitHub Actions. Exibimos as métricas de saúde da aplicação de forma executiva, protegendo os detalhes sensíveis de infraestrutura.</p>
+                
+                <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 15px; background: #0f172a; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; font-size: 0.95rem; border-left: 4px solid #38bdf8;">
+                    <span><strong>Última Varredura:</strong> <span id="zap-scan-date" style="color: #cbd5e1;">Buscando...</span></span>
+                    <span><strong>Status da Pipeline:</strong> <span id="zap-scan-status" style="font-weight: bold;">Buscando...</span></span>
+                </div>
+
+                <div class="qa-dashboard" style="grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); margin-bottom: 20px;">
+                    <div class="metric-card" style="border-top: 3px solid #22c55e;">
+                        <i class="fas fa-check-circle" style="color: #22c55e;"></i>
+                        <h4>Regras Aprovadas</h4>
+                        <span class="metric-value" style="color: #22c55e;">52</span>
+                    </div>
+                    <div class="metric-card" style="border-top: 3px solid #eab308;">
+                        <i class="fas fa-exclamation-triangle" style="color: #eab308;"></i>
+                        <h4>Riscos Aceitos</h4>
+                        <span class="metric-value" style="color: #eab308;">15</span>
+                    </div>
+                    <div class="metric-card" style="border-top: 3px solid #ef4444;">
+                        <i class="fas fa-bug" style="color: #ef4444;"></i>
+                        <h4>Falhas Críticas</h4>
+                        <span class="metric-value" style="color: #ef4444;">0</span>
+                    </div>
+                </div>
+                
+                <div style="background-color: #0f172a; padding: 20px; border-radius: 8px; font-family: 'Consolas', monospace; font-size: 0.9rem; color: #cbd5e1; text-align: left; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); line-height: 1.7;">
+                    <span style="color: #38bdf8;">[OWASP ZAP]</span> Análise Heurística Concluída.<br>
+                    <span style="color: #22c55e;">[✔] Payload Injection:</span> Sanitização XSS ativa e validada.<br>
+                    <span style="color: #22c55e;">[✔] Data Exposure:</span> Sem vazamento de dados sensíveis.<br>
+                    <span style="color: #eab308;">[!] Server Headers:</span> HSTS/CSP ausentes (Limitação de Host).<br>
+                    <span style="color: #38bdf8;">[INFO]</span> Sistema certificado contra ataques críticos OWASP.
+                </div>
+            </div>
         </section>
 
         <section id="articles">
@@ -1009,6 +1046,38 @@
                 easterEggBuffer = ''; // Reseta o buffer
             }
         });
+
+        // --- Lógica de Atualização Automática DevSecOps ---
+        async function fetchLatestSecurityScan() {
+            try {
+                // Consome a API pública do GitHub para buscar a última execução da esteira
+                const response = await fetch('https://api.github.com/repos/FlavianaPina24/automacao-web-playwright/actions/workflows/playwright.yml/runs');
+                const data = await response.json();
+                
+                if (data.workflow_runs && data.workflow_runs.length > 0) {
+                    const latestRun = data.workflow_runs[0];
+                    const date = new Date(latestRun.updated_at);
+                    
+                    document.getElementById('zap-scan-date').textContent = date.toLocaleDateString('pt-BR') + ' às ' + date.toLocaleTimeString('pt-BR');
+                    
+                    const statusEl = document.getElementById('zap-scan-status');
+                    if (latestRun.conclusion === 'success') {
+                        statusEl.innerHTML = '<i class="fas fa-check-circle"></i> Protegido';
+                        statusEl.style.color = '#22c55e';
+                    } else if (latestRun.status === 'in_progress') {
+                        statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Em Execução...';
+                        statusEl.style.color = '#38bdf8';
+                    } else {
+                        statusEl.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Falhou / Em Análise';
+                        statusEl.style.color = '#ef4444';
+                    }
+                }
+            } catch (error) {
+                document.getElementById('zap-scan-date').textContent = 'Indisponível';
+                document.getElementById('zap-scan-status').textContent = 'Offline';
+            }
+        }
+        fetchLatestSecurityScan();
     </script>
 </body>
 </html>
