@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão Ágil no Jira | Flaviana Pina</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LEKMM5EXM6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-LEKMM5EXM6');
+    </script>
+</head>
+<body>
+    <nav>
+        <a href="index.html#articles"><i class="fas fa-arrow-left"></i> Voltar ao Portfólio</a>
+        <button id="theme-toggle" class="btn-theme" aria-label="Alternar Modo Claro/Escuro"><i class="fas fa-sun"></i></button>
+    </nav>
+
+    <main class="container article-content fade-in visible">
+        <h1>Gestão Ágil no Jira: O Ciclo de Vida de uma User Story</h1>
+        <p>Por <strong>Flaviana Pina</strong> | Business Analyst & QA</p>
+        
+        <p>O <strong>Jira Software</strong> é muito mais do que um repositório de tarefas. Ele é a representação visual de como um time entrega valor para o cliente. Como Business Analyst, eu atuo ativamente para garantir que cada <em>Card</em> no quadro Kanban reflita a realidade do projeto, evitando gargalos e garantindo rastreabilidade.</p>
+
+        <!-- Animação do Quadro Kanban (Jira) -->
+        <div class="kanban-board">
+            <!-- As 4 Colunas do Quadro -->
+            <div class="kanban-col"><h4>TO DO</h4></div>
+            <div class="kanban-col" style="border-top-color: #eab308;"><h4>IN PROGRESS</h4></div>
+            <div class="kanban-col" style="border-top-color: #a855f7;"><h4>IN QA</h4></div>
+            <div class="kanban-col" style="border-top-color: #22c55e;"><h4>DONE</h4></div>
+            
+            <!-- O Card Animado da User Story -->
+            <div class="kanban-card">
+                <span class="kanban-ticket"><i class="fas fa-bookmark"></i> QA-102</span>
+                <span><i class="fas fa-fingerprint" style="margin-right: 5px;"></i>Login com Biometria</span>
+            </div>
+        </div>
+        <p style="text-align: center; font-size: 0.85rem; color: #94a3b8; margin-top: -15px; margin-bottom: 30px;"><em>Representação visual do fluxo de trabalho contínuo (Flow) em um board Ágil.</em></p>
+
+        <h2>1. Backlog & To Do (A Preparação)</h2>
+        <p>Tudo começa no <strong>Backlog</strong>. É aqui que o time de Produto e o BA escrevem a História do Usuário, definem os Critérios de Aceite e garantem que ela atende ao framework <em>INVEST</em>. Durante a Sprint Planning, as histórias mais prioritárias são puxadas para a coluna <strong>To Do</strong>, prontas para serem desenvolvidas.</p>
+
+        <h2>2. In Progress (Desenvolvimento)</h2>
+        <p>Quando um desenvolvedor assume o card, ele o move para <strong>In Progress</strong>. Meu papel nesta fase como QA/BA é o "Shift-Left Testing" — tiro as dúvidas de regras de negócio em tempo real, evitando que um erro de interpretação gere um bug lá na frente.</p>
+
+        <h2>3. In QA / In Review (Validação e Qualidade)</h2>
+        <p>Assim que o código está pronto, o card avança para <strong>In QA</strong>. É neste momento que executamos as suítes de testes automatizados (Playwright/Robot), testes exploratórios e validamos se os Critérios de Aceite foram integralmente atendidos. Se for encontrado um Bug, ele é linkado a essa história e volta para o desenvolvimento.</p>
+
+        <h2>4. Done (Pronto para o Cliente)</h2>
+        <p>Um card só chega em <strong>Done</strong> quando ele atende estritamente à nossa <em>Definition of Done (DoD)</em>. Isso garante que a funcionalidade foi documentada, testada e está entregando valor em produção sem gerar retrabalho.</p>
+
+        <br>
+        <a href="index.html#contact" class="btn-link">Precisa otimizar o fluxo ágil do seu time? Vamos conversar!</a>
+    </main>
+
+    <footer>
+        <div class="social-links">
+            <a href="https://github.com/FlavianaPina24" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/flaviana-pina-3848a39a" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <p>© 2026 - flavianapina.com.br</p>
+    </footer>
+
+    <script>
+        window.addEventListener('load', () => { document.querySelector('.article-content').classList.add('visible'); });
+
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = themeToggleBtn.querySelector('i');
+
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+        }
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            themeIcon.classList.replace(isLight ? 'fa-sun' : 'fa-moon', isLight ? 'fa-moon' : 'fa-sun');
+        });
+    </script>
+</body>
+</html>

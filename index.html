@@ -251,6 +251,16 @@
                     <p>Dicas fundamentais que aprendi utilizando Robot Framework para garantir a estabilidade das aplicações web.</p>
                     <a href="artigo-qa-automation.html" class="btn-link">Ler Artigo</a>
                 </div>
+                <div class="skill-card">
+                    <h3>Glossário de Business Analysis</h3>
+                    <p>Um guia de bolso prático sobre engenharia de requisitos: Framework INVEST, DoD, BRD, RTM e Modelagem Visual.</p>
+                    <a href="artigo-glossario-ba.html" class="btn-link">Ler Artigo</a>
+                </div>
+                <div class="skill-card">
+                    <h3>Gestão Ágil no Jira (Kanban)</h3>
+                    <p>Entenda o ciclo de vida completo de uma User Story e como organizo o fluxo de valor desde o Backlog até o Done.</p>
+                    <a href="artigo-jira-kanban.html" class="btn-link">Ler Artigo</a>
+                </div>
             </div>
         </section>
 
@@ -261,6 +271,7 @@
                     <button class="tab-btn active" onclick="openTab(event, 'tab-ba-metrics')"><i class="fas fa-chart-pie"></i> Valor Entregue</button>
                     <button class="tab-btn" onclick="openTab(event, 'tab-ba-case')"><i class="fas fa-project-diagram"></i> Case de Estudo</button>
                     <button class="tab-btn" onclick="openTab(event, 'tab-ba-bdd')"><i class="fas fa-file-code"></i> Artefato: BDD</button>
+                    <button class="tab-btn" onclick="openTab(event, 'tab-ba-sdlc')"><i class="fas fa-file-signature"></i> Ciclo de Vida (SDLC)</button>
                 </div>
 
                 <!-- Aba 1: Métricas de Valor -->
@@ -311,6 +322,35 @@
                             &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #22c55e; font-weight: bold;">Quando</span> eu realizo um PIX de <span style="color: #f87171;">"R$ 100,00"</span> para a chave <span style="color: #f87171;">"qa@banco.com"</span><br>
                             &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #22c55e; font-weight: bold;">Então</span> a transferência deve ser <span style="color: #38bdf8;">"Aprovada"</span><br>
                             &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #22c55e; font-weight: bold;">E</span> meu novo saldo deve ser <span style="color: #f87171;">"R$ 400,00"</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aba 4: Gestão de Requisitos (SDLC) -->
+                <div id="tab-ba-sdlc" class="tab-content">
+                    <div class="skill-card" style="padding: 25px; text-align: left;">
+                        <h3 style="font-size: 1.3rem; margin-bottom: 15px; color: #38bdf8;"><i class="fas fa-file-signature"></i> Adaptação de Documentação (Agile vs Cascata)</h3>
+                        <p style="font-size: 1.05rem; margin-bottom: 20px;">Como Business Analyst, entendo que a documentação não é "tamanho único". Ela deve gerar valor e adaptar-se à maturidade metodológica de cada projeto:</p>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                            <div style="background-color: #0f172a; padding: 20px; border-radius: 8px; border-top: 3px solid #eab308; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);">
+                                <h4 style="color: #eab308; margin-top: 0; font-size: 1.1rem;"><i class="fas fa-sync-alt"></i> Metodologia Ágil (Scrum/Kanban)</h4>
+                                <p style="font-size: 0.9rem; color: #cbd5e1; margin-bottom: 15px;">Foco em entregas incrementais, adaptação a mudanças e comunicação colaborativa.</p>
+                                <p style="font-size: 0.9rem; margin-bottom: 8px;"><i class="fas fa-angle-right" style="color: #eab308; margin-right: 5px;"></i> <strong style="color:#f1f5f9;">Épicos & User Stories:</strong> Escrita focada no valor para o usuário (Framework INVEST).</p>
+                                <p style="font-size: 0.9rem; margin-bottom: 8px;"><i class="fas fa-angle-right" style="color: #eab308; margin-right: 5px;"></i> <strong style="color:#f1f5f9;">Critérios de Aceite:</strong> Clareza técnica para garantir o "Definition of Done" (DoD).</p>
+                                <p style="font-size: 0.9rem; margin-bottom: 0;"><i class="fas fa-angle-right" style="color: #eab308; margin-right: 5px;"></i> <strong style="color:#f1f5f9;">Artefatos Vivos:</strong> BDD (Gherkin) e mapeamento em ferramentas como Jira/Confluence.</p>
+                            </div>
+                            
+                            <div style="background-color: #0f172a; padding: 20px; border-radius: 8px; border-top: 3px solid #ef4444; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);">
+                                <h4 style="color: #ef4444; margin-top: 0; font-size: 1.1rem;"><i class="fas fa-water"></i> Modelo Tradicional (Cascata)</h4>
+                                <p style="font-size: 0.9rem; color: #cbd5e1; margin-bottom: 15px;">Foco em previsibilidade, escopo bem definido e documentação formal rigorosa.</p>
+                                <p style="font-size: 0.9rem; margin-bottom: 8px;"><i class="fas fa-angle-right" style="color: #ef4444; margin-right: 5px;"></i> <strong style="color:#f1f5f9;">BRD & FRS:</strong> Especificação detalhada de Requisitos de Negócios e Funcionais.</p>
+                                <p style="font-size: 0.9rem; margin-bottom: 8px;"><i class="fas fa-angle-right" style="color: #ef4444; margin-right: 5px;"></i> <strong style="color:#f1f5f9;">Rastreabilidade:</strong> Criação da Matriz (RTM) unindo requisitos e casos de teste.</p>
+                                <p style="font-size: 0.9rem; margin-bottom: 0;"><i class="fas fa-angle-right" style="color: #ef4444; margin-right: 5px;"></i> <strong style="color:#f1f5f9;">Change Management:</strong> Análise de impacto e processos formais de mudança (CRs).</p>
+                            </div>
+                        </div>
+                        <div style="background-color: #0f172a; padding: 15px 20px; border-radius: 8px; border-left: 4px solid #38bdf8; margin-top: 20px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);">
+                            <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;"><i class="fas fa-project-diagram" style="color: #38bdf8; margin-right: 8px;"></i><strong>Modelagem Visual (O Elo Comum):</strong> Independente da metodologia (Ágil ou Cascata), utilizo ferramentas visuais como <strong>BPMN, Fluxogramas e Mapas Mentais</strong> (Miro/Draw.io) para tangibilizar processos complexos "As-Is" e "To-Be". O desenho de fluxos é a linguagem universal que garante o alinhamento perfeito entre as áreas de Negócio, UX e Desenvolvimento.</p>
                         </div>
                     </div>
                 </div>
@@ -524,6 +564,11 @@
                     link.classList.add('active');
                 }
             });
+            
+            // Sincronismo UX: Limpa a âncora (#) da URL automaticamente ao deslizar a página
+            if (window.location.hash) {
+                history.replaceState(null, null, window.location.pathname + window.location.search);
+            }
         });
 
         // --- Lógica das Abas (Tabs) ---
@@ -668,9 +713,17 @@
             }
         });
 
-        // Fecha o menu automaticamente quando um link é clicado
+        // Controle de Clique no Menu (Rolagem Suave e URL Sempre Limpa)
         navLinks.forEach(link => {
-            link.addEventListener('click', () => {
+            link.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                
+                if (targetId.startsWith('#')) {
+                    e.preventDefault(); // Impede o comportamento nativo de sujar a URL com o #
+                    document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+                }
+                
+                // Fecha o menu automaticamente no mobile
                 headerNav.classList.remove('open');
                 iconHamburger.classList.replace('fa-times', 'fa-bars');
             });

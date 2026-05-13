@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glossário de Business Analysis | Flaviana Pina</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LEKMM5EXM6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-LEKMM5EXM6');
+    </script>
+</head>
+<body>
+    <nav>
+        <a href="index.html#articles"><i class="fas fa-arrow-left"></i> Voltar ao Portfólio</a>
+        <button id="theme-toggle" class="btn-theme" aria-label="Alternar Modo Claro/Escuro"><i class="fas fa-sun"></i></button>
+    </nav>
+
+    <main class="container article-content fade-in visible">
+        <h1>Glossário do Analista de Negócios (BA): Do INVEST ao BRD</h1>
+        <p>Por <strong>Flaviana Pina</strong> | Business Analyst & QA</p>
+        
+        <p>Transitar entre ambientes Ágeis e modelos Tradicionais (Cascata) exige que o Analista de Negócios tenha um "canivete suíço" de documentações e processos. Criei este artigo como um guia rápido para desmistificar os principais termos técnicos de Engenharia de Requisitos e Arquitetura de Negócios que aplico no meu dia a dia.</p>
+
+        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Equipe discutindo fluxos em um quadro com post-its" title="Modelagem de Processos">
+
+        <h2>1. Framework INVEST (Mundo Ágil)</h2>
+        <p>O <strong>INVEST</strong> é um checklist de ouro criado por Bill Wake para garantir que uma História de Usuário (User Story) tenha excelência antes de ir para o time de desenvolvimento. Uma história perfeita deve ser:</p>
+        <ul>
+            <li style="box-shadow:none; padding:10px 15px; margin-bottom:5px;"><strong>[I] Independent (Independente):</strong> Pode ser desenvolvida em qualquer ordem, sem depender de outra história.</li>
+            <li style="box-shadow:none; padding:10px 15px; margin-bottom:5px;"><strong>[N] Negotiable (Negociável):</strong> Não é um contrato rígido, é um convite para uma conversa entre Produto, Dev e QA.</li>
+            <li style="box-shadow:none; padding:10px 15px; margin-bottom:5px;"><strong>[V] Valuable (Valiosa):</strong> Entrega valor real para o cliente ou para o negócio ao ser concluída.</li>
+            <li style="box-shadow:none; padding:10px 15px; margin-bottom:5px;"><strong>[E] Estimable (Estimável):</strong> A equipe consegue entender a complexidade para dar uma estimativa (ex: Story Points).</li>
+            <li style="box-shadow:none; padding:10px 15px; margin-bottom:5px;"><strong>[S] Small (Pequena):</strong> Cabe perfeitamente dentro de uma única Sprint (geralmente 2 semanas).</li>
+            <li style="box-shadow:none; padding:10px 15px; margin-bottom:5px;"><strong>[T] Testable (Testável):</strong> É possível provar que está pronta. É aqui que os Critérios de Aceite e o BDD entram!</li>
+        </ul>
+
+        <h2>2. Definition of Done - DoD (Mundo Ágil)</h2>
+        <p>A "Definição de Pronto" (DoD) é um acordo formal do time. Enquanto o <em>Critério de Aceite</em> valida a regra de negócio de uma história específica, o <strong>DoD</strong> é uma lista geral que se aplica a tudo. Por exemplo: Uma história só é considerada "Pronta" se o código passou por Code Review, foi coberto por automação de testes, a documentação foi atualizada e o Pipeline rodou sem erros.</p>
+
+        <h2>3. BRD - Business Requirements Document (Cascata)</h2>
+        <p>No modelo tradicional (Waterfall), o <strong>BRD</strong> é a bíblia do projeto. Ele descreve o <em>"O Quê"</em> e o <em>"Por Quê"</em> do ponto de vista executivo. Ele foca no problema de negócio, métricas de sucesso, público-alvo e restrições. Ele não fala de botões na tela ou linguagem de código (isso fica para o Documento de Requisitos Funcionais - FRS). O BRD garante que o projeto faça sentido financeiro e estratégico antes de gastar um real com desenvolvimento.</p>
+
+        <h2>4. Matriz de Rastreabilidade de Requisitos - RTM (Cascata/Híbrido)</h2>
+        <p>A <strong>RTM (Requirements Traceability Matrix)</strong> é uma ferramenta vital para QAs e BAs. Trata-se de uma planilha (ou mapa no Jira/X-ray) que cruza cada requisito aprovado no BRD com os Casos de Teste (Test Cases) que o validarão. Se o cliente exigiu "Login com Biometria" (Requisito 01), a Matriz apontará diretamente para o "Cenário de Teste 05". Isso garante 100% de cobertura e impede que um desenvolvedor crie uma funcionalidade que ninguém pediu, ou que a equipe esqueça de testar algo crítico.</p>
+
+        <h2>5. BPMN e Fluxogramas (O Elo Visual Universal)</h2>
+        <p>Palavras podem gerar ambiguidades, mas desenhos não. O <strong>BPMN (Business Process Model and Notation)</strong> é uma padronização global para desenho de fluxogramas. Utilizo ferramentas visuais como Miro e Draw.io para mapear o estado atual do projeto <em>(As-Is)</em>, identificar gargalos, e desenhar a solução ideal <em>(To-Be)</em>. Os diagramas unem a linguagem técnica com a de negócios de forma impecável.</p>
+
+        <div style="background-color: #0f172a; padding: 25px; border-radius: 8px; border-top: 4px solid #38bdf8; margin: 25px 0; box-shadow: inset 0 0 10px rgba(0,0,0,0.3);">
+            <h4 style="color: #38bdf8; margin-top: 0; text-align: center;"><i class="fas fa-project-diagram"></i> Exemplo Prático: Fluxo "To-Be" (Aprovação de Crédito)</h4>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 15px; margin-top: 20px;">
+                <div style="background: #1e293b; border: 2px solid #cbd5e1; padding: 12px; border-radius: 8px; color: #f1f5f9; text-align: center; width: 180px;"><strong>1. Solicitação</strong><br><span style="font-size: 0.8rem; color: #94a3b8;">Cliente envia dados</span></div>
+                <i class="fas fa-arrow-right" style="color: #38bdf8; font-size: 1.2rem;"></i>
+                <div style="background: #1e293b; border: 2px dashed #eab308; padding: 12px; border-radius: 8px; color: #f1f5f9; text-align: center; width: 180px; position: relative;">
+                    <span style="position: absolute; top: -10px; right: -10px; background: #eab308; color: #0f172a; font-size: 0.7rem; font-weight: bold; padding: 3px 6px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.5);">NOVO</span>
+                    <strong>2. Análise por IA</strong><br><span style="font-size: 0.8rem; color: #94a3b8;">Validação em segundos</span>
+                </div>
+                <i class="fas fa-arrow-right" style="color: #38bdf8; font-size: 1.2rem;"></i>
+                <div style="background: #1e293b; border: 2px solid #22c55e; padding: 12px; border-radius: 8px; color: #f1f5f9; text-align: center; width: 180px;"><strong>3. Resultado</strong><br><span style="font-size: 0.8rem; color: #94a3b8;">Aprovação Automática</span></div>
+            </div>
+            <p style="font-size: 0.9rem; color: #cbd5e1; margin-top: 25px; line-height: 1.6; border-left: 3px solid #eab308; padding-left: 10px;"><strong>Visão do Analista (BA):</strong> No mapeamento atual (<em>As-Is</em>), a etapa 2 era manual e levava até 3 dias úteis. No desenho da solução (<em>To-Be</em>) exemplificado acima, introduzimos a integração com uma API de inteligência artificial, automatizando a triagem e eliminando o gargalo operacional do processo.</p>
+        </div>
+
+        <br>
+        <a href="index.html#contact" class="btn-link">Quer debater sobre Engenharia de Requisitos? Vamos conversar!</a>
+    </main>
+
+    <footer>
+        <div class="social-links">
+            <a href="https://github.com/FlavianaPina24" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/flaviana-pina-3848a39a" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <p>© 2026 - flavianapina.com.br</p>
+    </footer>
+
+    <script>
+        // Aplica fade-in quando a página carrega
+        window.addEventListener('load', () => {
+            document.querySelector('.article-content').classList.add('visible');
+        });
+
+        // Lógica do Modo Claro / Escuro (Dark/Light Mode)
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = themeToggleBtn.querySelector('i');
+
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+        }
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            themeIcon.classList.replace(isLight ? 'fa-sun' : 'fa-moon', isLight ? 'fa-moon' : 'fa-sun');
+        });
+    </script>
+</body>
+</html>
