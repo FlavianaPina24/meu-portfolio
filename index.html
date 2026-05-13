@@ -643,12 +643,20 @@
                         const testimonialsGrid = document.querySelector('#testimonials .grid-skills');
                         const newCard = document.createElement('div');
                         newCard.className = 'feedback-card fade-in visible';
+                        
+                        // Função de Segurança (Sanitização) para evitar ataques XSS
+                        const sanitize = (str) => {
+                            const temp = document.createElement('div');
+                            temp.textContent = str;
+                            return temp.innerHTML;
+                        };
+
                         newCard.innerHTML = `
                             <i class="fas fa-quote-right quote-icon"></i>
-                            <p><em>"${feedbackForm.message.value}"</em></p>
+                            <p><em>"${sanitize(feedbackForm.message.value)}"</em></p>
                             <div class="feedback-author">
-                                <strong>${feedbackForm.name.value}</strong>
-                                <span>${feedbackForm.role.value}</span>
+                                <strong>${sanitize(feedbackForm.name.value)}</strong>
+                                <span>${sanitize(feedbackForm.role.value)}</span>
                             </div>`;
                         testimonialsGrid.appendChild(newCard);
                         
