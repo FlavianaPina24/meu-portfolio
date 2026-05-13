@@ -52,6 +52,9 @@
                 <span id="hero-typewriter" class="hero-typewriter-text"></span><span class="hero-cursor">█</span>
             </div>
             <p id="hero-subtitle" class="hero-subtitle" style="opacity: 0; transition: opacity 1s ease;">QA Engineer & Business Analyst</p>
+            <div id="availability-badge" class="availability-badge" style="opacity: 0; transition: opacity 1s ease 0.5s;">
+                <span class="pulse-dot"></span> Disponível para oportunidades 100% Remotas
+            </div>
         </div>
     </header>
 
@@ -496,6 +499,7 @@
             <h2>Contato</h2>
             <div class="text-panel center" style="padding-top: 20px; padding-bottom: 20px;">
                 <p style="font-size: 1.1rem;"><i class="fas fa-envelope" style="margin-right: 8px; color: #38bdf8;"></i>Quer conversar sobre tecnologia, projetos ou mentorias? Me mande uma mensagem!</p>
+                <p style="font-size: 0.95rem; color: #22c55e; margin-top: 10px; font-weight: bold;"><i class="fas fa-laptop-house" style="margin-right: 5px;"></i> Nota: Atualmente meu foco é exclusivo em oportunidades 100% Home Office.</p>
             </div>
             <form action="https://formspree.io/f/xzdogenn" method="POST" class="contact-form">
                 <input type="text" name="name" placeholder="Seu Nome" required>
@@ -975,6 +979,7 @@
                 } else {
                     heroElement.innerHTML = "Olá, eu sou a <span class='highlight'>Flaviana Pina</span>";
                     document.getElementById('hero-subtitle').style.opacity = '1'; // Faz o subtítulo aparecer suavemente
+                    document.getElementById('availability-badge').style.opacity = '1'; // Revela o selo
                 }
             }
             type();
@@ -987,6 +992,7 @@
             document.getElementById('preloader').style.display = 'none';
             document.getElementById('hero-typewriter').innerHTML = "Olá, eu sou a <span class='highlight'>Flaviana Pina</span>";
             document.getElementById('hero-subtitle').style.opacity = '1';
+            document.getElementById('availability-badge').style.opacity = '1';
         } else {
             const btnStart = document.getElementById('btn-start-preloader');
             const preloaderText = document.getElementById('preloader-text');
