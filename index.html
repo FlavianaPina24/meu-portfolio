@@ -518,7 +518,7 @@
                 <p style="font-size: 1.1rem;"><i class="fas fa-envelope" style="margin-right: 8px; color: #38bdf8;"></i>Quer conversar sobre tecnologia, projetos ou mentorias? Me mande uma mensagem!</p>
                 <p style="font-size: 0.95rem; color: #22c55e; margin-top: 10px; font-weight: bold;"><i class="fas fa-laptop-house" style="margin-right: 5px;"></i> Nota: Atualmente meu foco é exclusivo em oportunidades 100% Home Office.</p>
             </div>
-            <form action="https://formspree.io/f/xzdogenn" method="POST" class="contact-form">
+            <form action="https://portfolio-api-6kng.onrender.com/api/contact" method="POST" class="contact-form">
                 <input type="text" name="name" placeholder="Seu Nome" required>
                 <input type="email" name="email" placeholder="Seu E-mail" required>
                 <textarea name="message" rows="5" placeholder="Sua Mensagem" required></textarea>
@@ -652,13 +652,17 @@
             contactForm.addEventListener('submit', async function(e) {
                 e.preventDefault(); // Impede o redirecionamento padrão
                 
-                const data = new FormData(contactForm);
+                const formData = new FormData(contactForm);
+                const data = Object.fromEntries(formData.entries());
                 
                 try {
                     const response = await fetch(contactForm.action, {
                         method: contactForm.method,
-                        body: data,
-                        headers: { 'Accept': 'application/json' }
+                        body: JSON.stringify(data),
+                        headers: { 
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
                     });
                     if (response.ok) {
                         successPopup.classList.remove('hidden'); // Exibe o pop-up
