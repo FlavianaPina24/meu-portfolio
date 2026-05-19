@@ -652,6 +652,12 @@
             contactForm.addEventListener('submit', async function(e) {
                 e.preventDefault(); // Impede o redirecionamento padrão
                 
+                // Muda o texto do botão para avisar que está enviando (útil para o "sono" do Render)
+                const submitBtn = contactForm.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+                submitBtn.disabled = true;
+
                 const formData = new FormData(contactForm);
                 const data = Object.fromEntries(formData.entries());
                 
@@ -672,6 +678,10 @@
                     }
                 } catch (error) {
                     alert('Ops! Problema de conexão.');
+                } finally {
+                    // Restaura o botão original independente de sucesso ou falha
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.disabled = false;
                 }
             });
         }
