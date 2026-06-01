@@ -682,7 +682,8 @@
                         successPopup.classList.remove('hidden'); // Exibe o pop-up
                         contactForm.reset(); // Limpa os campos do formulário
                     } else {
-                        alert('Ops! Ocorreu um problema ao enviar. Tente novamente.');
+                        const errorData = await response.json().catch(() => ({}));
+                        alert(errorData.erro || 'Ops! Ocorreu um problema ao enviar. Tente novamente.');
                     }
                 } catch (error) {
                     alert('Ops! Problema de conexão.');
@@ -747,6 +748,9 @@
                         closeFeedbackModal();
                         successPopup.classList.remove('hidden');
                         feedbackForm.reset();
+                    } else {
+                        const errorData = await response.json().catch(() => ({}));
+                        alert(errorData.erro || 'Ops! Ocorreu um problema. Tente novamente.');
                     }
                 } catch (error) { alert('Ops! Problema de conexão.'); }
             });
