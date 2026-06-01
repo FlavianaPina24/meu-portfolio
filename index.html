@@ -532,8 +532,9 @@
         <div id="feedback-modal" class="popup hidden">
             <div class="popup-content" style="max-width: 500px;">
                 <h3 style="margin-bottom: 15px; color: #38bdf8;">Escrever Depoimento</h3>
-                <form action="https://formspree.io/f/xzdogenn" method="POST" id="leave-feedback-form" class="contact-form" style="margin-top: 0;">
-                    <input type="hidden" name="_subject" value="Novo Depoimento no Portfólio!">
+                <form action="https://portfolio-api-6kng.onrender.com/api/testimonial" method="POST" id="leave-feedback-form" class="contact-form" style="margin-top: 0;">
+                    <!-- Honeypot -->
+                    <input type="text" name="website" tabindex="-1" autocomplete="off" style="display: none;" aria-hidden="true">
                     <input type="text" name="name" placeholder="Seu Nome" required>
                     <input type="text" name="role" placeholder="Seu Cargo / Empresa" required>
                     <textarea name="message" rows="4" placeholder="Escreva seu feedback aqui..." required></textarea>
@@ -706,11 +707,14 @@
         if (feedbackForm) {
             feedbackForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
-                const data = new FormData(feedbackForm);
+                const formData = new FormData(feedbackForm);
+                const data = Object.fromEntries(formData.entries());
                 
                 try {
                     const response = await fetch(feedbackForm.action, {
-                        method: feedbackForm.method, body: data, headers: { 'Accept': 'application/json' }
+                        method: feedbackForm.method,
+                        body: JSON.stringify(data),
+                        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
                     });
                     if (response.ok) {
                         // 1. Adiciona o depoimento na tela imediatamente
