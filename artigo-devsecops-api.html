@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevSecOps: Criando uma API Blindada | Flaviana Pina</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LEKMM5EXM6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-LEKMM5EXM6');
+    </script>
+</head>
+<body>
+    <nav>
+        <a href="index.html#articles"><i class="fas fa-arrow-left"></i> Voltar ao Portfólio</a>
+        <button id="theme-toggle" class="btn-theme" aria-label="Alternar Modo Claro/Escuro"><i class="fas fa-sun"></i></button>
+    </nav>
+
+    <main class="container article-content fade-in visible">
+        <h1>DevSecOps na Prática: Construindo uma API Blindada na Nuvem</h1>
+        <p>Por <strong>Flaviana Pina</strong> | QA Architect & Business Analyst</p>
+        
+        <p>Durante a construção deste portfólio, tomei uma decisão de arquitetura: eu não queria depender de serviços terceirizados (como o Formspree) para gerenciar o envio de formulários. Como QA e BA, eu queria assumir o controle total (Ownership) da aplicação. Desenvolvi minha própria API em Node.js (Express), mas o caminho até a produção exigiu habilidades avançadas de DevSecOps e Cloud.</p>
+
+        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Servidores de nuvem iluminados em azul" title="Infraestrutura em Nuvem">
+
+        <h2>1. O Bloqueio da Nuvem (Debugando SMTP Timeout)</h2>
+        <p>Após fazer o deploy da minha API na plataforma Render, os e-mails pararam de chegar. Ao investigar os logs do servidor, encontrei um erro clássico: <code>ETIMEDOUT (Connection Timeout)</code> no módulo Nodemailer.</p>
+        <p><strong>A Análise:</strong> Provedores de nuvem (Render, AWS, Vercel) costumam bloquear o tráfego de saída nas portas SMTP padrão (25, 465, 587) em contas gratuitas para evitar que robôs enviem SPAM. A requisição morria antes mesmo de sair do servidor.</p>
+        <p><strong>A Solução:</strong> Ao invés de brigar com a infraestrutura, mudei a estratégia de rede. Aposentei o Nodemailer e integrei a API do <strong>Resend</strong>, que realiza o disparo de e-mails via requisições web HTTP (Porta 443). Como o tráfego HTTPS nunca é bloqueado, os e-mails passaram a chegar na velocidade da luz.</p>
+
+        <h2>2. Identificando Débito Técnico (Technical Debt)</h2>
+        <p>Com a API de contato funcionando, realizei uma análise exploratória no front-end e identifiquei um débito técnico silencioso: o formulário de "Depoimentos", que ficava em um modal, ainda estava utilizando a infraestrutura terceirizada do Formspree. Imediatamente escalei uma refatoração, criando uma rota dedicada <code>/api/testimonial</code> no meu backend e centralizando 100% da arquitetura sob meu controle.</p>
+
+        <h2>3. Defesa Cibernética: O Honeypot (Pote de Mel)</h2>
+        <p>Expor uma API pública na internet é um convite para robôs de spam. Para blindar a minha caixa de entrada sem prejudicar a experiência do usuário (UX) com CAPTCHAs irritantes, implementei a técnica do <strong>Honeypot</strong>.</p>
+        <p>Adicionei um campo invisível no front-end (via CSS). Humanos não o veem, logo não o preenchem. Robôs validam o HTML e preenchem todos os campos. No back-end, inseri uma interceptação cirúrgica:</p>
+        
+        <div style="background-color: #0f172a; padding: 20px; border-radius: 8px; font-family: 'Consolas', monospace; color: #f1f5f9; font-size: 0.95rem; overflow-x: auto; line-height: 1.5; margin: 20px 0; border-left: 4px solid #ef4444;">
+            <span style="color: #c678dd;">if</span> (website) {<br>
+            &nbsp;&nbsp;<span style="color: #98c379;">console.log</span>(<span style="color: #e5c07b;">"🛡️ [DEVSECOPS] Bot de spam detectado e bloqueado!"</span>);<br>
+            &nbsp;&nbsp;<span style="color: #7f848e;">// Ghost Banning: Retornamos sucesso (200) para enganar o Bot, mas não enviamos o e-mail.</span><br>
+            &nbsp;&nbsp;<span style="color: #c678dd;">return</span> res.<span style="color: #61afef;">status</span>(<span style="color: #d19a66;">200</span>).<span style="color: #61afef;">json</span>({ sucesso: <span style="color: #d19a66;">true</span> });<br>
+            }
+        </div>
+
+        <h2>Conclusão</h2>
+        <p>O papel do profissional de QA evoluiu. Garantir a qualidade de um software moderno exige que saibamos navegar pelos logs do servidor, compreender bloqueios de rede, refatorar débitos técnicos e projetar sistemas seguros "by design" (DevSecOps). Ao tomar as rédeas da arquitetura do meu portfólio, apliquei exatamente essa visão.</p>
+
+        <br>
+        <a href="index.html#contact" class="btn-link">Gostou deste Case de Estudo? Vamos conversar!</a>
+    </main>
+
+    <footer>
+        <div class="social-links">
+            <a href="https://github.com/FlavianaPina24" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/flaviana-pina-3848a39a" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <p>© 2026 - flavianapina.com.br</p>
+    </footer>
+
+    <script>
+        window.addEventListener('load', () => {
+            document.querySelector('.article-content').classList.add('visible');
+        });
+
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = themeToggleBtn.querySelector('i');
+
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+        }
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            themeIcon.classList.replace(isLight ? 'fa-sun' : 'fa-moon', isLight ? 'fa-moon' : 'fa-sun');
+        });
+    </script>
+</body>
+</html>
