@@ -521,6 +521,8 @@
             <form action="https://portfolio-api-6kng.onrender.com/api/contact" method="POST" class="contact-form">
                 <input type="text" name="name" placeholder="Seu Nome" required>
                 <input type="email" name="email" placeholder="Seu E-mail" required>
+                <!-- Honeypot: Campo invisível para pegar robôs de spam (DevSecOps) -->
+                <input type="text" name="website" tabindex="-1" autocomplete="off" style="display: none;" aria-hidden="true">
                 <textarea name="message" rows="5" placeholder="Sua Mensagem" required></textarea>
                 <button type="submit" class="btn-link" style="border: none; cursor: pointer; width: 100%; font-size: 1rem; padding: 12px;">Enviar Mensagem</button>
             </form>
