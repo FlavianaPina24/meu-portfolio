@@ -689,6 +689,8 @@
                         }
                     });
                     if (response.ok) {
+                    document.querySelector('#success-popup h3').textContent = 'Mensagem Enviada!';
+                    document.querySelector('#success-popup p').textContent = 'Obrigada pelo contato. Retornarei em breve.';
                         successPopup.classList.remove('hidden'); // Exibe o pop-up
                         contactForm.reset(); // Limpa os campos do formulário
                     } else {
@@ -765,6 +767,34 @@
                 } catch (error) { alert('Ops! Problema de conexão.'); }
             });
         }
+
+    // --- Buscar Depoimentos do Banco de Dados ---
+    async function loadTestimonials() {
+        try {
+            const response = await fetch('https://portfolio-api-6kng.onrender.com/api/testimonial');
+            if (response.ok) {
+                const depoimentos = await response.json();
+                if (depoimentos.length > 0) {
+                    const testimonialsGrid = document.querySelector('#testimonials .grid-skills');
+                    testimonialsGrid.innerHTML = ''; // Limpa os depoimentos fixos do HTML
+                    
+                    const sanitize = (str) => {
+                        const temp = document.createElement('div');
+                        temp.textContent = str;
+                        return temp.innerHTML;
+                    };
+
+                    depoimentos.forEach(dep => {
+                        const card = document.createElement('div');
+                        card.className = 'feedback-card fade-in visible';
+                        card.innerHTML = `<i class="fas fa-quote-right quote-icon"></i><p><em>"${sanitize(dep.message)}"</em></p><div class="feedback-author"><strong>${sanitize(dep.name)}</strong><span>${sanitize(dep.role)}</span></div>`;
+                        testimonialsGrid.appendChild(card);
+                    });
+                }
+            }
+        } catch (error) { console.error('Erro ao carregar depoimentos da API:', error); }
+    }
+    loadTestimonials();
 
         // Animação de Fade-In para as Seções
         const observer = new IntersectionObserver((entries) => {
