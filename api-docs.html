@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation (Swagger) | Flaviana Pina</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Estilos Customizados imitando o Swagger UI */
+        .swagger-container { max-width: 900px; margin: 40px auto; text-align: left; }
+        .swagger-header { margin-bottom: 30px; border-bottom: 1px solid #334155; padding-bottom: 20px; }
+        .swagger-header h1 { color: #f1f5f9; font-size: 2rem; margin: 0 0 10px 0; }
+        .swagger-header p { color: #94a3b8; font-size: 1rem; margin: 0; line-height: 1.5; }
+        .swagger-badge { background: #38bdf8; color: #0f172a; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; margin-left: 10px; vertical-align: middle; }
+        
+        .api-endpoint { background: #1e293b; border: 1px solid #334155; border-radius: 8px; margin-bottom: 20px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
+        .api-endpoint.post { border-color: rgba(34, 197, 94, 0.5); }
+        
+        .api-header { display: flex; align-items: center; padding: 15px; background: rgba(34, 197, 94, 0.05); cursor: pointer; transition: background 0.2s; }
+        .api-header:hover { background: rgba(34, 197, 94, 0.1); }
+        
+        .api-method { background: #22c55e; color: #fff; padding: 6px 16px; border-radius: 4px; font-weight: bold; margin-right: 15px; font-size: 0.9rem; text-shadow: 0 1px 1px rgba(0,0,0,0.2); }
+        .api-path { font-family: 'Consolas', monospace; font-size: 1.1rem; color: #f1f5f9; font-weight: bold; }
+        .api-desc { margin-left: auto; color: #94a3b8; font-size: 0.9rem; font-family: 'Inter', sans-serif; font-weight: normal; }
+        
+        .api-body { padding: 20px; border-top: 1px solid rgba(34, 197, 94, 0.2); background: #0f172a; }
+        .api-section-title { font-size: 0.85rem; color: #cbd5e1; text-transform: uppercase; margin-bottom: 10px; font-weight: bold; letter-spacing: 1px; }
+        
+        .json-block { background: #1e293b; padding: 15px; border-radius: 6px; font-family: 'Consolas', monospace; font-size: 0.9rem; margin-bottom: 20px; white-space: pre-wrap; overflow-x: auto; border: 1px solid #334155; }
+        .json-key { color: #f87171; } /* Vermelho claro */
+        .json-string { color: #a3e635; } /* Verde limão */
+        .json-boolean { color: #c084fc; } /* Roxo */
+        .json-comment { color: #64748b; font-style: italic; }
+        
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; background: #1e293b; border-radius: 6px; overflow: hidden; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #334155; color: #f1f5f9; font-size: 0.9rem; }
+        th { color: #94a3b8; text-transform: uppercase; font-size: 0.8rem; background: rgba(0,0,0,0.2); }
+        tr:last-child td { border-bottom: none; }
+        
+        .status-200 { color: #22c55e; font-weight: bold; }
+        .status-400 { color: #eab308; font-weight: bold; }
+        .status-429 { color: #f97316; font-weight: bold; }
+        .status-500 { color: #ef4444; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html#projects"><i class="fas fa-arrow-left"></i> Voltar ao Portfólio</a>
+        <button id="theme-toggle" class="btn-theme" aria-label="Alternar Modo Claro/Escuro"><i class="fas fa-sun"></i></button>
+    </nav>
+
+    <main class="container fade-in visible" style="max-width: 1000px;">
+        <div class="swagger-container">
+            <div class="swagger-header">
+                <h1>Portfolio API Documentation <span class="swagger-badge">v1.0.0</span></h1>
+                <p>Base URL: <code>https://portfolio-api-6kng.onrender.com</code></p>
+                <p style="margin-top: 10px;">Esta API Restful foi projetada para lidar com o envio de formulários do portfólio. Ela possui rotas de contato e depoimentos, e conta com camadas de defesa cibernética contra robôs de spam (Honeypot) e ataques DDoS (Rate Limiting).</p>
+            </div>
+
+            <!-- ENDPOINT 1: CONTATO -->
+            <div class="api-endpoint post">
+                <div class="api-header">
+                    <span class="api-method">POST</span>
+                    <span class="api-path">/api/contact</span>
+                    <span class="api-desc">Envia uma mensagem de contato</span>
+                </div>
+                <div class="api-body">
+                    <div class="api-section-title">Request Body (application/json)</div>
+                    <div class="json-block">
+{
+  <span class="json-key">"name"</span>: <span class="json-string">"string"</span>, <span class="json-comment">// Obrigatório. Nome do remetente.</span>
+  <span class="json-key">"email"</span>: <span class="json-string">"string"</span>, <span class="json-comment">// Obrigatório. E-mail de retorno.</span>
+  <span class="json-key">"message"</span>: <span class="json-string">"string"</span>, <span class="json-comment">// Obrigatório. Conteúdo da mensagem.</span>
+  <span class="json-key">"website"</span>: <span class="json-string">"string"</span>  <span class="json-comment">// Opcional. Armadilha Honeypot. Se preenchido, a requisição sofre Ghost Banning.</span>
+}</div>
+                    
+                    <div class="api-section-title">Responses</div>
+                    <table>
+                        <tr>
+                            <th>Code</th>
+                            <th>Description</th>
+                            <th>Example (JSON)</th>
+                        </tr>
+                        <tr>
+                            <td class="status-200">200</td>
+                            <td>Success - E-mail enviado. (Também retornado em Ghost Banning).</td>
+                            <td><span class="json-key">"sucesso"</span>: <span class="json-boolean">true</span></td>
+                        </tr>
+                        <tr>
+                            <td class="status-400">400</td>
+                            <td>Bad Request - Campos obrigatórios ausentes.</td>
+                            <td><span class="json-key">"erro"</span>: <span class="json-string">"Todos os campos..."</span></td>
+                        </tr>
+                        <tr>
+                            <td class="status-429">429</td>
+                            <td>Too Many Requests - Limite de taxa excedido (3 requisições / 15 min).</td>
+                            <td><span class="json-key">"erro"</span>: <span class="json-string">"Muitas tentativas..."</span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ENDPOINT 2: DEPOIMENTOS -->
+            <div class="api-endpoint post">
+                <div class="api-header">
+                    <span class="api-method">POST</span>
+                    <span class="api-path">/api/testimonial</span>
+                    <span class="api-desc">Registra um novo depoimento</span>
+                </div>
+                <div class="api-body">
+                    <div class="api-section-title">Request Body (application/json)</div>
+                    <div class="json-block">
+{
+  <span class="json-key">"name"</span>: <span class="json-string">"string"</span>, <span class="json-comment">// Obrigatório. Nome da pessoa.</span>
+  <span class="json-key">"role"</span>: <span class="json-string">"string"</span>, <span class="json-comment">// Obrigatório. Cargo ou Empresa.</span>
+  <span class="json-key">"message"</span>: <span class="json-string">"string"</span>, <span class="json-comment">// Obrigatório. Texto do depoimento.</span>
+  <span class="json-key">"website"</span>: <span class="json-string">"string"</span>  <span class="json-comment">// Opcional. Honeypot para spambots.</span>
+}</div>
+                    
+                    <div class="api-section-title">Responses</div>
+                    <table>
+                        <tr>
+                            <th>Code</th>
+                            <th>Description</th>
+                            <th>Example (JSON)</th>
+                        </tr>
+                        <tr>
+                            <td class="status-200">200</td>
+                            <td>Success - Depoimento recebido para moderação.</td>
+                            <td><span class="json-key">"sucesso"</span>: <span class="json-boolean">true</span></td>
+                        </tr>
+                        <tr>
+                            <td class="status-400">400</td>
+                            <td>Bad Request - Parâmetros inválidos.</td>
+                            <td><span class="json-key">"erro"</span>: <span class="json-string">"Todos os campos..."</span></td>
+                        </tr>
+                        <tr>
+                            <td class="status-500">500</td>
+                            <td>Internal Server Error - Falha no provedor Resend.</td>
+                            <td><span class="json-key">"erro"</span>: <span class="json-string">"Falha interna..."</span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer style="margin-top: 0;">
+        <div class="social-links">
+            <a href="https://github.com/FlavianaPina24" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/flaviana-pina-3848a39a" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <p>© 2026 - flavianapina.com.br</p>
+    </footer>
+
+    <script>
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = themeToggleBtn.querySelector('i');
+
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+        }
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            themeIcon.classList.replace(isLight ? 'fa-sun' : 'fa-moon', isLight ? 'fa-moon' : 'fa-sun');
+        });
+    </script>
+</body>
+</html>
