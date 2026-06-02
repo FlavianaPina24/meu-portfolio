@@ -1115,3 +1115,9 @@ html.a11y-large-text { font-size: 115% !important; }
 html.a11y-dyslexia body, html.a11y-dyslexia * { font-family: 'Comic Sans MS', 'Comic Sans', sans-serif !important; }
 html.a11y-no-animations *, html.a11y-no-animations *::before, html.a11y-no-animations *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 html.a11y-highlight-links a, html.a11y-highlight-links button { text-decoration: underline !important; text-decoration-color: #eab308 !important; text-decoration-thickness: 3px !important; }
+
+/* Responsividade do Painel A11y no Celular */
+@media (max-width: 768px) {
+    .a11y-btn { bottom: 15px; left: 15px; width: 45px; height: 45px; font-size: 1.2rem; }
+    .a11y-panel { bottom: 70px; left: 15px; width: calc(100vw - 30px); max-width: 320px; padding: 15px; }
+}
