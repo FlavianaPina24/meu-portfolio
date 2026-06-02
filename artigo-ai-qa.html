@@ -1,0 +1,81 @@
+ <!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Augmented QA - Flaviana Pina</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav style="justify-content: flex-start; gap: 20px;">
+        <a href="index.html#articles" style="font-size: 1.1rem;"><i class="fas fa-arrow-left"></i> Voltar para o Portfólio</a>
+    </nav>
+
+    <main class="container">
+        <section style="margin-top: 40px; text-align: left;">
+            <div class="section-badge" style="margin-bottom: 20px;"><i class="fas fa-robot"></i> AI-Augmented QA</div>
+            <h1 style="font-size: 2.2rem; color: #f1f5f9; margin-bottom: 10px;">Como usei IA como "Pair Programmer" para construir meu Portfólio e Framework E2E</h1>
+            <p style="color: #94a3b8; font-size: 1rem; margin-bottom: 40px;"><i class="fas fa-calendar-alt"></i> Publicado durante o desenvolvimento da Sprint | <i class="fas fa-clock"></i> Leitura: 4 min</p>
+
+            <div class="article-content">
+                <p>O mercado de tecnologia mudou. Acredito fortemente que o futuro da Engenharia de Qualidade não é apenas sobre saber decorar sintaxes de programação, mas sim sobre ter <strong>visão estratégica, análise crítica e saber orquestrar ferramentas para entregar valor de forma rápida e segura.</strong></p>
+                
+                <p>Foi com essa mentalidade que decidi construir todo este portfólio. A minha maior senioridade sempre esteve na Análise de Negócios (BA) e na modelagem de Testes. Então, como desenvolver um front-end moderno, um back-end blindado e um framework em Java do zero?</p>
+                
+                <div class="info-banner" style="margin: 30px 0;">
+                    <h3>A Resposta: AI-Augmented QA</h3>
+                    <p style="margin: 0; color: #cbd5e1;">Decidi adotar o modelo de "Qualidade Aumentada por IA". Utilizei o Google Gemini como meu <em>Pair Programmer</em>. Meu papel não foi o de digitar o código linha por linha, mas atuar como <strong>Arquiteta de Soluções e Tech Lead</strong> da própria Inteligência Artificial.</p>
+                </div>
+
+                <h2>O Papel da Analista de Negócios (Definindo o "O Quê")</h2>
+                <p>A IA é incrivelmente rápida para codificar, mas ela não tem contexto de negócios. O sucesso deste projeto veio da separação clara de responsabilidades:</p>
+                <ul style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 30px;">
+                    <li><strong>Eu definia o requisito:</strong> "Preciso de um formulário de contato."</li>
+                    <li><strong>A IA criava o código base (HTML/CSS).</strong></li>
+                    <li><strong>Eu validava com olhar de QA/DevSecOps:</strong> "A IA esqueceu de tratar ataques de Spam. Vamos adicionar um Honeypot e regras de sanitização (XSS) no Node.js."</li>
+                </ul>
+
+                <h2>Os Frutos Técnicos do Pair Programming</h2>
+                <p>O que começou como um simples site de currículo, evoluiu para uma aplicação de Nível Enterprise graças à iteração contínua (Prompt Engineering):</p>
+                
+                <div class="grid-skills" style="grid-template-columns: 1fr; gap: 15px; margin-top: 20px;">
+                    <div class="skill-card" style="padding: 15px;">
+                        <h3 style="font-size: 1.1rem; margin-bottom: 5px;"><i class="fas fa-universal-access"></i> Acessibilidade Inclusiva (A11y)</h3>
+                        <p style="margin:0; font-size: 0.95rem;">Construímos juntos um painel interativo injetado via JavaScript capaz de alterar fontes para dislexos e pausar animações visuais.</p>
+                    </div>
+                    <div class="skill-card" style="padding: 15px;">
+                        <h3 style="font-size: 1.1rem; margin-bottom: 5px;"><i class="fas fa-shield-alt"></i> Blindagem DevSecOps</h3>
+                        <p style="margin:0; font-size: 0.95rem;">Auditamos o site com OWASP ZAP e criamos defesas ativas na API e no Front-end (CSP e Rate Limiters).</p>
+                    </div>
+                    <div class="skill-card" style="padding: 15px;">
+                        <h3 style="font-size: 1.1rem; margin-bottom: 5px;"><i class="fas fa-play"></i> Automação Playwright Resiliente</h3>
+                        <p>A IA me auxiliou a escrever as funções básicas, e eu entrei com a estratégia de QA: Mapeamento via <code>data-testid</code>, Waits dinâmicos e Nightly Builds via CI/CD no GitHub Actions.</p>
+                    </div>
+                </div>
+
+                <h2>Conclusão</h2>
+                <p style="margin-top: 30px;">A Inteligência Artificial não substitui a Engenharia de Qualidade, ela <strong>exige mais dela</strong>. Ela escreve o código, mas a responsabilidade de garantir resiliência, acessibilidade, segurança e alinhamento às regras de negócio ainda é (e sempre será) do QA.</p>
+                <p>Ser transparente sobre o uso de IA e demonstrar como utilizá-la como uma alavanca produtiva é, na minha visão, a competência mais valiosa que podemos desenvolver no cenário tecnológico atual.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer style="margin-top: 0; padding: 20px; text-align: center;">
+        <p>© 2026 - flavianapina.com.br | Artigo escrito por Flaviana Pina.</p>
+    </footer>
+
+    <script>
+        // Restaura a cor do tema selecionada
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+        }
+        // Restaura acessibilidade
+        ['a11y-large-text', 'a11y-dyslexia', 'a11y-no-animations', 'a11y-highlight-links'].forEach(feature => {
+            if (localStorage.getItem(feature) === 'true') document.documentElement.classList.add(feature);
+        });
+    </script>
+</body>
+</html>
