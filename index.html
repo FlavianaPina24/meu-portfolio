@@ -1251,6 +1251,29 @@
         }
         checkApiHealth();
         setInterval(checkApiHealth, 60000); // Atualiza o status a cada 1 minuto automaticamente
+
+        // --- Lógica do Painel de Acessibilidade (A11y) ---
+        const a11yBtn = document.getElementById('a11y-btn');
+        const a11yPanel = document.getElementById('a11y-panel');
+
+        a11yBtn.addEventListener('click', () => {
+            a11yPanel.classList.toggle('hidden');
+        });
+
+        function toggleA11y(feature, btn) {
+            document.documentElement.classList.toggle(feature);
+            btn.classList.toggle('active');
+            localStorage.setItem(feature, document.documentElement.classList.contains(feature));
+        }
+
+        // Restaura as configurações de acessibilidade salvas nas visitas anteriores
+        ['a11y-large-text', 'a11y-dyslexia', 'a11y-no-animations', 'a11y-highlight-links'].forEach(feature => {
+            if (localStorage.getItem(feature) === 'true') {
+                document.documentElement.classList.add(feature);
+                const btn = document.querySelector(`button[onclick="toggleA11y('${feature}', this)"]`);
+                if (btn) btn.classList.add('active');
+            }
+        });
     </script>
 </body>
 </html>

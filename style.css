@@ -1078,3 +1078,40 @@ body.light-mode .tab-btn.active { background-color: #0284c7; color: #ffffff; bor
     clip: rect(0, 0, 0, 0);
     border: 0;
 }
+
+/* --- Painel de Acessibilidade (A11y) --- */
+.a11y-btn {
+    position: fixed; bottom: 30px; left: 30px;
+    background-color: #38bdf8; color: #0f172a;
+    border: none; border-radius: 50%;
+    width: 50px; height: 50px; font-size: 1.5rem;
+    cursor: pointer; display: flex; justify-content: center; align-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 10000;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+.a11y-btn:hover { transform: scale(1.1); background-color: #0284c7; }
+
+.a11y-panel {
+    position: fixed; bottom: 90px; left: 30px;
+    background-color: #1e293b; border: 1px solid #38bdf8; border-radius: 8px;
+    padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 10000; width: 250px;
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+}
+.a11y-panel.hidden { opacity: 0; visibility: hidden; transform: translateY(20px); }
+.a11y-panel h3 { color: #f1f5f9; margin-top: 0; margin-bottom: 20px; font-size: 1.1rem; border-bottom: 1px solid #334155; padding-bottom: 10px; }
+.a11y-option { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; color: #cbd5e1; font-size: 0.95rem; font-weight: bold; }
+.a11y-option button { background: #0f172a; color: #94a3b8; border: 1px solid #334155; padding: 6px 12px; border-radius: 4px; cursor: pointer; transition: all 0.2s ease; }
+.a11y-option button.active { background: #38bdf8; color: #0f172a; border-color: #38bdf8; }
+
+/* Estilos do A11y no Modo Claro */
+body.light-mode .a11y-panel { background-color: #ffffff; border-color: #0284c7; }
+body.light-mode .a11y-panel h3 { color: #0f172a; border-bottom-color: #e2e8f0; }
+body.light-mode .a11y-option { color: #475569; }
+body.light-mode .a11y-option button { background-color: #f8fafc; border-color: #cbd5e1; color: #64748b; }
+body.light-mode .a11y-option button.active { background-color: #0284c7; color: #ffffff; border-color: #0284c7; }
+
+/* Modificadores de Acessibilidade (Superpoderes aplicados na Tag <html>) */
+html.a11y-large-text { font-size: 115% !important; }
+html.a11y-dyslexia body, html.a11y-dyslexia * { font-family: 'Comic Sans MS', 'Comic Sans', sans-serif !important; }
+html.a11y-no-animations *, html.a11y-no-animations *::before, html.a11y-no-animations *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+html.a11y-highlight-links a, html.a11y-highlight-links button { text-decoration: underline !important; text-decoration-color: #eab308 !important; text-decoration-thickness: 3px !important; }
