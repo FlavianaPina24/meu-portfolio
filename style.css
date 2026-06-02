@@ -237,6 +237,66 @@ li:hover {
     margin-top: 0;
 }
 
+/* --- Redesign: Sobre Mim --- */
+.about-container {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    margin-top: 30px;
+    margin-bottom: 25px;
+    text-align: left;
+}
+.about-image {
+    flex: 0 0 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.profile-pic {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #38bdf8;
+    box-shadow: 0 10px 25px rgba(56, 189, 248, 0.4);
+    transition: transform 0.4s ease;
+}
+.profile-pic:hover {
+    transform: scale(1.05) rotate(2deg);
+}
+.about-social {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+.about-social a { color: #94a3b8; font-size: 1.5rem; transition: color 0.3s, transform 0.3s; }
+.about-social a:hover { color: #38bdf8; transform: translateY(-3px); }
+.about-text { flex: 1; }
+
+/* --- Redesign: Habilidades --- */
+.skills-category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+.skill-category-card {
+    background: #1e293b;
+    padding: 25px 20px;
+    border-radius: 8px;
+    border-top: 4px solid #38bdf8;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.skill-category-card:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); }
+.skill-category-card i { font-size: 2.5rem; color: #38bdf8; margin-bottom: 15px; }
+.skill-category-card h3 { color: #f1f5f9; font-size: 1.1rem; margin: 0 0 10px 0; }
+.skill-category-card p { color: #cbd5e1; font-size: 0.9rem; line-height: 1.5; margin: 0; }
+
 .info-banner {
     background-color: #1e293b;
     padding: 15px 20px;
@@ -789,11 +849,11 @@ body.light-mode nav a::after { background-color: #0284c7; }
 
 body.light-mode h1, body.light-mode h2, body.light-mode .skill-card h3, body.light-mode .timeline-content h3, body.light-mode .info-banner h3 { color: #0284c7; }
 
-body.light-mode li, body.light-mode .skill-card, body.light-mode .timeline-content, body.light-mode .feedback-card, body.light-mode .popup-content, body.light-mode .info-banner {
+body.light-mode li, body.light-mode .skill-card, body.light-mode .timeline-content, body.light-mode .feedback-card, body.light-mode .popup-content, body.light-mode .info-banner, body.light-mode .skill-category-card {
     background-color: #ffffff; color: #334155; border-top-color: #0284c7; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
-body.light-mode li:hover, body.light-mode .skill-card:hover, body.light-mode .feedback-card:hover, body.light-mode .metric-card:hover {
+body.light-mode li:hover, body.light-mode .skill-card:hover, body.light-mode .feedback-card:hover, body.light-mode .metric-card:hover, body.light-mode .skill-category-card:hover {
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.18);
 }
 body.light-mode li { border-left-color: #0284c7; border-top-color: transparent; }
@@ -811,6 +871,9 @@ body.light-mode .article-content h1, body.light-mode .article-content h2 { color
 body.light-mode .typewriter-container { color: #0f172a; }
 body.light-mode .hero-typewriter-text .highlight { color: #0284c7; }
 body.light-mode .hero-subtitle { color: #475569; }
+body.light-mode .profile-pic { border-color: #0284c7; box-shadow: 0 10px 25px rgba(2, 132, 199, 0.3); }
+body.light-mode .skill-category-card h3 { color: #0284c7; }
+body.light-mode .skill-category-card p { color: #475569; }
 body.light-mode .availability-badge {
     background-color: #dcfce7;
     border-color: #86efac;
@@ -930,6 +993,16 @@ body.light-mode .tab-btn.active { background-color: #0284c7; color: #ffffff; bor
 
     /* Adaptação do Kanban Jira para Mobile (Movimento Vertical) */
     .kanban-board { flex-direction: column; gap: 15px; }
+
+    /* Adaptação Mobile para Sobre Mim */
+    .about-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+    .about-text p { text-align: left; }
+    .about-text .btn-link { display: block; margin: 0 auto; text-align: center; }
+
     .kanban-col { width: 100%; min-height: 80px; padding-bottom: 50px; }
     .kanban-card { 
         width: calc(100% - 30px); left: 15px !important; top: 45px; 

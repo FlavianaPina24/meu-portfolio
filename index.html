@@ -94,22 +94,49 @@
     <main class="container">
         <section id="about">
             <h2>Sobre Mim</h2>
-            <div class="text-panel center">
-                <p style="font-size: 1.1rem;"><i class="fas fa-user-shield" style="margin-right: 8px; color: #38bdf8;"></i>Especialista em <strong>Qualidade de Software</strong> e <strong>Defesa Cibernética</strong>. Focada em garantir a excelência técnica e funcional de produtos digitais, unindo visão analítica de negócios com testes automatizados de ponta a ponta.</p>
-                <p style="margin-top: 20px; font-size: 1.05rem; padding: 15px; background-color: rgba(56, 189, 248, 0.1); border-left: 4px solid #38bdf8; border-radius: 4px; line-height: 1.6; text-align: left;"><i class="fas fa-robot" style="margin-right: 8px; color: #38bdf8;"></i><strong>QA Potencializada por IA (AI-Augmented QA):</strong> Minha maior força está na estratégia de negócios (BA) e nos testes funcionais. Para construir o código deste site e o framework de automação avançado em Java, atuei em sinergia com o <strong>Google Gemini</strong> (Pair Programming). Acredito fortemente na transparência e no uso da Inteligência Artificial como alavanca para superar desafios técnicos e entregar excelência.</p>
+            <div class="about-container fade-in visible">
+                <div class="about-image">
+                    <!-- Troque o link abaixo pela sua foto! Ex: src="minha-foto.png" -->
+                    <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Foto de Flaviana Pina" class="profile-pic">
+                    <div class="about-social">
+                        <a href="https://www.linkedin.com/in/flaviana-pina-3848a39a" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/FlavianaPina24" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="about-text">
+                    <p style="font-size: 1.1rem;"><i class="fas fa-user-shield" style="margin-right: 8px; color: #38bdf8;"></i>Especialista em <strong>Qualidade de Software</strong> e <strong>Defesa Cibernética</strong>. Focada em garantir a excelência técnica e funcional de produtos digitais, unindo visão analítica de negócios com testes automatizados de ponta a ponta.</p>
+                    <p style="margin-top: 20px; font-size: 1.05rem; padding: 15px; background-color: rgba(56, 189, 248, 0.1); border-left: 4px solid #38bdf8; border-radius: 4px; line-height: 1.6;"><i class="fas fa-robot" style="margin-right: 8px; color: #38bdf8;"></i><strong>QA Potencializada por IA (AI-Augmented QA):</strong> Minha maior força está na estratégia de negócios (BA) e nos testes funcionais. Para construir o código deste site e o framework de automação avançado em Java, atuei em sinergia com o <strong>Google Gemini</strong> (Pair Programming). Acredito fortemente na transparência e no uso da Inteligência Artificial como alavanca para entregar excelência.</p>
+                    <div style="margin-top: 25px;">
+                        <a href="curriculo.pdf" download="Curriculo_Flaviana_Pina.pdf" class="btn-link pulse-btn"><i class="fas fa-download"></i> Baixar Currículo</a>
+                    </div>
+                </div>
             </div>
-
-            <a href="curriculo.pdf" download="Curriculo_Flaviana_Pina.pdf" class="btn-link pulse-btn"><i class="fas fa-download"></i> Baixar Currículo</a>
         </section>
 
         <section id="skills">
             <h2>Habilidades Técnicas</h2>
-            <ul>
-                <li><strong>Testes:</strong> Automatizados (Robot Framework), Manuais, API (Postman), Web, Mobile, Regressão e Exploratórios.</li>
-                <li><strong>Ferramentas & DevOps:</strong> Jira, Confluence, Azure DevOps, OCTANE, BDD, X-ray.</li>
-                <li><strong>Tecnologias:</strong> Python (Básico), HTML, CSS, Cloud Computing, IBM Watsonx.</li>
-                <li><strong>Metodologias:</strong> Agile (Scrum/Kanban), Design Thinking, BI, Melhoria de Processos.</li>
-            </ul>
+            <div class="skills-category-grid">
+                <div class="skill-category-card">
+                    <i class="fas fa-vial"></i>
+                    <h3>Testes e Qualidade</h3>
+                    <p>Automatizados (Robot Framework), Manuais, API (Postman), Web, Mobile, Regressão e Exploratórios.</p>
+                </div>
+                <div class="skill-category-card">
+                    <i class="fas fa-tools"></i>
+                    <h3>Ferramentas & DevOps</h3>
+                    <p>Jira, Confluence, Azure DevOps, OCTANE, BDD, X-ray, CI/CD, GitHub Actions.</p>
+                </div>
+                <div class="skill-category-card">
+                    <i class="fas fa-code"></i>
+                    <h3>Tecnologias Base</h3>
+                    <p>Java, Python, HTML, CSS, Cloud Computing, BD (MongoDB), IBM Watsonx.</p>
+                </div>
+                <div class="skill-category-card">
+                    <i class="fas fa-project-diagram"></i>
+                    <h3>Metodologias & BA</h3>
+                    <p>Agile (Scrum/Kanban), Design Thinking, BI, Engenharia de Requisitos (BRD, RTM).</p>
+                </div>
+            </div>
             
             <!-- Carrossel Infinito de Tecnologias -->
             <div class="carousel-container">
