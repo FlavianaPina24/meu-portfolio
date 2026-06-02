@@ -194,6 +194,27 @@ nav a.active::after {
 
 h1 { font-size: 2.5rem; margin-bottom: 10px; color: #38bdf8; }
 
+/* Estilos de Cabeçalho de Seção (Títulos com Emoção) */
+.section-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    background-color: rgba(56, 189, 248, 0.1);
+    color: #38bdf8;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+}
+.section-subtitle {
+    color: #94a3b8;
+    font-size: 1.05rem;
+    margin: 15px auto 0;
+    max-width: 600px;
+    line-height: 1.6;
+}
+
 .container { padding: 40px 20px; max-width: 800px; width: 100%; } /* Garante que o site preencha a tela no celular */
 
 ul { list-style: none; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
@@ -240,7 +261,7 @@ li:hover {
 /* --- Redesign: Sobre Mim --- */
 .about-container {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 40px;
     margin-top: 30px;
     margin-bottom: 25px;
@@ -871,6 +892,8 @@ body.light-mode .article-content h1, body.light-mode .article-content h2 { color
 body.light-mode .typewriter-container { color: #0f172a; }
 body.light-mode .hero-typewriter-text .highlight { color: #0284c7; }
 body.light-mode .hero-subtitle { color: #475569; }
+body.light-mode .section-badge { background-color: #e0f2fe; color: #0284c7; border-color: #bae6fd; }
+body.light-mode .section-subtitle { color: #64748b; }
 body.light-mode .profile-pic { border-color: #0284c7; box-shadow: 0 10px 25px rgba(2, 132, 199, 0.3); }
 body.light-mode .skill-category-card h3 { color: #0284c7; }
 body.light-mode .skill-category-card p { color: #475569; }
