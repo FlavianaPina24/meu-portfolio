@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evolução de Arquitetura: MongoDB | Flaviana Pina</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LEKMM5EXM6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-LEKMM5EXM6');
+    </script>
+</head>
+<body>
+    <nav>
+        <a href="index.html#articles"><i class="fas fa-arrow-left"></i> Voltar ao Portfólio</a>
+        <button id="theme-toggle" class="btn-theme" aria-label="Alternar Modo Claro/Escuro"><i class="fas fa-sun"></i></button>
+    </nav>
+
+    <main class="container article-content fade-in visible">
+        <h1>Evolução de Arquitetura: Integrando MongoDB Atlas e API</h1>
+        <p>Por <strong>Flaviana Pina</strong> | QA Architect & Business Analyst</p>
+        
+        <p>A evolução natural de uma API RESTful é deixar de ser apenas um "mensageiro" (Stateless) e passar a ter memória. Neste artigo de estudo de caso, documento como transformei a arquitetura do meu portfólio integrando um Banco de Dados NoSQL em nuvem (MongoDB Atlas), aplicando conceitos de Moderação de Dados e Soft Delete.</p>
+
+        <img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Código e Banco de Dados em tela preta" title="Integração de Banco de Dados MongoDB">
+
+        <h2>1. Por que o MongoDB Atlas? (Cloud-Native)</h2>
+        <p>Como Arquiteta e Engenheira de Qualidade, a escolha da tecnologia deve focar em eficiência. Bancos de dados locais exigem muita infraestrutura (memória, CPU). Utilizando o <strong>MongoDB Atlas (Database as a Service)</strong>, o banco mora na nuvem. A minha API (hospedada no Render) se comunica com ele em milissegundos. Além disso, por ser NoSQL, ele salva as informações no exato formato <strong>JSON</strong> que nós (QAs) já utilizamos em automações via Rest-Assured e Postman.</p>
+
+        <h2>2. Moderação de Dados (A Regra de Negócio)</h2>
+        <p>Sistemas expostos na internet sofrem ataques e spam. Para proteger a interface do usuário, implementei uma regra de negócios no Back-end:</p>
+        <ul>
+            <li style="box-shadow:none; padding:10px; margin-bottom:5px;">Todo dado enviado pelo usuário nasce no banco com o <code>"status": "Pendente"</code>.</li>
+            <li style="box-shadow:none; padding:10px; margin-bottom:5px;">O Front-end só consome a rota GET para exibir dados que contenham o <code>"status": "Aprovado"</code>.</li>
+        </ul>
+        <p>Essa arquitetura permite que eu tenha total controle editorial sobre o que é publicado (Data Governance).</p>
+
+        <h2>3. Hard Delete vs Soft Delete</h2>
+        <p>Uma boa arquitetura de dados não exclui informações levianamente. Quando clicamos no ícone da lixeira no banco de dados, realizamos um <strong>Hard Delete</strong> (o dado é vaporizado). Para ter um histórico de auditoria (Auditing), o ideal é usar o <strong>Soft Delete</strong> (Exclusão Lógica): basta alterar o <em>status</em> do documento para <code>"Deletado"</code> ou <code>"Oculto"</code>. O dado some do site do usuário, mas fica preservado no banco para análises de segurança (DevSecOps).</p>
+
+        <hr style="border:0; height:1px; background:#334155; margin:30px 0;">
+
+        <h2>Guia de Referência: Comandos Úteis do MongoDB Atlas</h2>
+        <p>Este é o meu guia de bolso operacional para administrar o banco de dados diretamente via painel da nuvem (Data Seeding / Data Cleansing):</p>
+
+        <h3>👉 Como Inserir Dados Diretamente (Bypass de API)</h3>
+        <p>Inserir dados diretamente no banco poupa consumo da API e não esgota limites (Rate Limiting). Para inserir um depoimento pré-aprovado:</p>
+        <ol>
+            <li style="box-shadow:none; padding:5px;">Acesse o painel do MongoDB Atlas e clique em <strong>Database</strong> > <strong>Browse Collections</strong>.</li>
+            <li style="box-shadow:none; padding:5px;">Selecione a collection <code>testimonials</code>.</li>
+            <li style="box-shadow:none; padding:5px;">Clique no botão verde <strong>ADD DATA</strong> > <strong>Insert Document</strong>.</li>
+            <li style="box-shadow:none; padding:5px;">Clique no ícone de chaves <strong><code>{ }</code></strong> no topo para ativar a visualização de código (JSON).</li>
+            <li style="box-shadow:none; padding:5px;">Cole a estrutura abaixo e clique em <strong>Insert</strong>:</li>
+        </ol>
+
+        <div style="background-color: #0f172a; padding: 20px; border-radius: 8px; font-family: 'Consolas', monospace; color: #f1f5f9; font-size: 0.95rem; overflow-x: auto; line-height: 1.5; margin: 20px 0; border-left: 4px solid #22c55e;">
+{<br>
+&nbsp;&nbsp;<span style="color: #f87171;">"name"</span>: <span style="color: #a3e635;">"Nome do Profissional"</span>,<br>
+&nbsp;&nbsp;<span style="color: #f87171;">"role"</span>: <span style="color: #a3e635;">"Cargo e Empresa"</span>,<br>
+&nbsp;&nbsp;<span style="color: #f87171;">"message"</span>: <span style="color: #a3e635;">"Mensagem do depoimento aqui."</span>,<br>
+&nbsp;&nbsp;<span style="color: #f87171;">"status"</span>: <span style="color: #a3e635;">"Aprovado"</span><br>
+}
+        </div>
+
+        <h3>👉 Como Moderar (Aprovar / Ocultar)</h3>
+        <p>Localize o documento na lista (dentro de Browse Collections). Clique duas vezes sobre o valor do campo <code>status</code>. Troque <code>"Pendente"</code> por <code>"Aprovado"</code> ou <code>"Oculto"</code> e clique em <strong>Update</strong>.</p>
+
+        <h3>👉 Como Deletar Permanentemente (Hard Delete)</h3>
+        <p>Passe o mouse sobre o documento indesejado na lista. No canto superior direito do bloco, clique no ícone da <strong>Lixeira (🗑️)</strong> e confirme a exclusão.</p>
+
+        <br>
+        <a href="index.html#contact" class="btn-link">Dúvidas sobre Arquitetura de Banco de Dados? Vamos conversar!</a>
+    </main>
+
+    <footer>
+        <div class="social-links">
+            <a href="https://github.com/FlavianaPina24" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/flaviana-pina-3848a39a" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <p>© 2026 - flavianapina.com.br</p>
+    </footer>
+
+    <script>
+        window.addEventListener('load', () => {
+            document.querySelector('.article-content').classList.add('visible');
+        });
+
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = themeToggleBtn.querySelector('i');
+
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+        }
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            themeIcon.classList.replace(isLight ? 'fa-sun' : 'fa-moon', isLight ? 'fa-moon' : 'fa-sun');
+        });
+    </script>
+</body>
+</html>
