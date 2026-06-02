@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acessibilidade Inclusiva (A11y) | Flaviana Pina</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LEKMM5EXM6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-LEKMM5EXM6');
+    </script>
+</head>
+<body>
+    <nav style="justify-content: flex-start; gap: 20px;">
+        <a href="index.html#articles" style="font-size: 1.1rem;"><i class="fas fa-arrow-left"></i> Voltar para o Portfólio</a>
+        <button id="theme-toggle" class="btn-theme" aria-label="Alternar Modo Claro/Escuro" style="margin-left: auto;"><i class="fas fa-sun"></i></button>
+    </nav>
+
+    <main class="container">
+        <section style="margin-top: 40px; text-align: left;">
+            <div class="section-badge" style="margin-bottom: 20px;"><i class="fas fa-universal-access"></i> Acessibilidade (A11y)</div>
+            <h1 style="font-size: 2.2rem; color: #f1f5f9; margin-bottom: 10px;">Muito além do layout: Acessibilidade na prática com Axe-Core e Playwright</h1>
+            <p style="color: #94a3b8; font-size: 1rem; margin-bottom: 40px;"><i class="fas fa-calendar-alt"></i> Publicado durante o desenvolvimento da Sprint | <i class="fas fa-clock"></i> Leitura: 5 min</p>
+
+            <div class="article-content">
+                <p>Quando falamos de Qualidade de Software (QA), é muito comum limitarmos nosso escopo à automação funcional e à validação de regras de negócio. No entanto, um software só tem excelência de verdade quando ele pode ser utilizado por <strong>todas as pessoas</strong>, independente de suas limitações visuais, motoras ou cognitivas.</p>
+                
+                <p>Foi com esse compromisso que decidi transformar este portfólio em um laboratório prático de <strong>Acessibilidade (A11y)</strong>, seguindo as diretrizes internacionais da WCAG (Web Content Accessibility Guidelines).</p>
+                
+                <div class="info-banner" style="margin: 30px 0;">
+                    <h3>O Painel Interativo de A11y</h3>
+                    <p style="margin: 0; color: #cbd5e1;">Para dar autonomia ao usuário, construí um painel flutuante injetado via JavaScript. Ele permite que o visitante altere a experiência do site em tempo real, sem precisar instalar plugins no navegador.</p>
+                </div>
+
+                <h2>1. Desenvolvendo os "Superpoderes" de Acessibilidade</h2>
+                <p>O painel de A11y que você vê no canto inferior esquerdo deste site possui funcionalidades críticas baseadas nas necessidades reais dos usuários:</p>
+                <ul style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 30px;">
+                    <li style="border-left-color: #38bdf8; border-top: none;"><strong>Fonte para Dislexia:</strong> Substitui a fonte padrão por uma de base pesada (como a Comic Sans), evitando que letras semelhantes (p, q, b, d) girem ou espelhem na mente de leitores com dislexia.</li>
+                    <li style="border-left-color: #eab308; border-top: none;"><strong>Pausar Animações:</strong> Fundamental para usuários com TDAH ou Epilepsia Fotossensível. Esse recurso desliga as transições e paralisa a digitação no terminal da tela inicial.</li>
+                    <li style="border-left-color: #22c55e; border-top: none;"><strong>Destacar Links:</strong> Adiciona sublinhados grossos em elementos interativos, reduzindo a carga cognitiva para que o usuário não precise "adivinhar" onde pode clicar.</li>
+                </ul>
+
+                <h2>2. Auditoria Contínua com Axe-Core e Playwright</h2>
+                <p>Como QA Sênior, eu sei que validar o visual não é o suficiente. O HTML "invisível" precisa estar estruturado corretamente para Leitores de Tela (Screen Readers). É aqui que entra a automação!</p>
+                
+                <p>Em vez de fazer verificações manuais tediosas, integrei a poderosa biblioteca <strong>Axe-Core</strong> ao meu framework em <strong>Java + Playwright</strong>. Criei o Cenário 10 da nossa suíte de testes especificamente para atuar como um auditor cego.</p>
+
+                <div style="background-color: #0f172a; padding: 20px; border-radius: 8px; font-family: 'Consolas', monospace; color: #f1f5f9; font-size: 0.95rem; overflow-x: auto; line-height: 1.5; margin: 20px 0; border-left: 4px solid #a855f7; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);">
+                    <span style="color: #64748b;">// Exemplo de integração do Axe-Core no Java</span><br>
+                    AxeResults results = <span style="color: #c678dd;">new</span> <span style="color: #e5c07b;">AxeBuilder</span>(page).<span style="color: #61afef;">analyze</span>();<br>
+                    <span style="color: #c678dd;">if</span> (!results.<span style="color: #61afef;">getViolations</span>().<span style="color: #61afef;">isEmpty</span>()) {<br>
+                    &nbsp;&nbsp;System.out.<span style="color: #61afef;">println</span>(<span style="color: #98c379;">"Falhas de Acessibilidade Encontradas!"</span>);<br>
+                    &nbsp;&nbsp;Assert.<span style="color: #61afef;">fail</span>(<span style="color: #98c379;">"O site não atende às normas da WCAG."</span>);<br>
+                    }
+                </div>
+
+                <h2>3. Shift-Left A11y na Esteira CI/CD</h2>
+                <p>Com o teste automatizado pronto, conectei a execução na nossa esteira do <strong>GitHub Actions</strong>. Isso significa que toda vez que um código novo é atualizado no repositório, o Axe-Core varre a aplicação inteira em busca de imagens sem <code>alt</code>, baixo contraste de cores e botões sem rótulos semânticos (<code>aria-label</code>).</p>
+
+                <h2>Conclusão</h2>
+                <p style="margin-top: 30px;">Acessibilidade não deve ser a última etapa do ciclo de desenvolvimento, nem um "puxadinho" no final da Sprint. Ao implementar controles visuais interativos e garantir a varredura autônoma de A11y no pipeline, conseguimos provar que a inclusão digital é um pilar não negociável da Qualidade de Software.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer style="margin-top: 0; padding: 20px; text-align: center;">
+        <p>© 2026 - flavianapina.com.br | Artigo escrito por Flaviana Pina.</p>
+    </footer>
+
+    <script>
+        // Restaura a cor do tema selecionada
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = themeToggleBtn.querySelector('i');
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+        }
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            themeIcon.classList.replace(isLight ? 'fa-sun' : 'fa-moon', isLight ? 'fa-moon' : 'fa-sun');
+        });
+        // Restaura acessibilidade
+        ['a11y-large-text', 'a11y-dyslexia', 'a11y-no-animations', 'a11y-highlight-links'].forEach(feature => {
+            if (localStorage.getItem(feature) === 'true') document.documentElement.classList.add(feature);
+        });
+    </script>
+</body>
+</html>
