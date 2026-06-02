@@ -776,7 +776,6 @@
                 const depoimentos = await response.json();
                 if (depoimentos.length > 0) {
                     const testimonialsGrid = document.querySelector('#testimonials .grid-skills');
-                    testimonialsGrid.innerHTML = ''; // Limpa os depoimentos fixos do HTML
                     
                     const sanitize = (str) => {
                         const temp = document.createElement('div');
@@ -788,7 +787,7 @@
                         const card = document.createElement('div');
                         card.className = 'feedback-card fade-in visible';
                         card.innerHTML = `<i class="fas fa-quote-right quote-icon"></i><p><em>"${sanitize(dep.message)}"</em></p><div class="feedback-author"><strong>${sanitize(dep.name)}</strong><span>${sanitize(dep.role)}</span></div>`;
-                        testimonialsGrid.appendChild(card);
+                        testimonialsGrid.prepend(card); // Prepend adiciona os novos ANTES dos fixos!
                     });
                 }
             }
