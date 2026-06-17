@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA Blue Team & Defesa Híbrida | Flaviana Pina</title>
+    
+    <!-- Open Graph para o LinkedIn -->
+    <meta property="og:title" content="IA Blue Team: Cibersegurança e Defesa Híbrida com Machine Learning">
+    <meta property="og:description" content="Como construí um ecossistema autônomo com IA, Red Team simulado e Defesa em Profundidade.">
+    <meta property="og:image" content="https://flavianapina.com.br/site2.png">
+    <meta property="og:type" content="article">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LEKMM5EXM6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-LEKMM5EXM6');
+    </script>
+</head>
+<body>
+    <nav style="justify-content: flex-start; gap: 20px;">
+        <a href="index.html#articles" style="font-size: 1.1rem;"><i class="fas fa-arrow-left"></i> Voltar para o Portfólio</a>
+        <button id="theme-toggle" class="btn-theme" aria-label="Alternar Modo Claro/Escuro" style="margin-left: auto;"><i class="fas fa-sun"></i></button>
+    </nav>
+
+    <main class="container">
+        <section style="margin-top: 40px; text-align: left;">
+            <div class="section-badge" style="margin-bottom: 20px;"><i class="fas fa-shield-alt"></i> Cibersegurança & IA</div>
+            <h1 style="font-size: 2.2rem; color: #f1f5f9; margin-bottom: 10px;">Construindo um Ecossistema de Cibersegurança com IA: Blue Team Híbrido</h1>
+            <p style="color: #94a3b8; font-size: 1rem; margin-bottom: 40px;"><i class="fas fa-calendar-alt"></i> Novo Projeto | <i class="fas fa-clock"></i> Leitura: 5 min | Por <strong>Flaviana Pina</strong></p>
+
+            <div class="article-content">
+                <p>Como podemos construir defesas cibernéticas que aprendem e se adaptam a ataques cada vez mais sofisticados? Com o avanço das ameaças, depender apenas de regras estáticas de firewall já não é suficiente. É preciso Inteligência Artificial.</p>
+                
+                <p>Neste estudo de caso, detalho a arquitetura do meu mais recente projeto: o <strong>IA Blue Team</strong>. Um laboratório completo onde construí um agente de defesa autônomo, treinei uma IA e criei um Ethical Hacker (Red Team) para tentar derrubar minhas próprias barreiras.</p>
+                
+                <div class="info-banner" style="margin: 30px 0;">
+                    <h3>1. O Treinamento da IA (Ciência de Dados)</h3>
+                    <p style="margin: 0; color: #cbd5e1;">Para a IA aprender a diferença entre um usuário legítimo e um atacante, utilizei a biblioteca <strong>Pandas</strong> para gerar um dataset com mais de 1.000 logs sintéticos realistas. Em seguida, utilizei o modelo <strong>RandomForestClassifier (Scikit-Learn)</strong> para treinar a IA, que atingiu 100% de acurácia na detecção de anomalias com base na origem do IP e taxa de falhas.</p>
+                </div>
+
+                <h2>2. O Perigo do "Machine Bias" (Ataque Red Team)</h2>
+                <p>Para testar o modelo, desenvolvi um <code>red_team_agent.py</code> que simula ataques reais. A primeira tática (Brute Force simples da Rússia) foi imediatamente bloqueada pela IA na primeira tentativa.</p>
+                <p>No entanto, a segunda tática simulou um <strong>APT (Advanced Persistent Threat)</strong>. O atacante utilizou uma VPN do Brasil e simulou um padrão "Low & Slow". Adivinhe? <strong>A IA foi enganada!</strong> Ela assumiu que, por ser um IP local com falhas espaçadas, tratava-se apenas de um humano que esqueceu a senha.</p>
+
+                <h2>3. A Solução: Segurança em Profundidade (Híbrida)</h2>
+                <p>Na cibersegurança, não podemos confiar em uma única camada de defesa. Para mitigar o viés da máquina, refatorei a arquitetura do Agente Blue Team para trabalhar com <strong>Defesa em Profundidade (Defense in Depth)</strong>, unindo IA e Heurística:</p>
+
+                <div style="background-color: #0f172a; padding: 20px; border-radius: 8px; font-family: 'Consolas', monospace; color: #f1f5f9; font-size: 0.95rem; overflow-x: auto; line-height: 1.5; margin: 20px 0; border-left: 4px solid #38bdf8; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);">
+                    <span style="color: #64748b;"># Lógica Híbrida do Blue Team Agent</span><br>
+                    is_malicious = self.<span style="color: #61afef;">_analyze_with_ml</span>(ip, success, country)<br>
+                    <span style="color: #c678dd;">if not</span> is_malicious:<br>
+                    &nbsp;&nbsp;<span style="color: #64748b;"># Se a IA achar que é um humano, repassamos para a Heurística como Fallback!</span><br>
+                    &nbsp;&nbsp;self.<span style="color: #61afef;">_analyze_with_heuristics</span>(ip, success) 
+                </div>
+
+                <p>Com essa mudança, quando o Red Team atacou via VPN, a IA deixou passar, mas o contador de falhas da Heurística assumiu o controle e aplicou a tática de mitigação do <strong>MITRE ATT&CK (T1110)</strong>, jogando o IP na Blacklist do Firewall (SOAR) após a 5ª tentativa!</p>
+
+                <h2>4. Escalabilidade na Nuvem (Docker & DevSecOps)</h2>
+                <p>Para garantir que esse ecossistema fosse portátil, escrevi um <code>Dockerfile</code> que empacota todo o laboratório. Como rodar contêineres pode ser pesado localmente, implementei uma pipeline de CI/CD utilizando o <strong>GitHub Actions</strong>. Agora, a cada <em>push</em> no repositório, os servidores da Microsoft montam a imagem e executam o embate "Red Team vs Blue Team" de forma autônoma na nuvem.</p>
+
+                <h2>Conclusão</h2>
+                <p style="margin-top: 30px;">O desenvolvimento seguro não é apenas escrever código; é entender como esse código se comporta sob pressão extrema. Este projeto provou que a união entre a velocidade da Inteligência Artificial e a precisão da engenharia clássica (Heurística) é o caminho para o futuro da ciberdefesa.</p>
+
+                <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #334155; display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+                    <strong style="font-size: 1.1rem;">Ver no GitHub:</strong>
+                    <a href="https://github.com/FlavianaPina24/IA_Blue_Team" target="_blank" class="btn-link" style="background-color: #ef4444; color: #ffffff; margin-top: 0;"><i class="fab fa-github"></i> Acessar Repositório</a>
+                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://flavianapina.com.br/artigo-ia-blue-team.html" target="_blank" class="btn-link" style="background-color: #0077b5; color: #ffffff; margin-top: 0;"><i class="fab fa-linkedin"></i> Compartilhar</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer style="margin-top: 0; padding: 20px; text-align: center;">
+        <p>© 2026 - flavianapina.com.br | Artigo escrito por Flaviana Pina.</p>
+    </footer>
+
+    <script>
+        // Restaura a cor do tema selecionada
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = themeToggleBtn.querySelector('i');
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+        }
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            themeIcon.classList.replace(isLight ? 'fa-sun' : 'fa-moon', isLight ? 'fa-moon' : 'fa-sun');
+        });
+        // Restaura acessibilidade
+        ['a11y-large-text', 'a11y-dyslexia', 'a11y-no-animations', 'a11y-highlight-links'].forEach(feature => {
+            if (localStorage.getItem(feature) === 'true') document.documentElement.classList.add(feature);
+        });
+    </script>
+</body>
+</html>
