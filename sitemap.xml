@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <!-- Página Principal (Prioridade Máxima) -->
+  <url>
+    <loc>https://flavianapina.com.br/index.html</loc>
+    <lastmod>2024-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Artigos (Prioridade Alta) -->
+  <url>
+    <loc>https://flavianapina.com.br/artigo-ia-blue-team.html</loc>
+    <lastmod>2024-08-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://flavianapina.com.br/artigo-ai-qa.html</loc>
+    <lastmod>2024-08-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://flavianapina.com.br/artigo-a11y-qa.html</loc>
+    <lastmod>2024-08-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://flavianapina.com.br/artigo-mongodb-api.html</loc>
+    <lastmod>2024-08-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://flavianapina.com.br/artigo-devsecops-api.html</loc>
+    <lastmod>2024-08-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Documentação e Outros Artigos -->
+  <url>
+    <loc>https://flavianapina.com.br/api-docs.html</loc>
+    <lastmod>2024-08-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Adicione aqui os outros artigos se houver -->
+
+</urlset>
