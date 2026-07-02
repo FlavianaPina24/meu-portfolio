@@ -3,7 +3,7 @@
   
   <!-- Página Principal (Prioridade Máxima) -->
   <url>
-    <loc>https://flavianapina.com.br/</loc>
+    <loc>https://flavianapina.com.br/</loc> <!-- Apenas uma tag <loc> por <url> -->
     <lastmod>2024-08-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
