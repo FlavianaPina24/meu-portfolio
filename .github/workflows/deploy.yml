@@ -1,0 +1,48 @@
+# Nome do Workflow
+name: Deploy Portfolio to GitHub Pages
+
+# Gatilhos: Executa sempre que houver um push na branch 'main'
+on:
+  push:
+    branches:
+      - main
+
+# Permissões necessárias para o deploy
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Define que os deploys não podem rodar em paralelo
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  # Job 1: Construir o artefato do site
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do Código
+        uses: actions/checkout@v4
+      
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v5
+      
+      - name: Empacotar Artefato do Site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Pasta que contém os arquivos do seu site (index.html, etc.)
+          path: '.'
+
+  # Job 2: Fazer o deploy do artefato
+  deploy:
+    needs: build # Só executa depois que o 'build' terminar com sucesso
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy para GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
