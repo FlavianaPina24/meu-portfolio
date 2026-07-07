@@ -938,6 +938,18 @@
     }
     loadTestimonials();
 
+        // --- Lógica do Formulário de Contato Pré-preenchido (Serviços) ---
+        function prepareContactForm(serviceType) {
+            const contactSection = document.getElementById('contact');
+            const messageTextarea = contactSection.querySelector('textarea[name="message"]');
+            if (serviceType === 'auditoria') {
+                messageTextarea.value = "Olá, Flaviana! Tenho interesse em contratar o serviço de Auditoria de Qualidade & Segurança para o meu projeto.";
+            } else if (serviceType === 'cicd') {
+                messageTextarea.value = "Olá, Flaviana! Gostaria de um orçamento para o serviço de Setup de Pipeline CI/CD.";
+            }
+            contactSection.scrollIntoView({ behavior: 'smooth' }); messageTextarea.focus();
+        }
+
         // Animação de Fade-In para as Seções
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
