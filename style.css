@@ -1121,3 +1121,39 @@ html.a11y-highlight-links a, html.a11y-highlight-links button { text-decoration:
     .a11y-btn { bottom: 15px; left: 15px; width: 45px; height: 45px; font-size: 1.2rem; }
     .a11y-panel { bottom: 70px; left: 15px; width: calc(100vw - 30px); max-width: 320px; padding: 15px; }
 }
+
+/* --- Estilos da Seção de Serviços --- */
+.service-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 30px 25px;
+    border-top-color: #22c55e; /* Verde para diferenciar de projetos */
+}
+
+.service-icon {
+    font-size: 2.5rem;
+    color: #22c55e;
+    margin-bottom: 15px;
+}
+
+.service-checklist {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    grid-template-columns: 1fr; /* Sobrescreve o grid de 2 colunas do 'ul' genérico */
+}
+
+.service-checklist li { background: none; border: none; box-shadow: none; padding: 0; display: flex; align-items: center; gap: 10px; color: #cbd5e1; }
+.service-checklist li i { color: #22c55e; }
+
+body.light-mode .service-card { border-top-color: #16a34a; }
+body.light-mode .service-icon { color: #16a34a; }
+body.light-mode .service-checklist li { color: #475569; }
+body.light-mode .service-checklist li i { color: #16a34a; }
