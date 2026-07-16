@@ -44,6 +44,24 @@
         .is-bot #preloader { display: none !important; }
         .is-bot #hero-subtitle, .is-bot #availability-badge { opacity: 1 !important; transition: none !important; }
     </style>
+    <!-- CSS para customizar e integrar o Widget do Google Translate -->
+    <style>
+        /* Remove a barra superior que o Google adiciona na página traduzida */
+        body { top: 0 !important; }
+        .goog-te-banner-frame { display: none !important; }
+
+        /* Ajusta o container do widget para se alinhar na nav */
+        #google_translate_element {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Customiza o seletor de idiomas para parecer um botão nativo */
+        .goog-te-gadget-simple {
+            background-color: transparent !important;
+            border: none !important;
+        }
+    </style>
 </head>
 <body>
     <!-- Tela de Carregamento (Preloader Hacker) -->
