@@ -827,6 +827,14 @@ footer {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Estilos específicos para listas dentro de artigos */
+.article-content ul {
+    list-style: disc; /* Volta para bullet points */
+    padding-left: 20px;
+    margin: 20px 0;
+}
+.article-content ul li { background: none; border: none; box-shadow: none; padding: 0; margin-bottom: 8px; }
+
 .article-content img:hover {
     transform: scale(1.03);
     box-shadow: 0 10px 25px rgba(56, 189, 248, 0.3); /* Sombra azulada com o tema */
