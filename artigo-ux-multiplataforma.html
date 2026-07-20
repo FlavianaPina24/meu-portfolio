@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artigo: Experiências Multiplataforma | Flaviana Pina</title>
+    <title>Artigo: Projetando Experiências Multiplataforma | Flaviana Pina</title>
 
     <!-- Open Graph para o LinkedIn -->
     <meta property="og:title" content="Projetando Experiências Multiplataforma: A Visão Estratégica de UX, BA e QA">
@@ -11,10 +11,19 @@
     <meta property="og:image" content="https://flavianapina.com.br/site2.png">
     <meta property="og:type" content="article">
 
-    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/png" href="favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LEKMM5EXM6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-LEKMM5EXM6');
+    </script>
 </head>
 <body>
 
@@ -36,37 +45,37 @@
                 <h2>O que é uma Plataforma?</h2>
                 <p>Uma plataforma é o meio pelo qual os usuários interagem com seu produto. Embora existam inúmeras, as mais comuns no nosso dia a dia são:</p>
                 <ul>
-                    <li style="box-shadow:none; padding:10px 15px; margin-bottom:5px;"><i class="fas fa-desktop"></i> Computadores de Mesa (Desktops)</li>
-                    <li style="box-shadow:none; padding:10px 15px; margin-bottom:5px;"><i class="fas fa-laptop"></i> Notebooks (Laptops)</li>
-                    <li style="box-shadow:none; padding:10px 15px; margin-bottom:5px;"><i class="fas fa-mobile-alt"></i> Celulares (Smartphones)</li>
-                    <li style="box-shadow:none; padding:10px 15px; margin-bottom:5px;"><i class="fas fa-tablet-alt"></i> Tablets</li>
-                    <li style="box-shadow:none; padding:10px 15px; margin-bottom:5px;"><i class="fas fa-stopwatch"></i> Dispositivos Vestíveis (Smartwatches)</li>
+                    <li><i class="fas fa-desktop"></i> Computadores de Mesa (Desktops)</li>
+                    <li><i class="fas fa-laptop"></i> Notebooks (Laptops)</li>
+                    <li><i class="fas fa-mobile-alt"></i> Celulares (Smartphones)</li>
+                    <li><i class="fas fa-tablet-alt"></i> Tablets</li>
+                    <li><i class="fas fa-stopwatch"></i> Dispositivos Vestíveis (Smartwatches)</li>
                 </ul>
                 <p>Cada uma dessas plataformas possui características únicas que impactam diretamente nossas decisões de design. Vamos analisar as quatro dimensões fundamentais.</p>
 
                 <div class="info-banner" style="margin: 30px 0;">
-                    <h3> O Desafio do Tamanho da Tela</h3>
+                    <h3>1. O Desafio do Tamanho da Tela</h3>
                     <p style="margin: 0; color: #cbd5e1;">A primeira e mais óbvia consideração é o espaço disponível. Projetar para um monitor de 27 polegadas oferece uma liberdade imensa, enquanto uma tela de celular exige uma priorização implacável. Isso nos leva ao conceito de <strong>Site Responsivo</strong>, onde o layout se adapta dinamicamente ao tamanho da tela. Como QA, testar a responsividade é crucial para garantir que a experiência não "quebre" em diferentes resoluções.</p>
                 </div>
 
-                <h2> A Natureza da Interação</h2>
+                <h2>2. A Natureza da Interação</h2>
                 <p>A forma como o usuário interage com a plataforma muda tudo. Em um desktop, temos a precisão do mouse e a velocidade do teclado. Em um celular, a interação é baseada em toques, gestos e swipes. Isso significa que botões precisam ser maiores e mais espaçados para evitar "toques gordos" (fat finger).</p>
                 <p>Além disso, a <strong>acessibilidade</strong> é um fator de interação não negociável. Um usuário pode interagir com seu site através de um leitor de tela, comandos de voz ou um interruptor. Garantir que seu design funcione bem com essas tecnologias assistivas é um pilar do design equitativo.</p>
 
-                <h2> A Organização do Layout</h2>
+                <h2>3. A Organização do Layout</h2>
                 <p>O layout refere-se à organização das informações. Desktops, com suas telas em modo paisagem (horizontal), são perfeitos para layouts em múltiplas colunas. Já os celulares, predominantemente usados em modo retrato (vertical), favorecem um layout de coluna única, otimizado para rolagem infinita.</p>
                 <p>Um bom design responsivo não apenas move os elementos de lugar, mas os reorganiza de forma inteligente, como no exemplo abaixo, onde um layout de 3 colunas se transforma em um layout de 1 coluna.</p>
                 <div style="text-align: center; margin: 20px 0;">
-                    <img src="https://i.imgur.com/2m2aJpE.gif" alt="Animação de um site responsivo se adaptando de um layout de desktop para um layout de celular" style="max-width: 100%; border-radius: 8px; border: 1px solid #334155;">
+                    <img src="https://i.imgur.com/2m2aJpE.gif" alt="Animação de um site responsivo se adaptando de um layout de desktop para um layout de celular">
                     <p style="font-size: 0.9rem; color: #94a3b8; margin-top: 10px;"><em>Exemplo de um layout se adaptando de desktop para mobile.</em></p>
                 </div>
 
-                <h2> A Função e o Contexto de Uso</h2>
+                <h2>4. A Função e o Contexto de Uso</h2>
                 <p>Por que um usuário escolheria uma plataforma em vez de outra? A resposta geralmente está na <strong>função</strong> e no <strong>contexto</strong>. Ninguém preenche uma planilha complexa em um smartwatch, mas é a plataforma perfeita para checar uma notificação rápida.</p>
                 <ul>
-                    <li style="box-shadow:none; padding:10px 15px; margin-bottom:5px;"><strong>Desktop/Laptop:</strong> Foco em produtividade, tarefas longas e complexas.</li>
-                    <li style="box-shadow:none; padding:10px 15px; margin-bottom:5px;"><strong>Celular:</strong> Foco em comunicação, tarefas rápidas e consumo de informação "on-the-go".</li>
-                    <li style="box-shadow:none; padding:10px 15px; margin-bottom:5px;"><strong>Smartwatch:</strong> Foco em notificações, monitoramento e ações instantâneas.</li>
+                    <li><strong>Desktop/Laptop:</strong> Foco em produtividade, tarefas longas e complexas.</li>
+                    <li><strong>Celular:</strong> Foco em comunicação, tarefas rápidas e consumo de informação "on-the-go".</li>
+                    <li><strong>Smartwatch:</strong> Foco em notificações, monitoramento e ações instantâneas.</li>
                 </ul>
                 <p>Como BA, entender o contexto de uso é fundamental para definir os requisitos corretos para cada plataforma. Como QA, é essencial para criar cenários de teste que simulem o uso real e identifiquem falhas de usabilidade.</p>
 
@@ -76,15 +85,15 @@
                 <div class="text-panel" style="background-color: rgba(56, 189, 248, 0.1); border-left: 4px solid #38bdf8; padding: 20px; border-top: none; border-bottom: none; border-right: none;">
                     <p>Projetar para múltiplas plataformas não é apenas uma tarefa de UX; é uma estratégia de negócio. Ao entender as nuances de cada plataforma, podemos:</p>
                     <ul>
-                        <li style="box-shadow:none; padding:5px; margin-bottom:5px;"><strong>(Como BA)</strong> Escrever requisitos mais claros e priorizar funcionalidades que realmente agregam valor em cada contexto.</li>
-                        <li style="box-shadow:none; padding:5px; margin-bottom:5px;"><strong>(Como QA)</strong> Criar planos de teste mais eficazes, focando em cenários de uso real e identificando gargalos de usabilidade que automações simples não pegariam.</li>
+                        <li><strong>(Como BA)</strong> Escrever requisitos mais claros e priorizar funcionalidades que realmente agregam valor em cada contexto.</li>
+                        <li><strong>(Como QA)</strong> Criar planos de teste mais eficazes, focando em cenários de uso real e identificando gargalos de usabilidade que automações simples não pegariam.</li>
                     </ul>
                     <p>No final, um produto de alta qualidade é aquele que parece ter sido feito sob medida para o dispositivo em que está sendo usado. Essa é a marca de uma verdadeira excelência digital.</p>
                 </div>
 
                 <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #334155; display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
                     <strong style="font-size: 1.1rem;">Gostou do artigo?</strong>
-                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://flavianapina.com.br/artigo-ux-multiplataforma.html" target="_blank" class="btn-link" style="background-color: #0077b5; color: #ffffff; margin-top: 0;"><i class="fab fa-linkedin"></i> Compartilhar</a>
+                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://flavianapina.com.br/artigo-ux-multiplataforma.html" target="_blank" class="btn-link" style="background-color: #0077b5; color: #ffffff; margin-top: 0;"><i class="fab fa-linkedin"></i> Compartilhar no LinkedIn</a>
                     <a href="index.html#contact" class="btn-link" style="margin-top: 0;"><i class="fas fa-envelope"></i> Vamos Conversar</a>
                 </div>
             </div>
