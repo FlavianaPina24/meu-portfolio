@@ -10,45 +10,74 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Estilos para melhorar a legibilidade e o layout do artigo -->
     <style>
+        /* --- Estrutura e Espaçamento --- */
         .article-page main.container {
             max-width: 800px; /* Limita a largura do conteúdo para melhor leitura */
             margin: 40px auto; /* Centraliza o container e adiciona espaçamento */
             padding: 0 20px;
         }
+        .article-page hr {
+            border: 0;
+            height: 1px;
+            background: #334155;
+            margin: 60px 0;
+        }
+
+        /* --- Cabeçalho do Artigo --- */
         .article-page .article-header {
             text-align: center;
             margin-bottom: 40px;
             border-bottom: 1px solid #334155;
             padding-bottom: 30px;
         }
+
+        /* --- Tipografia e Hierarquia Visual --- */
         .article-page h1 {
             font-size: 2.5rem;
             line-height: 1.2;
             margin-bottom: 10px;
         }
         .article-page .article-subtitle {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             color: #94a3b8;
         }
         .article-page h2 {
             font-size: 1.8rem;
-            margin-top: 50px;
+            margin-top: 60px;
             margin-bottom: 20px;
             border-left: 4px solid #38bdf8;
             padding-left: 15px;
         }
         .article-page h3 {
             font-size: 1.4rem;
-            margin-top: 40px;
+            margin-top: 45px;
             margin-bottom: 15px;
         }
         .article-page p, .article-page li {
             line-height: 1.7; /* Aumenta o espaçamento entre linhas */
             font-size: 1.05rem;
+            color: #cbd5e1;
         }
         .article-page ul {
             padding-left: 25px;
             margin: 20px 0;
+        }
+
+        /* --- Estilização da Tabela de Exemplos --- */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 0.95rem;
+        }
+        .styled-table th, .styled-table td {
+            padding: 12px 15px;
+            border: 1px solid #334155;
+        }
+        .styled-table thead tr {
+            background-color: rgba(56, 189, 248, 0.1);
+            color: #f1f5f9;
+            text-align: left;
         }
     </style>
 </head>
