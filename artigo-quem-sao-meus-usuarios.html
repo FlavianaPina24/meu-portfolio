@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artigo: Quem São Meus Usuários? | Flaviana Pina</title>
+    
+    <!-- Open Graph para o LinkedIn -->
+    <meta property="og:title" content="Quem São Meus Usuários? O Guia (Bem-Humorado) de UX para BAs e QAs">
+    <meta property="og:description" content="Entenda de uma vez por todas quem é o 'usuário' e por que conhecê-lo é o segredo para construir produtos incríveis.">
+    <meta property="og:image" content="https://flavianapina.com.br/site2.png">
+    <meta property="og:type" content="article">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LEKMM5EXM6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-LEKMM5EXM6');
+    </script>
+</head>
+<body>
+    <nav style="justify-content: flex-start; gap: 20px;">
+        <a href="index.html#articles" style="font-size: 1.1rem;"><i class="fas fa-arrow-left"></i> Voltar para o Portfólio</a>
+        <button id="theme-toggle" class="btn-theme" aria-label="Alternar Modo Claro/Escuro" style="margin-left: auto;"><i class="fas fa-sun"></i></button>
+    </nav>
+
+    <main class="container">
+        <section style="margin-top: 40px; text-align: left;">
+            <div class="section-badge" style="margin-bottom: 20px;"><i class="fas fa-users"></i> UX & Análise de Negócios</div>
+            <h1 style="font-size: 2.2rem; color: #f1f5f9; margin-bottom: 10px;">Afinal, Quem Diabos São Meus Usuários?</h1>
+            <p style="color: #94a3b8; font-size: 1rem; margin-bottom: 40px;"><i class="fas fa-book-open"></i> Artigo de Estudo | <i class="fas fa-clock"></i> Leitura: 5 min | Por <strong>Flaviana Pina</strong></p>
+
+            <div class="article-content">
+                <p>No mundo da tecnologia, a palavra "usuário" é mais repetida que "depende" em reunião de planejamento. Mas quem é essa entidade mística? Um ser de luz? Um cliente com um cartão de crédito na mão? Um sobrinho que clica em tudo só pra ver o que acontece?</p>
+                
+                <p>A verdade é mais simples: <strong>um usuário é alguém com um problema.</strong> E seu produto é (ou deveria ser) a solução. Como BA e QA, meu trabalho é garantir que essa "solução" não crie três problemas novos. Para isso, precisamos entender que projetar um produto é como dar uma festa.</p>
+
+                <div class="info-banner" style="margin: 30px 0;">
+                    <h3>A Teoria da Festa: Você é o Anfitrião!</h3>
+                    <p style="margin: 0; color: #cbd5e1;">Seu objetivo é que todos os convidados se divirtam. Você não pode servir só churrasco se um amigo é vegano. Você não pode colocar música alta se sua tia usa aparelho auditivo. E você não pode assumir que todo mundo sabe usar um saca-rolhas.</p>
+                </div>
+
+                <p>Para ser um bom anfitrião (ou designer), você precisa conhecer seus convidados (usuários). Vamos ver quem está na sua lista:</p>
+
+                <h2>1. O Convidado com Necessidades Especiais (Acessibilidade)</h2>
+                <p>Mais de 1 bilhão de pessoas no mundo têm alguma deficiência. Ignorá-las não é só falta de educação, é um péssimo negócio. Acessibilidade não é um "extra", é a rampa de acesso da sua festa.</p>
+                <p>Pense nas legendas de um vídeo. Foram criadas para pessoas com deficiência auditiva, mas quem nunca as usou para ver um story no mudo enquanto o chefe passava? Isso é <strong>Design Inclusivo</strong>: uma solução para um grupo que acaba beneficiando a todos.</p>
+
+                <h2>2. O Convidado que Nunca Viu um Smartphone (Alfabetização Digital)</h2>
+                <p>Achamos que todo mundo sabe o que é "deslizar para a direita", mas para o próximo bilhão de usuários que estão entrando na internet agora, isso pode ser tão intuitivo quanto montar um móvel da IKEA. Eles podem não reconhecer o ícone de "salvar" (um disquete que a maioria nunca viu na vida) ou ter medo de clicar em botões.</p>
+                <p>Como QA, meu papel é testar com a mentalidade de quem está vendo aquilo pela primeira vez. O botão é claro? A instrução é óbvia? Ou o app espera que o usuário tenha um doutorado em "memes da internet"?</p>
+
+                <h2>3. O Convidado com a Internet 3G Caindo (Conectividade)</h2>
+                <p>Nem todo mundo tem Wi-Fi de fibra ótica. Muitos usuários dependem de planos de dados limitados ou de uma conexão que mais parece um sinal de fumaça. Seu produto funciona offline? Ele tem um "modo econômico"? Ou ele devora o plano de dados do usuário como um adolescente na frente da geladeira?</p>
+                <p>Projetar para uma experiência offline rica não é um luxo, é uma necessidade para garantir que sua "festa" continue, mesmo que a luz acabe.</p>
+
+                <h2>4. O Convidado que Fala Outro Idioma (Globalização)</h2>
+                <p>Seu produto será usado em outros países? Ótimo! Mas lembre-se que nem tudo é traduzível. Cores, ícones e até mesmo o formato de datas podem ter significados completamente diferentes em outras culturas.</p>
+                <p>Usar um ícone de cifrão ($) universalmente pode confundir quem usa Euro (€) ou Iene (¥). Oferecer um teclado multilíngue e usar ícones reconhecidos globalmente (como um envelope para "e-mail") são pequenos detalhes que fazem uma diferença gigantesca.</p>
+
+                <hr style="border:0; height:1px; background:#334155; margin:30px 0;">
+
+                <h2>Conclusão: O Anfitrião Perfeito</h2>
+                <div class="text-panel" style="background-color: rgba(56, 189, 248, 0.1); border-left: 4px solid #38bdf8; padding: 20px; border-top: none; border-bottom: none; border-right: none;">
+                    <p>Como designer, BA ou QA, seu objetivo final é fazer com que cada usuário sinta que a festa foi organizada especialmente para ele. Não importa sua idade, renda, habilidade ou de onde ele venha.</p>
+                    <p>Conhecer seus usuários não é sobre criar "personas" genéricas. É sobre ter empatia, investigar e, acima de tudo, não assumir nada. É a diferença entre um produto que "funciona" e um produto que as pessoas amam usar.</p>
+                </div>
+
+                <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #334155; display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+                    <strong style="font-size: 1.1rem;">Gostou da reflexão?</strong>
+                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://flavianapina.com.br/artigo-quem-sao-meus-usuarios.html" target="_blank" class="btn-link" style="background-color: #0077b5; color: #ffffff; margin-top: 0;"><i class="fab fa-linkedin"></i> Compartilhar no LinkedIn</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer style="margin-top: 0; padding: 20px; text-align: center;">
+        <p>© 2026 - flavianapina.com.br | Artigo escrito por Flaviana Pina.</p>
+    </footer>
+
+    <script>
+        // Script para o botão de tema e acessibilidade
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = themeToggleBtn.querySelector('i');
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+        }
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            themeIcon.classList.replace(isLight ? 'fa-sun' : 'fa-moon', isLight ? 'fa-moon' : 'fa-sun');
+        });
+        ['a11y-large-text', 'a11y-dyslexia', 'a11y-no-animations', 'a11y-highlight-links'].forEach(feature => {
+            if (localStorage.getItem(feature) === 'true') document.documentElement.classList.add(feature);
+        });
+    </script>
+</body>
+</html>
