@@ -37,14 +37,20 @@
             margin-top: 20px;
             overflow: hidden;
         }
+        .sql-query-header {
+            display: flex;
+            align-items: stretch; /* Faz o botão ter a mesma altura */
+            background-color: #1e293b;
+            border-bottom: 1px solid #334155;
+            position: relative;
+        }
         .sql-query-display {
             padding: 15px;
-            background-color: #1e293b;
             font-family: 'Consolas', 'Courier New', monospace;
             font-size: 1rem;
             color: #f8fafc;
             white-space: pre-wrap;
-            border-bottom: 1px solid #334155;
+            flex-grow: 1; /* Ocupa o espaço disponível */
         }
         .sql-query-display code { color: #a855f7; font-weight: bold; }
         .sql-query-display .table-name { color: #38bdf8; }
@@ -72,11 +78,33 @@
         .btn-run-query:hover { background-color: #9333ea; }
         .btn-run-query:disabled { background-color: #475569; cursor: not-allowed; }
 
+        /* Estilos para o botão de copiar */
+        .btn-copy-sql {
+            background-color: transparent; color: #94a3b8; border: none; padding: 0 15px;
+            cursor: pointer; font-weight: bold; font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s; position: relative; border-left: 1px solid #334155;
+        }
+        .btn-copy-sql:hover { background-color: #334155; }
+        .btn-copy-sql .copy-icon, .btn-copy-sql .copied-feedback {
+            display: inline-flex; align-items: center; gap: 5px;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .btn-copy-sql .copied-feedback { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); opacity: 0; white-space: nowrap; }
+        .btn-copy-sql.copied { background-color: #22c55e; color: #fff; }
+        .btn-copy-sql.copied .copy-icon { opacity: 0; transform: scale(0.8); }
+        .btn-copy-sql.copied .copied-feedback { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        .btn-copy-sql.copied .fa-check { animation: pop-in 0.3s ease-out 0.1s; }
+        @keyframes pop-in {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
         /* Estilos Light Mode */
         body.light-mode .sql-example-wrapper { background-color: #ffffff; border-left-color: #7e22ce; }
         body.light-mode .sql-example-wrapper h3 { color: #1e293b; border-bottom-color: #e2e8f0; }
         body.light-mode .sql-interactive-demo { background-color: #f8fafc; border-color: #e2e8f0; }
-        body.light-mode .sql-query-display { background-color: #f1f5f9; color: #334155; border-bottom-color: #e2e8f0; }
+        body.light-mode .sql-query-header { background-color: #f1f5f9; border-bottom-color: #e2e8f0; }
+        body.light-mode .sql-query-display { color: #334155; }
         body.light-mode .sql-query-display code { color: #7e22ce; }
         body.light-mode .sql-query-display .table-name { color: #0284c7; }
         body.light-mode .sql-query-display .value { color: #65a30d; }
@@ -87,6 +115,9 @@
         body.light-mode .btn-run-query { background-color: #7e22ce; }
         body.light-mode .btn-run-query:hover { background-color: #6b21a8; }
         body.light-mode .btn-run-query:disabled { background-color: #9ca3af; }
+        body.light-mode .btn-copy-sql { background-color: transparent; color: #64748b; border-left-color: #e2e8f0; }
+        body.light-mode .btn-copy-sql:hover { background-color: #e2e8f0; }
+        body.light-mode .btn-copy-sql.copied { background-color: #16a34a; }
     </style>
 </head>
 <body>
@@ -114,7 +145,13 @@
             <p>Imagine que o banco de dados é um armário gigante cheio de pastas (tabelas). O comando <code>SELECT</code> é como dizer: "Ei, me mostre o que tem dentro desta pasta!". Ele serve para <strong>buscar e ler</strong> informações, sem alterar nada. A tabela abaixo, por exemplo, se chama <code>clientes</code> e possui as colunas <code>id</code>, <code>nome</code> e <code>estado</code>.</p>
             
             <div class="sql-interactive-demo" data-demo-id="1">
-                <div class="sql-query-display"><code>SELECT</code> * <code>FROM</code> <span class="table-name">clientes</span>;</div>
+                <div class="sql-query-header">
+                    <div class="sql-query-display" id="sql-query-1"><code>SELECT</code> * <code>FROM</code> <span class="table-name">clientes</span>;</div>
+                    <button class="btn-copy-sql" data-target-id="sql-query-1" title="Copiar Query">
+                        <span class="copy-icon"><i class="far fa-copy"></i> Copiar</span>
+                        <span class="copied-feedback"><i class="fas fa-check"></i> Copiado!</span>
+                    </button>
+                </div>
                 <div class="demo-table-wrapper">
                     <table class="demo-table">
                         <thead><tr><th>id</th><th>nome</th><th>estado</th></tr></thead>
@@ -137,7 +174,13 @@
             <p>Depois de selecionar uma pasta, você não quer ler todos os papéis, apenas os que interessam. A cláusula <code>WHERE</code> é o seu filtro. Com ela, você diz: "Me mostre apenas os clientes que moram em 'SP'".</p>
 
             <div class="sql-interactive-demo" data-demo-id="2">
-                <div class="sql-query-display"><code>SELECT</code> * <code>FROM</code> <span class="table-name">clientes</span> <code>WHERE</code> estado = <span class="value">'SP'</span>;</div>
+                <div class="sql-query-header">
+                    <div class="sql-query-display" id="sql-query-2"><code>SELECT</code> * <code>FROM</code> <span class="table-name">clientes</span> <code>WHERE</code> estado = <span class="value">'SP'</span>;</div>
+                    <button class="btn-copy-sql" data-target-id="sql-query-2" title="Copiar Query">
+                        <span class="copy-icon"><i class="far fa-copy"></i> Copiar</span>
+                        <span class="copied-feedback"><i class="fas fa-check"></i> Copiado!</span>
+                    </button>
+                </div>
                 <div class="demo-table-wrapper">
                     <table class="demo-table">
                         <thead><tr><th>id</th><th>nome</th><th>estado</th></tr></thead>
@@ -160,7 +203,13 @@
             <p>Os dados vêm do banco de dados sem uma ordem específica. O <code>ORDER BY</code> serve para organizar a sua lista. Você pode ordenar por nome (em ordem alfabética, <code>ASC</code>) ou por preço (do mais caro para o mais barato, <code>DESC</code>).</p>
 
             <div class="sql-interactive-demo" data-demo-id="3">
-                <div class="sql-query-display"><code>SELECT</code> * <code>FROM</code> <span class="table-name">produtos</span> <code>ORDER BY</code> preco <code>DESC</code>;</div>
+                <div class="sql-query-header">
+                    <div class="sql-query-display" id="sql-query-3"><code>SELECT</code> * <code>FROM</code> <span class="table-name">produtos</span> <code>ORDER BY</code> preco <code>DESC</code>;</div>
+                    <button class="btn-copy-sql" data-target-id="sql-query-3" title="Copiar Query">
+                        <span class="copy-icon"><i class="far fa-copy"></i> Copiar</span>
+                        <span class="copied-feedback"><i class="fas fa-check"></i> Copiado!</span>
+                    </button>
+                </div>
                 <div class="demo-table-wrapper">
                     <table class="demo-table">
                         <thead><tr><th>produto</th><th>preco</th></tr></thead>
@@ -183,7 +232,13 @@
             <p>O comando <code>INSERT INTO</code> é usado para adicionar um novo papel (registro) a uma pasta (tabela). Você precisa dizer em qual tabela quer inserir, quais colunas vai preencher e, finalmente, os valores que quer adicionar.</p>
 
             <div class="sql-interactive-demo" data-demo-id="4">
-                <div class="sql-query-display"><code>INSERT INTO</code> <span class="table-name">fornecedores</span> (nome, cidade) <code>VALUES</code> (<span class="value">'TechCorp'</span>, <span class="value">'São Paulo'</span>);</div>
+                <div class="sql-query-header">
+                    <div class="sql-query-display" id="sql-query-4"><code>INSERT INTO</code> <span class="table-name">fornecedores</span> (nome, cidade) <code>VALUES</code> (<span class="value">'TechCorp'</span>, <span class="value">'São Paulo'</span>);</div>
+                    <button class="btn-copy-sql" data-target-id="sql-query-4" title="Copiar Query">
+                        <span class="copy-icon"><i class="far fa-copy"></i> Copiar</span>
+                        <span class="copied-feedback"><i class="fas fa-check"></i> Copiado!</span>
+                    </button>
+                </div>
                 <div class="demo-table-wrapper">
                     <table class="demo-table">
                         <thead><tr><th>id</th><th>nome</th><th>cidade</th></tr></thead>
@@ -204,7 +259,13 @@
             <p>Imagine que você escreveu algo errado em um papel e precisa corrigir. O <code>UPDATE</code> é a sua borracha e caneta. Ele serve para <strong>modificar</strong> um dado que já existe. É crucial usar a cláusula <code>WHERE</code> para dizer exatamente qual registro você quer alterar!</p>
 
             <div class="sql-interactive-demo" data-demo-id="5">
-                <div class="sql-query-display"><code>UPDATE</code> <span class="table-name">clientes</span> <code>SET</code> email = <span class="value">'novo.email@exemplo.com'</span> <code>WHERE</code> id = 5;</div>
+                <div class="sql-query-header">
+                    <div class="sql-query-display" id="sql-query-5"><code>UPDATE</code> <span class="table-name">clientes</span> <code>SET</code> email = <span class="value">'novo.email@exemplo.com'</span> <code>WHERE</code> id = 5;</div>
+                    <button class="btn-copy-sql" data-target-id="sql-query-5" title="Copiar Query">
+                        <span class="copy-icon"><i class="far fa-copy"></i> Copiar</span>
+                        <span class="copied-feedback"><i class="fas fa-check"></i> Copiado!</span>
+                    </button>
+                </div>
                 <div class="demo-table-wrapper">
                     <table class="demo-table">
                         <thead><tr><th>id</th><th>nome</th><th>email</th></tr></thead>
@@ -226,7 +287,13 @@
             <p>Às vezes, um papel no seu armário não é mais necessário. O <code>DELETE</code> é a sua lixeira. Ele serve para <strong>remover</strong> um registro (uma linha inteira) de uma tabela. Assim como no <code>UPDATE</code>, o uso do <code>WHERE</code> é fundamental para não apagar a tabela inteira por acidente!</p>
 
             <div class="sql-interactive-demo" data-demo-id="6">
-                <div class="sql-query-display"><code>DELETE FROM</code> <span class="table-name">clientes</span> <code>WHERE</code> id = 10;</div>
+                <div class="sql-query-header">
+                    <div class="sql-query-display" id="sql-query-6"><code>DELETE FROM</code> <span class="table-name">clientes</span> <code>WHERE</code> id = 10;</div>
+                    <button class="btn-copy-sql" data-target-id="sql-query-6" title="Copiar Query">
+                        <span class="copy-icon"><i class="far fa-copy"></i> Copiar</span>
+                        <span class="copied-feedback"><i class="fas fa-check"></i> Copiado!</span>
+                    </button>
+                </div>
                 <div class="demo-table-wrapper">
                     <table class="demo-table">
                         <thead><tr><th>id</th><th>nome</th><th>status</th></tr></thead>
@@ -249,7 +316,13 @@
             <p>Imagine que você tem duas pastas: uma com os dados dos <code>clientes</code> e outra com os <code>pedidos</code>. Como saber qual pedido é de qual cliente? O <code>JOIN</code> é o seu super-grampo! Ele junta informações de duas ou mais tabelas que têm uma coluna em comum (como o <code>id_cliente</code>).</p>
             
             <div class="sql-interactive-demo" data-demo-id="7">
-                <div class="sql-query-display"><code>SELECT</code> <span class="table-name">clientes</span>.nome, <span class="table-name">pedidos</span>.data_pedido <code>FROM</code> <span class="table-name">clientes</span> <code>JOIN</code> <span class="table-name">pedidos</span> <code>ON</code> <span class="table-name">clientes</span>.id = <span class="table-name">pedidos</span>.id_cliente;</div>
+                <div class="sql-query-header">
+                    <div class="sql-query-display" id="sql-query-7"><code>SELECT</code> <span class="table-name">clientes</span>.nome, <span class="table-name">pedidos</span>.data_pedido <code>FROM</code> <span class="table-name">clientes</span> <code>JOIN</code> <span class="table-name">pedidos</span> <code>ON</code> <span class="table-name">clientes</span>.id = <span class="table-name">pedidos</span>.id_cliente;</div>
+                    <button class="btn-copy-sql" data-target-id="sql-query-7" title="Copiar Query">
+                        <span class="copy-icon"><i class="far fa-copy"></i> Copiar</span>
+                        <span class="copied-feedback"><i class="fas fa-check"></i> Copiado!</span>
+                    </button>
+                </div>
                 <div class="demo-table-wrapper">
                     <p style="text-align: center; color: #94a3b8; font-weight: bold;">Tabelas Originais:</p>
                     <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
@@ -274,7 +347,13 @@
             <p>O <code>GROUP BY</code> é como um organizador de festa que agrupa pessoas por características em comum. Por exemplo: "Todos que são de 'SP', fiquem aqui. Todos que são do 'RJ', fiquem ali". Ele é quase sempre usado com <strong>funções de agregação</strong> (como <code>COUNT</code> para contar, <code>SUM</code> para somar ou <code>AVG</code> para calcular a média) para criar relatórios e resumos dos dados.</p>
 
             <div class="sql-interactive-demo" data-demo-id="8">
-                <div class="sql-query-display"><code>SELECT</code> estado, <code>COUNT</code>(*) <code>FROM</code> <span class="table-name">clientes</span> <code>GROUP BY</code> estado;</div>
+                <div class="sql-query-header">
+                    <div class="sql-query-display" id="sql-query-8"><code>SELECT</code> estado, <code>COUNT</code>(*) <code>FROM</code> <span class="table-name">clientes</span> <code>GROUP BY</code> estado;</div>
+                    <button class="btn-copy-sql" data-target-id="sql-query-8" title="Copiar Query">
+                        <span class="copy-icon"><i class="far fa-copy"></i> Copiar</span>
+                        <span class="copied-feedback"><i class="fas fa-check"></i> Copiado!</span>
+                    </button>
+                </div>
                 <div class="demo-table-wrapper">
                     <p style="text-align: center; color: #94a3b8; font-weight: bold;">Tabela Original:</p>
                     <table class="demo-table">
@@ -426,6 +505,22 @@
                     btn.disabled = false;
                     btn.innerHTML = '<i class="fas fa-redo"></i> Executar Novamente';
                 }, 2000);
+            });
+        });
+
+        // --- Lógica para Copiar SQL ---
+        document.querySelectorAll('.btn-copy-sql').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const targetId = e.currentTarget.getAttribute('data-target-id');
+                const codeElement = document.getElementById(targetId);
+                navigator.clipboard.writeText(codeElement.innerText).then(() => {
+                    e.currentTarget.classList.add('copied');
+                    setTimeout(() => {
+                        e.currentTarget.classList.remove('copied');
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Falha ao copiar query: ', err);
+                });
             });
         });
 
