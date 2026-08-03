@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL na Prática: Validador de Queries | Flaviana Pina</title>
+    
+    <meta property="og:title" content="SQL na Prática: Um Guia Interativo com Validador de Queries">
+    <meta property="og:description" content="Aprenda SQL com exemplos do mundo real e teste seu conhecimento com um validador de queries interativo.">
+    <meta property="og:image" content="https://flavianapina.com.br/site2.png">
+    <meta property="og:type" content="article">
+
+    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    
+    <style>
+        /* --- Estilos para o Glossário Interativo de SQL --- */
+        .sql-example-wrapper {
+            background-color: #1e293b;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
+            border-left: 4px solid #a855f7;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+            text-align: left;
+        }
+        .sql-example-wrapper h3 {
+            color: #f1f5f9;
+            margin-top: 0;
+        }
+        .sql-interactive-demo {
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+        .sql-query-display {
+            padding: 15px;
+            background-color: #1e293b;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 1rem;
+            color: #f8fafc;
+            white-space: pre-wrap;
+            border-bottom: 1px solid #334155;
+        }
+        .sql-query-display code { color: #a855f7; font-weight: bold; }
+        .sql-query-display .table-name { color: #38bdf8; }
+        .sql-query-display .value { color: #a3e635; }
+
+        .demo-table-wrapper { padding: 15px; }
+        .demo-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .demo-table th, .demo-table td { padding: 8px 12px; text-align: left; border: 1px solid #334155; }
+        .demo-table th { background-color: #1e293b; color: #94a3b8; }
+        .demo-table tr { transition: opacity 0.5s ease, background-color 0.5s ease; }
+
+        /* Estilos de Animação */
+        .demo-table tr.dimmed { opacity: 0.3; background-color: #1c1c1c; }
+        .demo-table tr.highlighted { background-color: rgba(168, 85, 247, 0.2); }
+        .demo-table tr.deleted { text-decoration: line-through; opacity: 0.2; }
+        .demo-table .cell-updated { background-color: rgba(234, 179, 8, 0.3); animation: flash-yellow 1s ease; }
+        @keyframes flash-yellow { from { background-color: #eab308; } }
+
+        .sql-actions { padding: 0 15px 15px 15px; display: flex; gap: 10px; }
+        .btn-run-query {
+            background-color: #a855f7; color: #fff; border: none; padding: 8px 15px;
+            border-radius: 4px; cursor: pointer; font-weight: bold; font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s;
+        }
+        .btn-run-query:hover { background-color: #9333ea; }
+        .btn-run-query:disabled { background-color: #475569; cursor: not-allowed; }
+
+        /* Estilos Light Mode */
+        body.light-mode .sql-example-wrapper { background-color: #ffffff; border-left-color: #7e22ce; }
+        body.light-mode .sql-example-wrapper h3 { color: #1e293b; border-bottom-color: #e2e8f0; }
+        body.light-mode .sql-interactive-demo { background-color: #f8fafc; border-color: #e2e8f0; }
+        body.light-mode .sql-query-display { background-color: #f1f5f9; color: #334155; border-bottom-color: #e2e8f0; }
+        body.light-mode .sql-query-display code { color: #7e22ce; }
+        body.light-mode .sql-query-display .table-name { color: #0284c7; }
+        body.light-mode .sql-query-display .value { color: #65a30d; }
+        body.light-mode .demo-table th, body.light-mode .demo-table td { border-color: #e2e8f0; }
+        body.light-mode .demo-table th { background-color: #f1f5f9; color: #64748b; }
+        body.light-mode .demo-table tr.dimmed { opacity: 0.2; background-color: #f0f0f0; }
+        body.light-mode .demo-table tr.highlighted { background-color: rgba(126, 34, 206, 0.1); }
+        body.light-mode .btn-run-query { background-color: #7e22ce; }
+        body.light-mode .btn-run-query:hover { background-color: #6b21a8; }
+        body.light-mode .btn-run-query:disabled { background-color: #9ca3af; }
+    </style>
+</head>
+<body>
+    <div class="scroll-progress-container">
+        <div class="scroll-progress-bar" id="scroll-progress-bar"></div>
+    </div>
+
+    <nav>
+        <a href="index.html#articles" style="display: flex; align-items: center; gap: 8px;"><i class="fas fa-arrow-left"></i> Voltar aos Artigos</a>
+        <button id="theme-toggle" class="btn-theme" aria-label="Alternar Modo Claro/Escuro"><i class="fas fa-sun"></i></button>
+    </nav>
+
+    <main class="container article-content">
+        <div class="article-header">
+            <h1>SQL na Prática: Um Guia Interativo com Validador de Queries</h1>
+            <p>Aprenda os comandos SQL mais utilizados no dia a dia de um Analista de Dados e QA com exemplos práticos e um validador para testar seu conhecimento em tempo real.</p>
+        </div>
+
+        <p>Dominar SQL (Structured Query Language) é uma habilidade essencial para qualquer profissional de tecnologia que precise extrair, analisar ou validar dados. Seja você um QA garantindo a integridade de um banco de dados após um teste, ou um BA buscando insights para o negócio, saber "conversar" com os dados é um superpoder.</p>
+        <p>Este artigo é um guia prático e interativo. Primeiro, vamos apresentar os comandos mais comuns como um glossário. No final, você encontrará uma seção para testar seus conhecimentos!</p>
+
+        <!-- Exemplo 1: SELECT -->
+        <div class="sql-example-wrapper">
+            <h3><i class="fas fa-search" style="margin-right: 10px; color: #a855f7;"></i>1. SELECT: O Comando para "Ver" os Dados</h3>
+            <p>Imagine que o banco de dados é um armário gigante cheio de pastas (tabelas). O comando <code>SELECT</code> é como dizer: "Ei, me mostre o que tem dentro desta pasta!". Ele serve para <strong>buscar e ler</strong> informações, sem alterar nada. A tabela abaixo, por exemplo, se chama <code>clientes</code> e possui as colunas <code>id</code>, <code>nome</code> e <code>estado</code>.</p>
+            
+            <div class="sql-interactive-demo" data-demo-id="1">
+                <div class="sql-query-display"><code>SELECT</code> * <code>FROM</code> <span class="table-name">clientes</span>;</div>
+                <div class="demo-table-wrapper">
+                    <table class="demo-table">
+                        <thead><tr><th>id</th><th>nome</th><th>estado</th></tr></thead>
+                        <tbody>
+                            <tr><td>1</td><td>Ana</td><td>SP</td></tr>
+                            <tr><td>2</td><td>Bruno</td><td>RJ</td></tr>
+                            <tr><td>3</td><td>Carlos</td><td>SP</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="sql-actions">
+                    <button class="btn-run-query" data-action="select-all"><i class="fas fa-play"></i> Executar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exemplo 2: WHERE -->
+        <div class="sql-example-wrapper">
+            <h3><i class="fas fa-filter" style="margin-right: 10px; color: #a855f7;"></i>2. WHERE: O Filtro Inteligente</h3>
+            <p>Depois de selecionar uma pasta, você não quer ler todos os papéis, apenas os que interessam. A cláusula <code>WHERE</code> é o seu filtro. Com ela, você diz: "Me mostre apenas os clientes que moram em 'SP'".</p>
+
+            <div class="sql-interactive-demo" data-demo-id="2">
+                <div class="sql-query-display"><code>SELECT</code> * <code>FROM</code> <span class="table-name">clientes</span> <code>WHERE</code> estado = <span class="value">'SP'</span>;</div>
+                <div class="demo-table-wrapper">
+                    <table class="demo-table">
+                        <thead><tr><th>id</th><th>nome</th><th>estado</th></tr></thead>
+                        <tbody>
+                            <tr data-estado="SP"><td>1</td><td>Ana</td><td>SP</td></tr>
+                            <tr data-estado="RJ"><td>2</td><td>Bruno</td><td>RJ</td></tr>
+                            <tr data-estado="SP"><td>3</td><td>Carlos</td><td>SP</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="sql-actions">
+                    <button class="btn-run-query" data-action="where"><i class="fas fa-play"></i> Executar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exemplo 3: ORDER BY -->
+        <div class="sql-example-wrapper">
+            <h3><i class="fas fa-sort-amount-down" style="margin-right: 10px; color: #a855f7;"></i>3. ORDER BY: Organizando a Bagunça</h3>
+            <p>Os dados vêm do banco de dados sem uma ordem específica. O <code>ORDER BY</code> serve para organizar a sua lista. Você pode ordenar por nome (em ordem alfabética, <code>ASC</code>) ou por preço (do mais caro para o mais barato, <code>DESC</code>).</p>
+
+            <div class="sql-interactive-demo" data-demo-id="3">
+                <div class="sql-query-display"><code>SELECT</code> * <code>FROM</code> <span class="table-name">produtos</span> <code>ORDER BY</code> preco <code>DESC</code>;</div>
+                <div class="demo-table-wrapper">
+                    <table class="demo-table">
+                        <thead><tr><th>produto</th><th>preco</th></tr></thead>
+                        <tbody id="sortable-table">
+                            <tr data-price="19.99"><td>Caneta</td><td>19.99</td></tr>
+                            <tr data-price="99.90"><td>Teclado</td><td>99.90</td></tr>
+                            <tr data-price="49.50"><td>Mouse</td><td>49.50</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="sql-actions">
+                    <button class="btn-run-query" data-action="orderby"><i class="fas fa-play"></i> Executar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exemplo 4: INSERT INTO -->
+        <div class="sql-example-wrapper">
+            <h3><i class="fas fa-plus-circle" style="margin-right: 10px; color: #a855f7;"></i>4. INSERT INTO: Adicionando Novos Dados</h3>
+            <p>O comando <code>INSERT INTO</code> é usado para adicionar um novo papel (registro) a uma pasta (tabela). Você precisa dizer em qual tabela quer inserir, quais colunas vai preencher e, finalmente, os valores que quer adicionar.</p>
+
+            <div class="sql-interactive-demo" data-demo-id="4">
+                <div class="sql-query-display"><code>INSERT INTO</code> <span class="table-name">fornecedores</span> (nome, cidade) <code>VALUES</code> (<span class="value">'TechCorp'</span>, <span class="value">'São Paulo'</span>);</div>
+                <div class="demo-table-wrapper">
+                    <table class="demo-table">
+                        <thead><tr><th>id</th><th>nome</th><th>cidade</th></tr></thead>
+                        <tbody id="insert-table">
+                            <tr><td>1</td><td>Papelaria ABC</td><td>Curitiba</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="sql-actions">
+                    <button class="btn-run-query" data-action="insert"><i class="fas fa-play"></i> Executar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exemplo 5: UPDATE -->
+        <div class="sql-example-wrapper">
+            <h3><i class="fas fa-pencil-alt" style="margin-right: 10px; color: #a855f7;"></i>5. UPDATE: Corrigindo Informações</h3>
+            <p>Imagine que você escreveu algo errado em um papel e precisa corrigir. O <code>UPDATE</code> é a sua borracha e caneta. Ele serve para <strong>modificar</strong> um dado que já existe. É crucial usar a cláusula <code>WHERE</code> para dizer exatamente qual registro você quer alterar!</p>
+
+            <div class="sql-interactive-demo" data-demo-id="5">
+                <div class="sql-query-display"><code>UPDATE</code> <span class="table-name">clientes</span> <code>SET</code> email = <span class="value">'novo.email@exemplo.com'</span> <code>WHERE</code> id = 5;</div>
+                <div class="demo-table-wrapper">
+                    <table class="demo-table">
+                        <thead><tr><th>id</th><th>nome</th><th>email</th></tr></thead>
+                        <tbody>
+                            <tr data-id="4"><td>4</td><td>Daniela</td><td>daniela@email.com</td></tr>
+                            <tr data-id="5"><td>5</td><td>Eduardo</td><td class="cell-to-update">edu@email.com</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="sql-actions">
+                    <button class="btn-run-query" data-action="update"><i class="fas fa-play"></i> Executar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exemplo 6: DELETE -->
+        <div class="sql-example-wrapper">
+            <h3><i class="fas fa-trash-alt" style="margin-right: 10px; color: #a855f7;"></i>6. DELETE: Jogando Dados Fora</h3>
+            <p>Às vezes, um papel no seu armário não é mais necessário. O <code>DELETE</code> é a sua lixeira. Ele serve para <strong>remover</strong> um registro (uma linha inteira) de uma tabela. Assim como no <code>UPDATE</code>, o uso do <code>WHERE</code> é fundamental para não apagar a tabela inteira por acidente!</p>
+
+            <div class="sql-interactive-demo" data-demo-id="6">
+                <div class="sql-query-display"><code>DELETE FROM</code> <span class="table-name">clientes</span> <code>WHERE</code> id = 10;</div>
+                <div class="demo-table-wrapper">
+                    <table class="demo-table">
+                        <thead><tr><th>id</th><th>nome</th><th>status</th></tr></thead>
+                        <tbody>
+                            <tr data-id="9"><td>9</td><td>Fabiana</td><td>Ativo</td></tr>
+                            <tr data-id="10" class="row-to-delete"><td>10</td><td>Gabriel</td><td>Inativo</td></tr>
+                            <tr data-id="11"><td>11</td><td>Heloisa</td><td>Ativo</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="sql-actions">
+                    <button class="btn-run-query" data-action="delete"><i class="fas fa-play"></i> Executar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exemplo 7: JOIN -->
+        <div class="sql-example-wrapper">
+            <h3><i class="fas fa-link" style="margin-right: 10px; color: #a855f7;"></i>7. JOIN: O Super-Grampo de Tabelas</h3>
+            <p>Imagine que você tem duas pastas: uma com os dados dos <code>clientes</code> e outra com os <code>pedidos</code>. Como saber qual pedido é de qual cliente? O <code>JOIN</code> é o seu super-grampo! Ele junta informações de duas ou mais tabelas que têm uma coluna em comum (como o <code>id_cliente</code>).</p>
+            
+            <div class="sql-interactive-demo" data-demo-id="7">
+                <div class="sql-query-display"><code>SELECT</code> <span class="table-name">clientes</span>.nome, <span class="table-name">pedidos</span>.data_pedido <code>FROM</code> <span class="table-name">clientes</span> <code>JOIN</code> <span class="table-name">pedidos</span> <code>ON</code> <span class="table-name">clientes</span>.id = <span class="table-name">pedidos</span>.id_cliente;</div>
+                <div class="demo-table-wrapper">
+                    <p style="text-align: center; color: #94a3b8; font-weight: bold;">Tabelas Originais:</p>
+                    <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                        <table class="demo-table" style="width: auto;"><thead><tr><th colspan="2">clientes</th></tr><tr><th>id</th><th>nome</th></tr></thead><tbody><tr><td>1</td><td>Ana</td></tr><tr><td>2</td><td>Bruno</td></tr></tbody></table>
+                        <table class="demo-table" style="width: auto;"><thead><tr><th colspan="3">pedidos</th></tr><tr><th>id_pedido</th><th>id_cliente</th><th>data_pedido</th></tr></thead><tbody><tr><td>101</td><td>2</td><td>2024-01-05</td></tr><tr><td>102</td><td>1</td><td>2024-01-10</td></tr></tbody></table>
+                    </div>
+                    <p style="text-align: center; color: #94a3b8; font-weight: bold; margin-top: 20px; display: none;" class="join-result-title">Tabela Resultante (JOIN):</p>
+                    <table class="demo-table" id="join-result-table" style="margin-top: 10px; display: none;">
+                        <thead><tr><th>nome</th><th>data_pedido</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="sql-actions">
+                    <button class="btn-run-query" data-action="join"><i class="fas fa-play"></i> Executar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exemplo 8: GROUP BY -->
+        <div class="sql-example-wrapper">
+            <h3><i class="fas fa-layer-group" style="margin-right: 10px; color: #a855f7;"></i>8. GROUP BY: O Organizador de Grupos</h3>
+            <p>O <code>GROUP BY</code> é como um organizador de festa que agrupa pessoas por características em comum. Por exemplo: "Todos que são de 'SP', fiquem aqui. Todos que são do 'RJ', fiquem ali". Ele é quase sempre usado com <strong>funções de agregação</strong> (como <code>COUNT</code> para contar, <code>SUM</code> para somar ou <code>AVG</code> para calcular a média) para criar relatórios e resumos dos dados.</p>
+
+            <div class="sql-interactive-demo" data-demo-id="8">
+                <div class="sql-query-display"><code>SELECT</code> estado, <code>COUNT</code>(*) <code>FROM</code> <span class="table-name">clientes</span> <code>GROUP BY</code> estado;</div>
+                <div class="demo-table-wrapper">
+                    <p style="text-align: center; color: #94a3b8; font-weight: bold;">Tabela Original:</p>
+                    <table class="demo-table">
+                        <thead><tr><th>id</th><th>nome</th><th>estado</th></tr></thead>
+                        <tbody>
+                            <tr data-estado="SP"><td>1</td><td>Ana</td><td>SP</td></tr>
+                            <tr data-estado="RJ"><td>2</td><td>Bruno</td><td>RJ</td></tr>
+                            <tr data-estado="SP"><td>3</td><td>Carlos</td><td>SP</td></tr>
+                            <tr data-estado="MG"><td>4</td><td>Daniela</td><td>MG</td></tr>
+                            <tr data-estado="RJ"><td>5</td><td>Eduardo</td><td>RJ</td></tr>
+                        </tbody>
+                    </table>
+                    <p style="text-align: center; color: #94a3b8; font-weight: bold; margin-top: 20px; display: none;" class="groupby-result-title">Tabela Resultante (GROUP BY):</p>
+                    <table class="demo-table" id="groupby-result-table" style="margin-top: 10px; display: none;">
+                        <thead><tr><th>estado</th><th>COUNT(*)</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="sql-actions">
+                    <button class="btn-run-query" data-action="groupby"><i class="fas fa-play"></i> Executar</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+            <p><a href="index.html" style="color: #38bdf8; text-decoration: none;">&copy; 2026 - flavianapina.com.br</a> | Desenvolvido com <i class="fas fa-heart" style="color: #38bdf8;"></i> e Qualidade</p>
+        </div>
+    </footer>
+
+    <script>
+        // Lógica do Modo Claro / Escuro
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = themeToggleBtn.querySelector('i');
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+        }
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            themeIcon.classList.replace(isLight ? 'fa-sun' : 'fa-moon', isLight ? 'fa-moon' : 'fa-sun');
+        });
+
+        // --- Lógica das Demos Interativas de SQL ---
+        document.querySelectorAll('.btn-run-query').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const btn = e.currentTarget;
+                const action = btn.dataset.action;
+                const demoWrapper = btn.closest('.sql-interactive-demo');
+                
+                // Desabilita o botão para evitar cliques múltiplos
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Executando...';
+
+                // Reseta o estado visual antes de uma nova execução
+                demoWrapper.querySelectorAll('.demo-table tr').forEach(row => {
+                    row.classList.remove('highlighted', 'dimmed', 'deleted');
+                });
+                demoWrapper.querySelectorAll('.cell-updated').forEach(cell => {
+                    cell.classList.remove('cell-updated');
+                });
+
+                // Lógica para cada tipo de ação
+                switch(action) {
+                    case 'select-all':
+                        demoWrapper.querySelectorAll('.demo-table tbody tr').forEach(row => {
+                            row.classList.add('highlighted');
+                        });
+                        break;
+
+                    case 'where':
+                        demoWrapper.querySelectorAll('.demo-table tbody tr').forEach(row => {
+                            if (row.dataset.estado === 'SP') {
+                                row.classList.add('highlighted');
+                            } else {
+                                row.classList.add('dimmed');
+                            }
+                        });
+                        break;
+
+                    case 'orderby':
+                        const tbodySort = demoWrapper.querySelector('#sortable-table');
+                        const rowsSort = Array.from(tbodySort.querySelectorAll('tr'));
+                        rowsSort.sort((a, b) => parseFloat(b.dataset.price) - parseFloat(a.dataset.price));
+                        rowsSort.forEach(row => {
+                            tbodySort.appendChild(row); // Reanexa na nova ordem
+                            row.classList.add('highlighted');
+                        });
+                        break;
+
+                    case 'insert':
+                        const tbodyInsert = demoWrapper.querySelector('#insert-table');
+                        const newRow = document.createElement('tr');
+                        newRow.innerHTML = '<td>2</td><td>TechCorp</td><td>São Paulo</td>';
+                        newRow.style.opacity = '0';
+                        tbodyInsert.appendChild(newRow);
+                        setTimeout(() => {
+                            newRow.style.opacity = '1';
+                            newRow.classList.add('highlighted');
+                        }, 100);
+                        break;
+
+                    case 'update':
+                        const cellToUpdate = demoWrapper.querySelector('.cell-to-update');
+                        if (cellToUpdate) {
+                            cellToUpdate.classList.add('cell-updated');
+                            cellToUpdate.textContent = 'novo.email@exemplo.com';
+                        }
+                        break;
+
+                    case 'delete':
+                        const rowToDelete = demoWrapper.querySelector('.row-to-delete');
+                        if (rowToDelete) {
+                            rowToDelete.classList.add('deleted');
+                        }
+                        break;
+
+                    case 'join':
+                        const joinResultTable = demoWrapper.querySelector('#join-result-table');
+                        const joinResultTitle = demoWrapper.querySelector('.join-result-title');
+                        joinResultTable.querySelector('tbody').innerHTML = `
+                            <tr class="highlighted"><td>Ana</td><td>2024-01-10</td></tr>
+                            <tr class="highlighted"><td>Bruno</td><td>2024-01-05</td></tr>
+                        `;
+                        joinResultTitle.style.display = 'block';
+                        joinResultTable.style.display = 'table';
+                        break;
+
+                    case 'groupby':
+                        const groupbyResultTable = demoWrapper.querySelector('#groupby-result-table');
+                        const groupbyResultTitle = demoWrapper.querySelector('.groupby-result-title');
+                        groupbyResultTable.querySelector('tbody').innerHTML = `
+                            <tr class="highlighted"><td>SP</td><td>2</td></tr>
+                            <tr class="highlighted"><td>RJ</td><td>2</td></tr>
+                            <tr class="highlighted"><td>MG</td><td>1</td></tr>
+                        `;
+                        groupbyResultTitle.style.display = 'block';
+                        groupbyResultTable.style.display = 'table';
+                        demoWrapper.querySelectorAll('.demo-table tbody tr').forEach(row => row.classList.add('dimmed'));
+                        break;
+                }
+
+                // Reabilita o botão após a animação
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-redo"></i> Executar Novamente';
+                }, 2000);
+            });
+        });
+
+        // Restaura as configurações de acessibilidade salvas
+        ['a11y-large-text', 'a11y-dyslexia', 'a11y-no-animations', 'a11y-highlight-links'].forEach(feature => {
+            if (localStorage.getItem(feature) === 'true') {
+                document.documentElement.classList.add(feature);
+            }
+        });
+    </script>
+</body>
+</html>

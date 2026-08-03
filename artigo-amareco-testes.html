@@ -84,7 +84,21 @@
         }
         .purpose i { color: #38bdf8; margin-top: 4px; }
 
+        /* Estilos para os ícones dentro do botão de copiar */
+        .btn-copy-gherkin .copy-icon, .btn-copy-gherkin .copied-feedback {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .btn-copy-gherkin .copied-feedback {
+            position: absolute;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
         .test-case-card .gherkin-code {
+            color: #f1f5f9;
             padding: 15px;
             font-family: 'Consolas', monospace;
             font-size: 0.9rem;
@@ -114,17 +128,26 @@
             border: none;
         }
         .gherkin-wrapper:hover .btn-copy-gherkin {
-            opacity: 1;
+            opacity: 1; /* Mostra o botão ao passar o mouse */
         }
         .btn-copy-gherkin:hover { background-color: #38bdf8; color: #0f172a; }
 
         /* Animação de sucesso ao copiar */
-        .btn-copy-gherkin.copied {
+        .btn-copy-gherkin.copied { /* Estilo do botão quando copiado */
             background-color: #22c55e;
             color: #ffffff;
         }
+        .btn-copy-gherkin.copied .copy-icon {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        .btn-copy-gherkin.copied .copied-feedback {
+            opacity: 1;
+            transform: scale(1);
+        }
         .btn-copy-gherkin.copied .fa-check {
-            animation: pop-in 0.3s ease-out;
+            /* A animação agora é aplicada diretamente ao ícone quando ele se torna visível */
+            animation: pop-in 0.3s ease-out 0.1s;
         }
         @keyframes pop-in {
             from { transform: scale(0.5); opacity: 0; }
@@ -262,8 +285,9 @@
                             <p class="purpose"><i class="fas fa-bullseye"></i> <strong>Finalidade:</strong> ${sc.purpose}</p>
                             <div class="gherkin-wrapper">
                                 <div class="gherkin-code" id="gherkin-${sc.id.replace('/', '-')}">${sc.steps.replace(/^(Given|When|Then|And)/gm, '<strong style="color: #38bdf8;">$1</strong>')}</div>
-                                <button class="btn-copy-gherkin" data-target-id="gherkin-${sc.id.replace('/', '-')}" title="Copiar código">
-                                    <i class="far fa-copy"></i> Copiar
+                                <button class="btn-copy-gherkin" data-target-id="gherkin-${sc.id.replace('/', '-')}" title="Copiar código Gherkin">
+                                    <span class="copy-icon"><i class="far fa-copy"></i> Copiar</span>
+                                    <span class="copied-feedback"><i class="fas fa-check"></i> Copiado!</span>
                                 </button>
                             </div>
                         </div>
@@ -284,13 +308,9 @@
                     const codeElement = document.getElementById(targetId);
                     // Usamos o 'innerText' para copiar o texto puro, sem o HTML da tag <strong>
                     navigator.clipboard.writeText(codeElement.innerText).then(() => {
-                        const button = e.currentTarget;
-                        const originalContent = button.innerHTML;
-                        button.innerHTML = '<i class="fas fa-check"></i> Copiado!';
-                        button.classList.add('copied');
+                        e.currentTarget.classList.add('copied');
                         setTimeout(() => {
-                            button.innerHTML = originalContent;
-                            button.classList.remove('copied');
+                            e.currentTarget.classList.remove('copied');
                         }, 2000);
                     }).catch(err => {
                         console.error('Falha ao copiar: ', err);
