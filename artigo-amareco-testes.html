@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Análise detalhada de 22 cenários de teste de API para o projeto Amoreco, utilizando BDD, Java e Rest-Assured para validar regras de negócio e fluxos CRUD.">
-    <meta property="og:title" content="Flaviana Pina | Deep Dive: 22 Cenários de Teste de API (BDD)">
-    <meta property="og:description" content="Explore a estratégia de testes de API do projeto Amoreco, cobrindo validação de documentos, fluxos de negócio e geração de massa de dados.">
+    <meta name="description" content="Análise detalhada de 22 cenários de teste de API para validar o novo CNPJ alfanumérico no Brasil, utilizando BDD, Java e Rest-Assured.">
+    <meta property="og:title" content="Flaviana Pina | Automação de API para Validar o CNPJ Alfanumérico">
+    <meta property="og:description" content="Explore a estratégia de automação de testes de API que garante a conformidade com o novo CNPJ alfanumérico do Brasil.">
     <meta property="og:image" content="https://flavianapina.com.br/site2.png">
     <meta property="og:type" content="article">
     
-    <title>Flaviana Pina | Deep Dive: 22 Cenários de Teste de API (BDD)</title>
+    <title>Flaviana Pina | Automação de API para o CNPJ Alfanumérico</title>
     <link rel="stylesheet" href="style.css?v=2">
     <link rel="icon" type="image/png" href="favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
@@ -39,58 +39,119 @@
             padding: 20px;
             margin-bottom: 20px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            text-align: left;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .test-case-card .steps-list {
-            margin-top: 15px;
-            padding-left: 20px;
-            border-left: 2px solid #334155;
+        .test-case-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
-        .test-case-card .step-item {
+        .card-header {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 8px 0;
-            font-size: 0.95rem;
-            color: #cbd5e1;
-        }
-        .test-case-card .step-item i {
-            font-size: 1.1rem;
-            width: 20px; /* Alinha os ícones */
-            text-align: center;
-        }
-        .test-case-card .step-item.given i { color: #38bdf8; }
-        .test-case-card .step-item.when i { color: #eab308; }
-        .test-case-card .step-item.then i { color: #22c55e; }
-        .test-case-card .step-item.then-fail i { color: #ef4444; }
-
-        .test-case-card h4 {
-            margin: 0 0 10px 0;
-            color: #f1f5f9;
-            font-size: 1.1rem;
-        }
-        .test-case-card .purpose {
-            font-style: italic;
-            color: #94a3b8;
+            gap: 15px;
             margin-bottom: 15px;
-            display: block;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #334155;
         }
-        .test-case-card .step-item strong {
-            color: #f87171;
+        .card-header h4 {
+            margin: 0;
+            color: #f1f5f9;
+            font-size: 1.2rem;
+            flex-grow: 1;
+        }
+        .method-badge {
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            color: #fff;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+        }
+        .method-post { background-color: #22c55e; } /* Verde */
+        .method-get { background-color: #3b82f6; }  /* Azul */
+        .method-put { background-color: #eab308; }  /* Amarelo */
+        .method-delete { background-color: #ef4444; } /* Vermelho */
+
+        .purpose {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            color: #94a3b8;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        .purpose i { color: #38bdf8; margin-top: 4px; }
+
+        .test-case-card .gherkin-code {
+            padding: 15px;
             font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+
+        .gherkin-wrapper {
+            position: relative;
             background-color: #0f172a;
-            padding: 2px 6px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+        }
+
+        .btn-copy-gherkin {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #334155;
+            color: #94a3b8;
             border-radius: 4px;
+            padding: 5px 8px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s, background-color 0.3s;
+            font-size: 0.8rem;
+            border: none;
+        }
+        .gherkin-wrapper:hover .btn-copy-gherkin {
+            opacity: 1;
+        }
+        .btn-copy-gherkin:hover { background-color: #38bdf8; color: #0f172a; }
+
+        /* Animação de sucesso ao copiar */
+        .btn-copy-gherkin.copied {
+            background-color: #22c55e;
+            color: #ffffff;
+        }
+        .btn-copy-gherkin.copied .fa-check {
+            animation: pop-in 0.3s ease-out;
+        }
+        @keyframes pop-in {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
         body.light-mode .article-header { border-bottom-color: #e2e8f0; }
         body.light-mode .article-header h1 { color: #0284c7; }
         body.light-mode .article-header p { color: #64748b; }
-        body.light-mode .test-case-card { background-color: #ffffff; border-left-color: #0284c7; box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
-        body.light-mode .test-case-card .steps-list { border-left-color: #e2e8f0; }
-        body.light-mode .test-case-card .step-item { color: #475569; }
-        body.light-mode .test-case-card .step-item strong { background-color: #f1f5f9; }
-        body.light-mode .test-case-card h4 { color: #1e293b; }
-        body.light-mode .test-case-card .purpose { color: #475569; }
+        body.light-mode .test-case-card { background-color: #ffffff; border-left-color: #0284c7; box-shadow: 0 6px 16px rgba(0,0,0,0.12); color: #334155; }
+        body.light-mode .card-header { border-bottom-color: #e2e8f0; }
+        body.light-mode .card-header h4 { color: #1e293b; }
+        body.light-mode .purpose { color: #475569; }
+        body.light-mode .gherkin-wrapper { background-color: #f8fafc; border-color: #e2e8f0; }
+        body.light-mode .test-case-card .gherkin-code { color: #334155; }
+        body.light-mode .btn-copy-gherkin {
+            background-color: #e2e8f0;
+            color: #64748b;
+        }
+        body.light-mode .btn-copy-gherkin:hover {
+            background-color: #0284c7;
+            color: #ffffff;
+        }
+        body.light-mode .btn-copy-gherkin.copied {
+            background-color: #16a34a;
+            color: #ffffff;
+        }
     </style>
 </head>
 <body>
@@ -105,8 +166,8 @@
 
     <main class="container article-content">
         <div class="article-header">
-            <h1>Amoreco: Um Deep Dive em 22 Cenários de Teste de API com BDD</h1>
-            <p>Uma análise técnica da estratégia de automação do projeto "Amoreco", demonstrando a cobertura de testes desde a validação de dados até os fluxos de negócio ponta a ponta.</p>
+            <h1>Automação de API: A Estratégia Definitiva para Validar o CNPJ Alfanumérico</h1>
+            <p>Uma análise técnica da melhor abordagem para garantir a conformidade com o novo CNPJ alfanumérico no Brasil, demonstrando a cobertura de testes desde a validação de dados até os fluxos de negócio.</p>
         </div>
 
         <p>O projeto <strong>Amoreco</strong> é um framework de automação de testes de API construído em Java, utilizando Rest-Assured para as requisições HTTP e Cucumber para a escrita de cenários em BDD (Behavior-Driven Development). O objetivo deste artigo é detalhar a suíte de 22 cenários de teste que garantem a qualidade e a resiliência da aplicação, servindo como um artefato vivo da minha abordagem como QA.</p>
@@ -161,28 +222,28 @@
 
         // Dados dos cenários
         const scenarios = [
-            { group: 'validation', id: '1/22', title: 'Validar CNPJ com caracteres alfanuméricos', purpose: 'Verifica se o serviço aceita um CNPJ com formato alfanumérico válido.', steps: [{type: 'given', text: 'um documento <strong>Z7NNC4PE/9520-06</strong> é preparado.'}, {type: 'when', text: 'uma requisição de validação POST é enviada.'}, {type: 'then', text: 'a resposta deve ser <strong>200 OK</strong> com a mensagem "Documento com formato válido".'}] },
-            { group: 'validation', id: '2/22', title: 'Validar CNPJ com menos de 14 dígitos', purpose: 'Garante que o serviço rejeita CNPJs com tamanho incorreto (menor).', steps: [{type: 'given', text: 'um documento <strong>123A56780001</strong> é preparado.'}, {type: 'when', text: 'uma requisição de validação POST é enviada.'}, {type: 'then-fail', text: 'a resposta deve ser <strong>400 Bad Request</strong> com a mensagem "CNPJ inválido: quantidade de dígitos incorreta".'}] },
-            { group: 'validation', id: '3/22', title: 'Validar CNPJ com mais de 14 dígitos', purpose: 'Garante que o serviço rejeita CNPJs com tamanho incorreto (maior).', steps: [{type: 'given', text: 'um documento <strong>123A56789000123</strong> é preparado.'}, {type: 'when', text: 'uma requisição de validação POST é enviada.'}, {type: 'then-fail', text: 'a resposta deve ser <strong>400 Bad Request</strong> com a mensagem "CNPJ inválido: quantidade de dígitos incorreta".'}] },
-            { group: 'validation', id: '4/22', title: 'Validar CNPJ com caracteres não alfanuméricos', purpose: 'Garante que o serviço rejeita CNPJs que contêm caracteres especiais inválidos.', steps: [{type: 'given', text: 'um documento <strong>12A45#78/@001-9@</strong> é preparado.'}, {type: 'when', text: 'uma requisição de validação POST é enviada.'}, {type: 'then-fail', text: 'a resposta deve ser <strong>400 Bad Request</strong> com a mensagem "CNPJ inválido: caracteres especiais não permitidos".'}] },
-            { group: 'validation', id: '5/22', title: 'Validar CPF Com sucesso', purpose: 'Verifica se o serviço aceita um CPF com formato numérico válido.', steps: [{type: 'given', text: 'um documento <strong>123.456.789-00</strong> é preparado.'}, {type: 'when', text: 'uma requisição de validação POST é enviada.'}, {type: 'then', text: 'a resposta deve ser <strong>200 OK</strong> com a mensagem "Documento com formato válido".'}] },
-            { group: 'validation', id: '6/22', title: 'Validar CPF com menos de 11 dígitos', purpose: 'Garante que o serviço rejeita CPFs com tamanho incorreto (menor).', steps: [{type: 'given', text: 'um documento <strong>123.456.789-0</strong> é preparado.'}, {type: 'when', text: 'uma requisição de validação POST é enviada.'}, {type: 'then-fail', text: 'a resposta deve ser <strong>400 Bad Request</strong> com a mensagem "CPF inválido: quantidade de dígitos incorreta".'}] },
-            { group: 'validation', id: '7/22', title: 'Validar CPF com mais de 11 dígitos', purpose: 'Garante que o serviço rejeita CPFs com tamanho incorreto (maior).', steps: [{type: 'given', text: 'um documento <strong>123.456.789-000</strong> é preparado.'}, {type: 'when', text: 'uma requisição de validação POST é enviada.'}, {type: 'then-fail', text: 'a resposta deve ser <strong>400 Bad Request</strong> com a mensagem "CPF inválido: quantidade de dígitos incorreta".'}] },
-            { group: 'validation', id: '8/22', title: 'Validar CPF com caracteres não numéricos', purpose: 'Garante que o serviço rejeita CPFs que contêm caracteres especiais inválidos.', steps: [{type: 'given', text: 'um documento <strong>123.456.789-@@</strong> é preparado.'}, {type: 'when', text: 'uma requisição de validação POST é enviada.'}, {type: 'then-fail', text: 'a resposta deve ser <strong>400 Bad Request</strong> com a mensagem "CPF inválido: caracteres especiais não permitidos".'}] },
-            { group: 'validation', id: '9/22', title: 'Validar CNPJ Alfanumérico com dígito verificador válido', purpose: 'Testa o "Módulo de Inteligência", garantindo que ele aprova um CNPJ alfanumérico com dígito verificador matematicamente correto (de acordo com a regra customizada).', steps: [{type: 'given', text: 'um documento <strong>Q3NUDAUL/IL76-09</strong> é preparado.'}, {type: 'when', text: 'uma requisição de validação POST é enviada.'}, {type: 'then', text: 'a resposta deve ser <strong>200 OK</strong> com a mensagem "Documento com formato válido".'}] },
-            { group: 'validation', id: '10/22', title: 'Validar CNPJ Alfanumérico com dígito verificador inválido', purpose: 'Testa o "Módulo de Inteligência", garantindo que ele rejeita um CNPJ alfanumérico com dígito verificador matematicamente incorreto.', steps: [{type: 'given', text: 'um documento <strong>Q3NUDAUL/IL76-00</strong> é preparado.'}, {type: 'when', text: 'uma requisição de validação POST é enviada.'}, {type: 'then-fail', text: 'a resposta deve ser <strong>400 Bad Request</strong> com a mensagem "CNPJ inválido: dígito verificador não confere".'}] },
-            { group: 'business', id: '11/22', title: 'Criação de um novo cliente válido', purpose: 'Testa o fluxo básico de criação de um novo cliente com dados estáticos.', steps: [{type: 'given', text: 'o sistema está configurado para a ação <strong>CRIAR_CLIENTE</strong>.'}, {type: 'when', text: 'uma requisição POST é enviada para <strong>/v1/clientes</strong> com a chave <strong>NOVO_CLIENTE_VALIDO</strong>.'}, {type: 'then', text: 'a resposta deve ser <strong>201 Created</strong> com a mensagem "Cliente criado com sucesso".'}] },
-            { group: 'business', id: '12/22', title: 'Busca de um cliente existente', purpose: 'Testa a busca de um cliente pré-existente (id=1) pelo seu ID.', steps: [{type: 'given', text: 'o sistema está configurado para a ação <strong>BUSCAR_CLIENTE</strong>.'}, {type: 'when', text: 'uma requisição GET é enviada para <strong>/v1/clientes/1</strong>.'}, {type: 'then', text: 'a resposta deve ser <strong>200 OK</strong> e o corpo deve conter o nome "João Silva".'}] },
-            { group: 'business', id: '13/22', title: 'Alteração de um cliente existente', purpose: 'Testa a atualização de um cliente pré-existente.', steps: [{type: 'given', text: 'o sistema está configurado para a ação <strong>ALTERAR_CLIENTE</strong>.'}, {type: 'when', text: 'uma requisição PUT é enviada para <strong>/v1/clientes/1</strong> com a chave <strong>ATUALIZACAO_NOME_VALIDA</strong>.'}, {type: 'then', text: 'a resposta deve ser <strong>200 OK</strong> com a mensagem "Cliente atualizado".'}] },
-            { group: 'business', id: '14/22', title: 'Deleção de um cliente existente', purpose: 'Testa a exclusão de um cliente pré-existente.', steps: [{type: 'given', text: 'o sistema está configurado para a ação <strong>DELETAR_CLIENTE</strong>.'}, {type: 'when', text: 'uma requisição DELETE é enviada para <strong>/v1/clientes/1</strong>.'}, {type: 'then', text: 'a resposta deve ser <strong>204 No Content</strong>.'}] },
-            { group: 'business', id: '15/22', title: 'Busca de um cliente que foi deletado', purpose: 'Garante que um cliente, após ser deletado, não pode mais ser encontrado.', steps: [{type: 'given', text: 'o sistema está configurado para a ação <strong>BUSCAR_DELETADO</strong>.'}, {type: 'when', text: 'uma requisição GET é enviada para <strong>/v1/clientes/1</strong>.'}, {type: 'then-fail', text: 'a resposta deve ser <strong>404 Not Found</strong> com a mensagem "Cliente não encontrado".'}] },
-            { group: 'business', id: '16/22', title: 'Criação de cliente com CPF preenchido com zeros', purpose: 'Testa a "Fábrica de Dados", validando a regra de completar um CPF com zeros à esquerda.', steps: [{type: 'given', text: 'o sistema está configurado para a ação <strong>CRIAR_CLIENTE</strong>.'}, {type: 'when', text: 'uma requisição POST é enviada para <strong>/v1/clientes</strong> com a chave <strong>CPF_9_DIGITOS</strong> e a regra <strong>COMPLETAR_CPF_COM_ZEROS</strong>.'}, {type: 'then', text: 'a resposta deve ser <strong>201 Created</strong>.'}] },
-            { group: 'business', id: '17/22', title: 'Criação de cliente com CNPJ numérico preenchido com zeros', purpose: 'Testa a "Fábrica de Dados", validando a regra de completar um CNPJ numérico com zeros à esquerda.', steps: [{type: 'given', text: 'o sistema está configurado para a ação <strong>CRIAR_CLIENTE</strong>.'}, {type: 'when', text: 'uma requisição POST é enviada para <strong>/v1/clientes</strong> com a chave <strong>CNPJ_12_DIGITOS</strong> e a regra <strong>COMPLETAR_CNPJ_COM_ZEROS</strong>.'}, {type: 'then', text: 'a resposta deve ser <strong>201 Created</strong>.'}] },
-            { group: 'business', id: '18/22', title: 'Criação de cliente com CNPJ Alfanumérico preenchido com zeros', purpose: 'Testa a "Fábrica de Dados", validando a regra de completar um CNPJ alfanumérico com zeros à esquerda.', steps: [{type: 'given', text: 'o sistema está configurado para a ação <strong>CRIAR_CLIENTE</strong>.'}, {type: 'when', text: 'uma requisição POST é enviada para <strong>/v1/clientes</strong> com a chave <strong>CNPJ_ALFA_10_DIGITOS</strong> e a regra <strong>COMPLETAR_CNPJ_ALFA_COM_ZEROS</strong>.'}, {type: 'then', text: 'a resposta deve ser <strong>201 Created</strong>.'}] },
-            { group: 'business', id: '19/22', title: 'Busca de cliente criado com CPF preenchido com zeros', purpose: 'Valida que um cliente criado com CPF gerado pode ser buscado.', steps: [{type: 'given', text: 'o sistema está configurado para a ação <strong>BUSCAR_CLIENTE</strong>.'}, {type: 'when', text: 'uma requisição GET é enviada para <strong>/v1/clientes/2</strong>.'}, {type: 'then', text: 'a resposta deve ser <strong>200 OK</strong> e o corpo deve conter o nome "Cliente CPF Auto".'}] },
-            { group: 'business', id: '20/22', title: 'Busca de cliente criado com CNPJ numérico preenchido com zeros', purpose: 'Valida que um cliente criado com CNPJ numérico gerado pode ser buscado.', steps: [{type: 'given', text: 'o sistema está configurado para a ação <strong>BUSCAR_CLIENTE</strong>.'}, {type: 'when', text: 'uma requisição GET é enviada para <strong>/v1/clientes/3</strong>.'}, {type: 'then', text: 'a resposta deve ser <strong>200 OK</strong> e o corpo deve conter o nome "Cliente CNPJ Auto".'}] },
-            { group: 'business', id: '21/22', title: 'Busca de cliente criado com CNPJ Alfanumérico', purpose: 'Valida que um cliente criado com CNPJ alfanumérico gerado pode ser buscado.', steps: [{type: 'given', text: 'o sistema está configurado para a ação <strong>BUSCAR_CLIENTE</strong>.'}, {type: 'when', text: 'uma requisição GET é enviada para <strong>/v1/clientes/4</strong>.'}, {type: 'then', text: 'a resposta deve ser <strong>200 OK</strong> e o corpo deve conter o nome "Cliente CNPJ Alfa Auto".'}] },
-            { group: 'business', id: '22/22', title: 'Busca por cliente com ID inexistente (migrado)', purpose: 'Garante que o sistema retorna 404 ao buscar por um ID que não existe.', steps: [{type: 'given', text: 'o sistema está configurado para a ação <strong>BUSCAR_CLIENTE</strong>.'}, {type: 'when', text: 'uma requisição GET é enviada para <strong>/v1/clientes/999</strong>.'}, {type: 'then-fail', text: 'a resposta deve ser <strong>404 Not Found</strong> com a mensagem "Cliente não encontrado".'}] },
+            { group: 'validation', id: '1/22', title: 'Validar CNPJ com caracteres alfanuméricos', method: 'POST', purpose: 'Consulta (Validação) - Verifica se o serviço aceita um CNPJ com formato alfanumérico válido.', steps: 'Given: um documento Z7NNC4PE/9520-06 é preparado.\nWhen: uma requisição de validação POST é enviada.\nThen: a resposta deve ser 200 OK com a mensagem "Documento com formato válido".' },
+            { group: 'validation', id: '2/22', title: 'Validar CNPJ com menos de 14 dígitos', method: 'POST', purpose: 'Consulta (Validação) - Garante que o serviço rejeita CNPJs com tamanho incorreto (menor).', steps: 'Given: um documento 123A56780001 é preparado.\nWhen: uma requisição de validação POST é enviada.\nThen: a resposta deve ser 400 Bad Request com a mensagem "CNPJ inválido: quantidade de dígitos incorreta".' },
+            { group: 'validation', id: '3/22', title: 'Validar CNPJ com mais de 14 dígitos', method: 'POST', purpose: 'Consulta (Validação) - Garante que o serviço rejeita CNPJs com tamanho incorreto (maior).', steps: 'Given: um documento 123A56789000123 é preparado.\nWhen: uma requisição de validação POST é enviada.\nThen: a resposta deve ser 400 Bad Request com a mensagem "CNPJ inválido: quantidade de dígitos incorreta".' },
+            { group: 'validation', id: '4/22', title: 'Validar CNPJ com caracteres não alfanuméricos', method: 'POST', purpose: 'Consulta (Validação) - Garante que o serviço rejeita CNPJs que contêm caracteres especiais inválidos.', steps: 'Given: um documento 12A45#78/@001-9@ é preparado.\nWhen: uma requisição de validação POST é enviada.\nThen: a resposta deve ser 400 Bad Request com a mensagem "CNPJ inválido: caracteres especiais não permitidos".' },
+            { group: 'validation', id: '5/22', title: 'Validar CPF Com sucesso', method: 'POST', purpose: 'Consulta (Validação) - Verifica se o serviço aceita um CPF com formato numérico válido.', steps: 'Given: um documento 123.456.789-00 é preparado.\nWhen: uma requisição de validação POST é enviada.\nThen: a resposta deve ser 200 OK com a mensagem "Documento com formato válido".' },
+            { group: 'validation', id: '6/22', title: 'Validar CPF com menos de 11 dígitos', method: 'POST', purpose: 'Consulta (Validação) - Garante que o serviço rejeita CPFs com tamanho incorreto (menor).', steps: 'Given: um documento 123.456.789-0 é preparado.\nWhen: uma requisição de validação POST é enviada.\nThen: a resposta deve ser 400 Bad Request com a mensagem "CPF inválido: quantidade de dígitos incorreta".' },
+            { group: 'validation', id: '7/22', title: 'Validar CPF com mais de 11 dígitos', method: 'POST', purpose: 'Consulta (Validação) - Garante que o serviço rejeita CPFs com tamanho incorreto (maior).', steps: 'Given: um documento 123.456.789-000 é preparado.\nWhen: uma requisição de validação POST é enviada.\nThen: a resposta deve ser 400 Bad Request com a mensagem "CPF inválido: quantidade de dígitos incorreta".' },
+            { group: 'validation', id: '8/22', title: 'Validar CPF com caracteres não numéricos', method: 'POST', purpose: 'Consulta (Validação) - Garante que o serviço rejeita CPFs que contêm caracteres especiais inválidos.', steps: 'Given: um documento 123.456.789-@@ é preparado.\nWhen: uma requisição de validação POST é enviada.\nThen: a resposta deve ser 400 Bad Request com a mensagem "CPF inválido: caracteres especiais não permitidos".' },
+            { group: 'validation', id: '9/22', title: 'Validar CNPJ Alfanumérico com dígito verificador válido', method: 'POST', purpose: 'Consulta (Validação) - Testa o "Módulo de Inteligência", garantindo que ele aprova um CNPJ alfanumérico com dígito verificador matematicamente correto (de acordo com a regra customizada).', steps: 'Given: um documento Q3NUDAUL/IL76-09 é preparado.\nWhen: uma requisição de validação POST é enviada.\nThen: a resposta deve ser 200 OK com a mensagem "Documento com formato válido".' },
+            { group: 'validation', id: '10/22', title: 'Validar CNPJ Alfanumérico com dígito verificador inválido', method: 'POST', purpose: 'Consulta (Validação) - Testa o "Módulo de Inteligência", garantindo que ele rejeita um CNPJ alfanumérico com dígito verificador matematicamente incorreto.', steps: 'Given: um documento Q3NUDAUL/IL76-00 é preparado.\nWhen: uma requisição de validação POST é enviada.\nThen: a resposta deve ser 400 Bad Request com a mensagem "CNPJ inválido: dígito verificador não confere".' },
+            { group: 'business', id: '11/22', title: 'Criação de um novo cliente válido', method: 'POST', purpose: 'Criação - Testa o fluxo básico de criação de um novo cliente com dados estáticos.', steps: 'Given: o sistema está configurado para a ação CRIAR_CLIENTE.\nWhen: uma requisição POST é enviada para /v1/clientes com a chave NOVO_CLIENTE_VALIDO.\nThen: a resposta deve ser 201 Created com a mensagem "Cliente criado com sucesso".' },
+            { group: 'business', id: '12/22', title: 'Busca de um cliente existente', method: 'GET', purpose: 'Consulta - Testa a busca de um cliente pré-existente (id=1) pelo seu ID.', steps: 'Given: o sistema está configurado para a ação BUSCAR_CLIENTE.\nWhen: uma requisição GET é enviada para /v1/clientes/1.\nThen: a resposta deve ser 200 OK e o corpo deve conter o nome "João Silva".' },
+            { group: 'business', id: '13/22', title: 'Alteração de um cliente existente', method: 'PUT', purpose: 'Alteração - Testa a atualização de um cliente pré-existente.', steps: 'Given: o sistema está configurado para a ação ALTERAR_CLIENTE.\nWhen: uma requisição PUT é enviada para /v1/clientes/1 com a chave ATUALIZACAO_NOME_VALIDA.\nThen: a resposta deve ser 200 OK com a mensagem "Cliente atualizado".' },
+            { group: 'business', id: '14/22', title: 'Deleção de um cliente existente', method: 'DELETE', purpose: 'Delete - Testa a exclusão de um cliente pré-existente.', steps: 'Given: o sistema está configurado para a ação DELETAR_CLIENTE.\nWhen: uma requisição DELETE é enviada para /v1/clientes/1.\nThen: a resposta deve ser 204 No Content.' },
+            { group: 'business', id: '15/22', title: 'Busca de um cliente que foi deletado', method: 'GET', purpose: 'Consulta (Validação de Erro) - Garante que um cliente, após ser deletado, não pode mais ser encontrado.', steps: 'Given: o sistema está configurado para a ação BUSCAR_DELETADO.\nWhen: uma requisição GET é enviada para /v1/clientes/1.\nThen: a resposta deve ser 404 Not Found com a mensagem "Cliente não encontrado".' },
+            { group: 'business', id: '16/22', title: 'Criação de cliente com CPF preenchido com zeros', method: 'POST', purpose: 'Criação (Geração de Massa) - Testa a "Fábrica de Dados", validando a regra de completar um CPF com zeros à esquerda.', steps: 'Given: o sistema está configurado para a ação CRIAR_CLIENTE.\nWhen: uma requisição POST é enviada para /v1/clientes com a chave CPF_9_DIGITOS e a regra COMPLETAR_CPF_COM_ZEROS.\nThen: a resposta deve ser 201 Created.' },
+            { group: 'business', id: '17/22', title: 'Criação de cliente com CNPJ numérico preenchido com zeros', method: 'POST', purpose: 'Criação (Geração de Massa) - Testa a "Fábrica de Dados", validando a regra de completar um CNPJ numérico com zeros à esquerda.', steps: 'Given: o sistema está configurado para a ação CRIAR_CLIENTE.\nWhen: uma requisição POST é enviada para /v1/clientes com a chave CNPJ_12_DIGITOS e a regra COMPLETAR_CNPJ_COM_ZEROS.\nThen: a resposta deve ser 201 Created.' },
+            { group: 'business', id: '18/22', title: 'Criação de cliente com CNPJ Alfanumérico preenchido com zeros', method: 'POST', purpose: 'Criação (Geração de Massa) - Testa a "Fábrica de Dados", validando a regra de completar um CNPJ alfanumérico com zeros à esquerda.', steps: 'Given: o sistema está configurado para a ação CRIAR_CLIENTE.\nWhen: uma requisição POST é enviada para /v1/clientes com a chave CNPJ_ALFA_10_DIGITOS e a regra COMPLETAR_CNPJ_ALFA_COM_ZEROS.\nThen: a resposta deve ser 201 Created.' },
+            { group: 'business', id: '19/22', title: 'Busca de cliente criado com CPF preenchido com zeros', method: 'GET', purpose: 'Consulta (Ponta a Ponta) - Valida que um cliente criado com CPF gerado pode ser buscado.', steps: 'Given: o sistema está configurado para a ação BUSCAR_CLIENTE.\nWhen: uma requisição GET é enviada para /v1/clientes/2.\nThen: a resposta deve ser 200 OK e o corpo deve conter o nome "Cliente CPF Auto".' },
+            { group: 'business', id: '20/22', title: 'Busca de cliente criado com CNPJ numérico preenchido com zeros', method: 'GET', purpose: 'Consulta (Ponta a Ponta) - Valida que um cliente criado com CNPJ numérico gerado pode ser buscado.', steps: 'Given: o sistema está configurado para a ação BUSCAR_CLIENTE.\nWhen: uma requisição GET é enviada para /v1/clientes/3.\nThen: a resposta deve ser 200 OK e o corpo deve conter o nome "Cliente CNPJ Auto".' },
+            { group: 'business', id: '21/22', title: 'Busca de cliente criado com CNPJ Alfanumérico', method: 'GET', purpose: 'Consulta (Ponta a Ponta) - Valida que um cliente criado com CNPJ alfanumérico gerado pode ser buscado.', steps: 'Given: o sistema está configurado para a ação BUSCAR_CLIENTE.\nWhen: uma requisição GET é enviada para /v1/clientes/4.\nThen: a resposta deve ser 200 OK e o corpo deve conter o nome "Cliente CNPJ Alfa Auto".' },
+            { group: 'business', id: '22/22', title: 'Busca por cliente com ID inexistente (migrado)', method: 'GET', purpose: 'Consulta (Validação de Erro) - Garante que o sistema retorna 404 ao buscar por um ID que não existe.', steps: 'Given: o sistema está configurado para a ação BUSCAR_CLIENTE.\nWhen: uma requisição GET é enviada para /v1/clientes/999.\nThen: a resposta deve ser 404 Not Found com a mensagem "Cliente não encontrado".' },
         ];
 
         // Função para renderizar os cenários
@@ -190,37 +251,56 @@
             const validationContainer = document.getElementById('test-scenarios-validation');
             const businessContainer = document.getElementById('test-scenarios-business');
 
-            const icons = {
-                given: 'fa-cogs',
-                when: 'fa-paper-plane',
-                then: 'fa-check-circle',
-                'then-fail': 'fa-times-circle'
-            };
-
             scenarios.forEach(sc => {
-                const stepsHtml = sc.steps.map(step => `
-                    <div class="step-item ${step.type}">
-                        <i class="fas ${icons[step.type]}"></i>
-                        <span>${step.text}</span>
-                    </div>
-                `).join('');
-
                 const cardHtml = `
-                    <div class="test-case-card">
-                        <h4>Cenário ${sc.id}: ${sc.title}</h4>
-                        <span class="purpose">${sc.purpose}</span>
-                        <div class="steps-list">${stepsHtml}</div>
+                    <div class="test-case-card" id="ct-${sc.id.replace('/', '-')}">
+                        <div class="card-header">
+                            <h4><i class="fas fa-vial" style="margin-right: 10px; font-size: 1rem; color: #94a3b8;"></i>${sc.id}: ${sc.title}</h4>
+                            <span class="method-badge method-${sc.method.toLowerCase()}">${sc.method}</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="purpose"><i class="fas fa-bullseye"></i> <strong>Finalidade:</strong> ${sc.purpose}</p>
+                            <div class="gherkin-wrapper">
+                                <div class="gherkin-code" id="gherkin-${sc.id.replace('/', '-')}">${sc.steps.replace(/^(Given|When|Then|And)/gm, '<strong style="color: #38bdf8;">$1</strong>')}</div>
+                                <button class="btn-copy-gherkin" data-target-id="gherkin-${sc.id.replace('/', '-')}" title="Copiar código">
+                                    <i class="far fa-copy"></i> Copiar
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 `;
+
                 if (sc.group === 'validation') {
                     validationContainer.innerHTML += cardHtml;
                 } else {
                     businessContainer.innerHTML += cardHtml;
                 }
             });
+
+            // Adiciona os event listeners para os botões de copiar
+            document.querySelectorAll('.btn-copy-gherkin').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const targetId = e.currentTarget.getAttribute('data-target-id');
+                    const codeElement = document.getElementById(targetId);
+                    // Usamos o 'innerText' para copiar o texto puro, sem o HTML da tag <strong>
+                    navigator.clipboard.writeText(codeElement.innerText).then(() => {
+                        const button = e.currentTarget;
+                        const originalContent = button.innerHTML;
+                        button.innerHTML = '<i class="fas fa-check"></i> Copiado!';
+                        button.classList.add('copied');
+                        setTimeout(() => {
+                            button.innerHTML = originalContent;
+                            button.classList.remove('copied');
+                        }, 2000);
+                    }).catch(err => {
+                        console.error('Falha ao copiar: ', err);
+                    });
+                });
+            });
         }
 
         document.addEventListener('DOMContentLoaded', renderScenarios);
+
     </script>
 </body>
 </html>
