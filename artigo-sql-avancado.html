@@ -60,6 +60,53 @@
         body.light-mode .toc-wrapper ol li a:hover { background-color: #0284c7; color: #ffffff; }
         body.light-mode .sql-example-wrapper { background-color: #ffffff; border-left-color: #7e22ce; }
         body.light-mode .sql-example-wrapper h3 { color: #1e293b; }
+
+        /* Estilos para as demos interativas (copiados e adaptados) */
+        .demo-table-wrapper { padding: 15px; }
+        .demo-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .demo-table th, .demo-table td { padding: 8px 12px; text-align: left; border: 1px solid #334155; }
+        .demo-table th { background-color: #1e293b; color: #94a3b8; }
+        .demo-table tr { transition: opacity 0.5s ease, background-color 0.5s ease; }
+        .demo-table tr.dimmed { opacity: 0.3; }
+        .demo-table tr.highlighted { background-color: rgba(168, 85, 247, 0.2); }
+        .demo-table .cell-added { animation: flash-green 1s ease; }
+        @keyframes flash-green { from { background-color: #22c55e; } }
+        .sql-actions { padding: 0 15px 15px 15px; display: flex; gap: 10px; }
+        .btn-run-query {
+            background-color: #a855f7; color: #fff; border: none; padding: 8px 15px;
+            border-radius: 4px; cursor: pointer; font-weight: bold; font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s;
+        }
+        .btn-run-query:hover { background-color: #9333ea; }
+        .btn-run-query:disabled { background-color: #475569; cursor: not-allowed; }
+        .btn-copy-sql {
+            background-color: transparent; color: #94a3b8; border: none; padding: 0 15px;
+            cursor: pointer; font-weight: bold; font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s; position: relative; border-left: 1px solid #334155;
+        }
+        .btn-copy-sql:hover { background-color: #334155; }
+        .btn-copy-sql .copy-icon, .btn-copy-sql .copied-feedback {
+            display: inline-flex; align-items: center; gap: 5px;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .btn-copy-sql .copied-feedback { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); opacity: 0; white-space: nowrap; }
+        .btn-copy-sql.copied { background-color: #22c55e; color: #fff; }
+        .btn-copy-sql.copied .copy-icon { opacity: 0; transform: scale(0.8); }
+        .btn-copy-sql.copied .copied-feedback { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        @keyframes pop-in { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .btn-copy-sql.copied .fa-check { animation: pop-in 0.3s ease-out 0.1s; }
+
+        body.light-mode .demo-table th, body.light-mode .demo-table td { border-color: #e2e8f0; }
+        body.light-mode .demo-table th { background-color: #f1f5f9; color: #64748b; }
+        body.light-mode .demo-table tr.dimmed { opacity: 0.2; }
+        body.light-mode .demo-table tr.highlighted { background-color: rgba(126, 34, 206, 0.1); }
+        body.light-mode .demo-table .cell-added { animation: flash-green-light 1s ease; }
+        @keyframes flash-green-light { from { background-color: #4ade80; } }
+        body.light-mode .btn-run-query { background-color: #7e22ce; }
+        body.light-mode .btn-run-query:hover { background-color: #6b21a8; }
+        body.light-mode .btn-copy-sql { border-left-color: #e2e8f0; }
+        body.light-mode .btn-copy-sql:hover { background-color: #e2e8f0; }
+        body.light-mode .btn-copy-sql.copied { background-color: #16a34a; }
     </style>
 </head>
 <body>
@@ -100,9 +147,301 @@
 
         <!-- Seção de Exemplos (a ser preenchida) -->
         <div id="advanced-sql-examples">
-            <p style="text-align: center; font-style: italic; color: #94a3b8; margin-top: 50px;">
-                <i class="fas fa-cogs"></i> Em breve: exemplos interativos para cada um dos tópicos acima serão adicionados aqui.
-            </p>
+            <!-- Exemplo 1: LEFT JOIN -->
+            <div class="sql-example-wrapper" id="sql-left-join">
+                <h3><i class="fas fa-user-plus" style="margin-right: 10px; color: #a855f7;"></i>1. LEFT JOIN: Encontrando Dados "Órfãos"</h3>
+                <p>Enquanto o <code>JOIN</code> tradicional só mostra a combinação perfeita entre duas tabelas, o <code>LEFT JOIN</code> é mais inclusivo. Ele retorna <strong>todos os registros da tabela da esquerda</strong>, e preenche com <code>NULL</code> (vazio) caso não encontre um par na tabela da direita. É a query perfeita para responder: "Quais clientes nunca fizeram um pedido?".</p>
+                
+                <div class="sql-interactive-demo" data-demo-id="1">
+                    <div class="sql-query-header">
+                        <div class="sql-query-display" id="sql-query-1"><code>SELECT</code> c.nome, p.id_pedido <code>FROM</code> <span class="table-name">clientes</span> c <code>LEFT JOIN</code> <span class="table-name">pedidos</span> p <code>ON</code> c.id = p.id_cliente;</div>
+                        <button class="btn-copy-sql" data-target-id="sql-query-1" title="Copiar Query">
+                            <span class="copy-icon"><i class="far fa-copy"></i> Copiar</span>
+                            <span class="copied-feedback"><i class="fas fa-check"></i> Copiado!</span>
+                        </button>
+                    </div>
+                    <div class="demo-table-wrapper">
+                        <p style="text-align: center; color: #94a3b8; font-weight: bold;">Tabelas Originais:</p>
+                        <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                            <table class="demo-table" style="width: auto;"><thead><tr><th colspan="2">clientes (esquerda)</th></tr><tr><th>id</th><th>nome</th></tr></thead><tbody><tr><td>1</td><td>Ana</td></tr><tr><td>2</td><td>Bruno</td></tr><tr><td>3</td><td>Carlos</td></tr></tbody></table>
+                            <table class="demo-table" style="width: auto;"><thead><tr><th colspan="2">pedidos (direita)</th></tr><tr><th>id_pedido</th><th>id_cliente</th></tr></thead><tbody><tr><td>101</td><td>2</td></tr><tr><td>102</td><td>1</td></tr></tbody></table>
+                        </div>
+                        <p style="text-align: center; color: #94a3b8; font-weight: bold; margin-top: 20px; display: none;" class="join-result-title">Tabela Resultante (LEFT JOIN):</p>
+                        <table class="demo-table" id="left-join-result-table" style="margin-top: 10px; display: none;">
+                            <thead><tr><th>nome</th><th>id_pedido</th></tr></thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="sql-actions">
+                        <button class="btn-run-query" data-action="left-join"><i class="fas fa-play"></i> Executar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exemplo 2: HAVING -->
+            <div class="sql-example-wrapper" id="sql-having">
+                <h3><i class="fas fa-search-dollar" style="margin-right: 10px; color: #a855f7;"></i>2. HAVING: O Filtro para Grupos</h3>
+                <p>Se o <code>WHERE</code> filtra linhas individuais antes da agregação, o <code>HAVING</code> filtra os <strong>resultados de um grupo</strong>, depois que a agregação já aconteceu. Ele é sempre usado com <code>GROUP BY</code>. A pergunta muda de "quais clientes são de SP?" (WHERE) para "quais estados têm mais de 1 cliente?" (HAVING).</p>
+
+                <div class="sql-interactive-demo" data-demo-id="2">
+                    <div class="sql-query-header">
+                        <div class="sql-query-display" id="sql-query-2"><code>SELECT</code> estado, <code>COUNT</code>(*) <code>FROM</code> <span class="table-name">clientes</span> <code>GROUP BY</code> estado <code>HAVING COUNT</code>(*) > 1;</div>
+                        <button class="btn-copy-sql" data-target-id="sql-query-2" title="Copiar Query">
+                            <span class="copy-icon"><i class="far fa-copy"></i> Copiar</span>
+                            <span class="copied-feedback"><i class="fas fa-check"></i> Copiado!</span>
+                        </button>
+                    </div>
+                    <div class="demo-table-wrapper">
+                        <p style="text-align: center; color: #94a3b8; font-weight: bold;">Tabela Agrupada (Antes do HAVING):</p>
+                        <table class="demo-table" id="having-source-table">
+                            <thead><tr><th>estado</th><th>COUNT(*)</th></tr></thead>
+                            <tbody>
+                                <tr><td>SP</td><td>2</td></tr>
+                                <tr><td>RJ</td><td>2</td></tr>
+                                <tr><td>MG</td><td>1</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="sql-actions">
+                        <button class="btn-run-query" data-action="having"><i class="fas fa-play"></i> Executar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exemplo 3: CASE -->
+            <div class="sql-example-wrapper" id="sql-case">
+                <h3><i class="fas fa-random" style="margin-right: 10px; color: #a855f7;"></i>3. CASE: O "Se-Então-Senão" do SQL</h3>
+                <p>A instrução <code>CASE</code> é a sua ferramenta para criar lógicas condicionais dentro de uma query. Ela permite criar uma nova coluna baseada em regras. Por exemplo: "<strong>SE</strong> o preço for menor que 50, <strong>ENTÃO</strong> chame de 'Promoção', <strong>SENÃO</strong>, chame de 'Preço Normal'".</p>
+
+                <div class="sql-interactive-demo" data-demo-id="3">
+                    <div class="sql-query-header">
+                        <div class="sql-query-display" id="sql-query-3"><code>SELECT</code> nome, preco, <code>CASE WHEN</code> preco < 50 <code>THEN</code> <span class="value">'Promoção'</span> <code>ELSE</code> <span class="value">'Preço Normal'</span> <code>END AS</code> categoria <code>FROM</code> <span class="table-name">produtos</span>;</div>
+                        <button class="btn-copy-sql" data-target-id="sql-query-3" title="Copiar Query">
+                            <span class="copy-icon"><i class="far fa-copy"></i> Copiar</span>
+                            <span class="copied-feedback"><i class="fas fa-check"></i> Copiado!</span>
+                        </button>
+                    </div>
+                    <div class="demo-table-wrapper">
+                        <table class="demo-table" id="case-source-table">
+                            <thead>
+                                <tr><th>nome</th><th>preco</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr data-price="19.99"><td>Caneta</td><td>19.99</td></tr>
+                                <tr data-price="99.90"><td>Teclado</td><td>99.90</td></tr>
+                                <tr data-price="49.50"><td>Mouse</td><td>49.50</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="sql-actions">
+                        <button class="btn-run-query" data-action="case"><i class="fas fa-play"></i> Executar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exemplo 4: Window Functions -->
+            <div class="sql-example-wrapper" id="sql-window-functions">
+                <h3><i class="fas fa-chart-bar" style="margin-right: 10px; color: #a855f7;"></i>4. Window Functions: Análise Sequencial</h3>
+                <p>As Funções de Janela são um superpoder do SQL. Elas realizam cálculos em um conjunto de linhas (uma "janela") relacionadas à linha atual. Diferente do <code>GROUP BY</code> que agrega tudo em uma única linha, as Window Functions retornam um valor para <strong>cada linha</strong>. São perfeitas para criar rankings, calcular médias móveis ou totais acumulados.</p>
+
+                <div class="sql-interactive-demo" data-demo-id="4">
+                    <div class="sql-query-header">
+                        <div class="sql-query-display" id="sql-query-4"><code>SELECT</code> produto, vendas, <code>RANK() OVER</code> (<code>ORDER BY</code> vendas <code>DESC</code>) <code>AS</code> ranking <code>FROM</code> <span class="table-name">vendas_mensais</span>;</div>
+                        <button class="btn-copy-sql" data-target-id="sql-query-4" title="Copiar Query">
+                            <span class="copy-icon"><i class="far fa-copy"></i> Copiar</span>
+                            <span class="copied-feedback"><i class="fas fa-check"></i> Copiado!</span>
+                        </button>
+                    </div>
+                    <div class="demo-table-wrapper">
+                        <table class="demo-table" id="window-source-table">
+                            <thead>
+                                <tr><th>produto</th><th>vendas</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr data-sales="9500"><td>Produto A</td><td>9500</td></tr>
+                                <tr data-sales="7200"><td>Produto B</td><td>7200</td></tr>
+                                <tr data-sales="9500"><td>Produto C</td><td>9500</td></tr>
+                                <tr data-sales="8100"><td>Produto D</td><td>8100</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="sql-actions">
+                        <button class="btn-run-query" data-action="window-function"><i class="fas fa-play"></i> Executar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exemplo 5: CTE (Common Table Expressions) -->
+            <div class="sql-example-wrapper" id="sql-cte">
+                <h3><i class="fas fa-sitemap" style="margin-right: 10px; color: #a855f7;"></i>5. CTEs: Organizando Queries Complexas</h3>
+                <p>As Expressões de Tabela Comuns (CTEs), iniciadas com a cláusula <code>WITH</code>, são como criar uma tabela temporária e nomeada que existe apenas durante a execução da query. Elas são essenciais para quebrar consultas longas e complexas em blocos lógicos e legíveis, evitando subqueries aninhadas e confusas.</p>
+
+                <div class="sql-interactive-demo" data-demo-id="5">
+                    <div class="sql-query-header">
+                        <div class="sql-query-display" id="sql-query-5"><code>WITH</code> VendasPorRegiao <code>AS</code> (<br>  <code>SELECT</code> regiao, <code>SUM</code>(vendas) <code>AS</code> total_vendas<br>  <code>FROM</code> <span class="table-name">filiais</span> <code>GROUP BY</code> regiao<br>)<br><code>SELECT</code> * <code>FROM</code> VendasPorRegiao <code>WHERE</code> total_vendas > 50000;</div>
+                        <button class="btn-copy-sql" data-target-id="sql-query-5" title="Copiar Query">
+                            <span class="copy-icon"><i class="far fa-copy"></i> Copiar</span>
+                            <span class="copied-feedback"><i class="fas fa-check"></i> Copiado!</span>
+                        </button>
+                    </div>
+                    <div class="demo-table-wrapper">
+                        <p style="text-align: center; color: #94a3b8; font-weight: bold;">Tabela Original (filiais):</p>
+                        <table class="demo-table" id="cte-source-table">
+                            <thead><tr><th>filial_id</th><th>regiao</th><th>vendas</th></tr></thead>
+                            <tbody>
+                                <tr><td>1</td><td>Sudeste</td><td>30000</td></tr>
+                                <tr><td>2</td><td>Nordeste</td><td>25000</td></tr>
+                                <tr><td>3</td><td>Sudeste</td><td>40000</td></tr>
+                                <tr><td>4</td><td>Sul</td><td>45000</td></tr>
+                                <tr><td>5</td><td>Nordeste</td><td>35000</td></tr>
+                            </tbody>
+                        </table>
+                        <p style="text-align: center; color: #94a3b8; font-weight: bold; margin-top: 20px; display: none;" class="cte-result-title">1. CTE "VendasPorRegiao" (Resultado Intermediário):</p>
+                        <table class="demo-table" id="cte-result-table" style="margin-top: 10px; display: none;">
+                            <thead><tr><th>regiao</th><th>total_vendas</th></tr></thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="sql-actions">
+                        <button class="btn-run-query" data-action="cte"><i class="fas fa-play"></i> Executar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exemplo 6: Subqueries (Consultas Aninhadas) -->
+            <div class="sql-example-wrapper" id="sql-subquery">
+                <h3><i class="fas fa-search-plus" style="margin-right: 10px; color: #a855f7;"></i>6. Subqueries: Uma Query Dentro de Outra</h3>
+                <p>Uma Subquery (ou subconsulta) é uma instrução <code>SELECT</code> aninhada dentro de outra query. Ela é executada primeiro, e seu resultado é usado como filtro para a consulta principal. É uma alternativa poderosa às CTEs para resolver problemas em etapas, como: "Primeiro, encontre o ID da categoria 'Eletrônicos', depois, me mostre todos os produtos dessa categoria".</p>
+
+                <div class="sql-interactive-demo" data-demo-id="6">
+                    <div class="sql-query-header">
+                        <div class="sql-query-display" id="sql-query-6"><code>SELECT</code> * <code>FROM</code> <span class="table-name">produtos</span> <code>WHERE</code> id_categoria <code>IN</code> (<br>  <code>SELECT</code> id <code>FROM</code> <span class="table-name">categorias</span> <code>WHERE</code> nome = <span class="value">'Eletrônicos'</span><br>);</div>
+                        <button class="btn-copy-sql" data-target-id="sql-query-6" title="Copiar Query">
+                            <span class="copy-icon"><i class="far fa-copy"></i> Copiar</span>
+                            <span class="copied-feedback"><i class="fas fa-check"></i> Copiado!</span>
+                        </button>
+                    </div>
+                    <div class="demo-table-wrapper">
+                        <p style="text-align: center; color: #94a3b8; font-weight: bold;">Tabelas Originais:</p>
+                        <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                            <table class="demo-table" id="subquery-produtos-table" style="width: auto;">
+                                <thead><tr><th colspan="3">produtos</th></tr><tr><th>id</th><th>nome</th><th>id_categoria</th></tr></thead>
+                                <tbody>
+                                    <tr data-category="1"><td>10</td><td>Teclado</td><td>1</td></tr>
+                                    <tr data-category="2"><td>11</td><td>Caneta</td><td>2</td></tr>
+                                    <tr data-category="1"><td>12</td><td>Mouse</td><td>1</td></tr>
+                                </tbody>
+                            </table>
+                            <table class="demo-table" id="subquery-categorias-table" style="width: auto;">
+                                <thead><tr><th colspan="2">categorias</th></tr><tr><th>id</th><th>nome</th></tr></thead>
+                                <tbody>
+                                    <tr data-category-name="Eletrônicos"><td>1</td><td>Eletrônicos</td></tr>
+                                    <tr data-category-name="Papelaria"><td>2</td><td>Papelaria</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="sql-actions">
+                        <button class="btn-run-query" data-action="subquery"><i class="fas fa-play"></i> Executar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exemplo 7: UNION -->
+            <div class="sql-example-wrapper" id="sql-union">
+                <h3><i class="fas fa-layer-group" style="margin-right: 10px; color: #a855f7;"></i>7. UNION: Combinando Listas</h3>
+                <p>O operador <code>UNION</code> é usado para combinar o resultado de duas ou mais instruções <code>SELECT</code> em uma única lista. É como pegar duas listas de convidados e juntá-las em uma só, <strong>removendo automaticamente os nomes duplicados</strong>. É perfeito para consolidar dados de tabelas diferentes que possuem a mesma estrutura de colunas.</p>
+
+                <div class="sql-interactive-demo" data-demo-id="7">
+                    <div class="sql-query-header">
+                        <div class="sql-query-display" id="sql-query-7"><code>SELECT</code> nome, email <code>FROM</code> <span class="table-name">clientes_ativos</span><br><code>UNION</code><br><code>SELECT</code> nome, email <code>FROM</code> <span class="table-name">clientes_novos</span>;</div>
+                        <button class="btn-copy-sql" data-target-id="sql-query-7" title="Copiar Query">
+                            <span class="copy-icon"><i class="far fa-copy"></i> Copiar</span>
+                            <span class="copied-feedback"><i class="fas fa-check"></i> Copiado!</span>
+                        </button>
+                    </div>
+                    <div class="demo-table-wrapper">
+                        <p style="text-align: center; color: #94a3b8; font-weight: bold;">Tabelas Originais:</p>
+                        <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                            <table class="demo-table" id="union-table-1" style="width: auto;">
+                                <thead><tr><th colspan="2">clientes_ativos</th></tr><tr><th>nome</th><th>email</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Ana</td><td>ana@email.com</td></tr>
+                                    <tr><td>Bruno</td><td>bruno@email.com</td></tr>
+                                </tbody>
+                            </table>
+                            <table class="demo-table" id="union-table-2" style="width: auto;">
+                                <thead><tr><th colspan="2">clientes_novos</th></tr><tr><th>nome</th><th>email</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Carlos</td><td>carlos@email.com</td></tr>
+                                    <tr><td>Ana</td><td>ana@email.com</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="sql-actions">
+                        <button class="btn-run-query" data-action="union"><i class="fas fa-play"></i> Executar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exemplo 8: Self-Join -->
+            <div class="sql-example-wrapper" id="sql-self-join">
+                <h3><i class="fas fa-users" style="margin-right: 10px; color: #a855f7;"></i>8. Self-Join: Relacionando uma Tabela com Ela Mesma</h3>
+                <p>Um <code>SELF JOIN</code> é uma técnica onde você junta uma tabela com ela mesma, tratando-a como se fossem duas tabelas distintas (usando apelidos, como <code>e</code> para empregados e <code>m</code> para gerentes). É a solução perfeita para consultar dados hierárquicos, como encontrar o nome do gerente de cada funcionário.</p>
+
+                <div class="sql-interactive-demo" data-demo-id="8">
+                    <div class="sql-query-header">
+                        <div class="sql-query-display" id="sql-query-8"><code>SELECT</code> e.nome <code>AS</code> funcionario, m.nome <code>AS</code> gerente<br><code>FROM</code> <span class="table-name">funcionarios</span> e <code>JOIN</code> <span class="table-name">funcionarios</span> m <code>ON</code> e.id_gerente = m.id;</div>
+                        <button class="btn-copy-sql" data-target-id="sql-query-8" title="Copiar Query">
+                            <span class="copy-icon"><i class="far fa-copy"></i> Copiar</span>
+                            <span class="copied-feedback"><i class="fas fa-check"></i> Copiado!</span>
+                        </button>
+                    </div>
+                    <div class="demo-table-wrapper">
+                        <p style="text-align: center; color: #94a3b8; font-weight: bold;">Tabela Original (funcionarios):</p>
+                        <table class="demo-table" id="self-join-table-1" style="width: auto; margin: 0 auto;">
+                            <thead><tr><th>id</th><th>nome</th><th>id_gerente</th></tr></thead>
+                            <tbody>
+                                <tr><td>1</td><td>Carlos</td><td>NULL</td></tr>
+                                <tr><td>2</td><td>Ana</td><td>1</td></tr>
+                                <tr><td>3</td><td>Bruno</td><td>1</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="sql-actions">
+                        <button class="btn-run-query" data-action="self-join"><i class="fas fa-play"></i> Executar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exemplo 9: Funções de Data -->
+            <div class="sql-example-wrapper" id="sql-date-functions">
+                <h3><i class="fas fa-calendar-alt" style="margin-right: 10px; color: #a855f7;"></i>9. Funções de Data: Viajando no Tempo</h3>
+                <p>Manipular datas é uma tarefa diária em análise de dados. Funções como <code>NOW()</code>, <code>DATE()</code>, e operadores de intervalo (<code>INTERVAL</code>) permitem filtrar registros em períodos específicos, como "todos os usuários que se cadastraram nos últimos 30 dias", uma query essencial para analisar o crescimento recente.</p>
+
+                <div class="sql-interactive-demo" data-demo-id="9">
+                    <div class="sql-query-header">
+                        <div class="sql-query-display" id="sql-query-9"><code>SELECT</code> nome, data_cadastro <code>FROM</code> <span class="table-name">usuarios</span><br><code>WHERE</code> data_cadastro >= <code>NOW()</code> - <code>INTERVAL</code> <span class="value">'30 day'</span>;</div>
+                        <button class="btn-copy-sql" data-target-id="sql-query-9" title="Copiar Query">
+                            <span class="copy-icon"><i class="far fa-copy"></i> Copiar</span>
+                            <span class="copied-feedback"><i class="fas fa-check"></i> Copiado!</span>
+                        </button>
+                    </div>
+                    <div class="demo-table-wrapper">
+                        <p style="text-align: center; color: #94a3b8; font-weight: bold;">Tabela Original (usuarios):</p>
+                        <table class="demo-table" id="date-source-table">
+                            <thead><tr><th>nome</th><th>data_cadastro</th></tr></thead>
+                            <tbody>
+                                <!-- As datas serão geradas dinamicamente via JS para sempre serem relevantes -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="sql-actions">
+                        <button class="btn-run-query" data-action="date-function"><i class="fas fa-play"></i> Executar</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </main>
@@ -135,6 +474,241 @@
             const scrollPercentage = (scrollTop / scrollHeight) * 100;
             document.getElementById('scroll-progress-bar').style.width = scrollPercentage + '%';
         });
+
+        // --- Lógica das Demos Interativas de SQL ---
+        document.querySelectorAll('.btn-run-query').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const btn = e.currentTarget;
+                const action = btn.dataset.action;
+                const demoWrapper = btn.closest('.sql-interactive-demo');
+                
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Executando...';
+
+                // Reseta o estado visual antes de uma nova execução
+                demoWrapper.querySelectorAll('.demo-table tr').forEach(row => {
+                    row.classList.remove('highlighted', 'dimmed');
+                });
+                demoWrapper.querySelectorAll('.join-result-title, #left-join-result-table').forEach(el => {
+                    el.style.display = 'none';
+                });
+
+                switch(action) {
+                    case 'left-join':
+                        const leftJoinResultTable = demoWrapper.querySelector('#left-join-result-table');
+                        const leftJoinResultTitle = demoWrapper.querySelector('.join-result-title');
+                        leftJoinResultTable.querySelector('tbody').innerHTML = `
+                            <tr class="highlighted"><td>Ana</td><td>102</td></tr>
+                            <tr class="highlighted"><td>Bruno</td><td>101</td></tr>
+                            <tr class="highlighted"><td>Carlos</td><td><em>NULL</em></td></tr>
+                        `;
+                        leftJoinResultTitle.style.display = 'block';
+                        leftJoinResultTable.style.display = 'table';
+                        break;
+                    
+                    case 'having':
+                        demoWrapper.querySelectorAll('#having-source-table tbody tr').forEach(row => {
+                            const count = parseInt(row.cells[1].textContent);
+                            row.classList.toggle('highlighted', count > 1);
+                            row.classList.toggle('dimmed', count <= 1);
+                        });
+                        break;
+
+                    case 'case':
+                        const caseTable = demoWrapper.querySelector('#case-source-table');
+                        const headerRow = caseTable.querySelector('thead tr');
+                        
+                        // Adiciona o cabeçalho da nova coluna
+                        const newTh = document.createElement('th');
+                        newTh.textContent = 'categoria';
+                        newTh.classList.add('cell-added');
+                        headerRow.appendChild(newTh);
+
+                        // Adiciona a célula em cada linha com o valor condicional
+                        caseTable.querySelectorAll('tbody tr').forEach(row => {
+                            const price = parseFloat(row.dataset.price);
+                            const newTd = document.createElement('td');
+                            newTd.textContent = price < 50 ? 'Promoção' : 'Preço Normal';
+                            newTd.classList.add('cell-added');
+                            row.appendChild(newTd);
+                        });
+                        break;
+
+                    case 'window-function':
+                        const windowTable = demoWrapper.querySelector('#window-source-table');
+                        const windowHeader = windowTable.querySelector('thead tr');
+                        
+                        const newWindowTh = document.createElement('th');
+                        newWindowTh.textContent = 'ranking';
+                        newWindowTh.classList.add('cell-added');
+                        windowHeader.appendChild(newWindowTh);
+
+                        const rows = Array.from(windowTable.querySelectorAll('tbody tr'));
+                        const sortedRows = rows.sort((a, b) => parseFloat(b.dataset.sales) - parseFloat(a.dataset.sales));
+                        
+                        let currentRank = 0;
+                        let lastSales = -1;
+                        sortedRows.forEach((row, index) => {
+                            const sales = parseFloat(row.dataset.sales);
+                            if (sales !== lastSales) { currentRank = index + 1; }
+                            const newTd = document.createElement('td');
+                            newTd.textContent = currentRank;
+                            newTd.classList.add('cell-added');
+                            row.appendChild(newTd);
+                            lastSales = sales;
+                        });
+                        break;
+
+                    case 'cte':
+                        const cteResultTable = demoWrapper.querySelector('#cte-result-table');
+                        const cteResultTitle = demoWrapper.querySelector('.cte-result-title');
+                        
+                        // Simula a criação da CTE
+                        cteResultTable.querySelector('tbody').innerHTML = `
+                            <tr data-total="70000"><td>Sudeste</td><td>70000</td></tr>
+                            <tr data-total="60000"><td>Nordeste</td><td>60000</td></tr>
+                            <tr data-total="45000"><td>Sul</td><td>45000</td></tr>
+                        `;
+                        cteResultTitle.style.display = 'block';
+                        cteResultTable.style.display = 'table';
+
+                        // Simula a filtragem final com HAVING sobre a CTE
+                        setTimeout(() => {
+                            cteResultTable.querySelectorAll('tbody tr').forEach(row => {
+                                row.classList.toggle('highlighted', parseInt(row.dataset.total) > 50000);
+                                row.classList.toggle('dimmed', parseInt(row.dataset.total) <= 50000);
+                            });
+                        }, 1000); // Atraso para mostrar o efeito em 2 passos
+                        break;
+
+                    case 'subquery':
+                        const categoriasTable = demoWrapper.querySelector('#subquery-categorias-table');
+                        const produtosTable = demoWrapper.querySelector('#subquery-produtos-table');
+
+                        // 1. Anima a subquery
+                        categoriasTable.querySelector("tr[data-category-name='Eletrônicos']").classList.add('highlighted');
+
+                        // 2. Anima a query principal usando o resultado da subquery
+                        setTimeout(() => {
+                            produtosTable.querySelectorAll("tr[data-category='1']").forEach(row => {
+                                row.classList.add('highlighted');
+                            });
+                        }, 1000);
+                        break;
+
+                    case 'union':
+                        const unionTable1 = demoWrapper.querySelector('#union-table-1');
+                        const unionTable2 = demoWrapper.querySelector('#union-table-2');
+                        unionTable1.querySelectorAll('tbody tr').forEach(r => r.classList.add('highlighted'));
+                        unionTable2.querySelectorAll('tbody tr').forEach(r => r.classList.add('highlighted'));
+
+                        setTimeout(() => {
+                            const resultHtml = `
+                                <p style="text-align: center; color: #94a3b8; font-weight: bold; margin-top: 20px;" class="union-result-title">Tabela Resultante (UNION):</p>
+                                <table class="demo-table" id="union-result-table" style="margin-top: 10px;">
+                                    <thead><tr><th>nome</th><th>email</th></tr></thead>
+                                    <tbody>
+                                        <tr class="highlighted"><td>Ana</td><td>ana@email.com</td></tr>
+                                        <tr class="highlighted"><td>Bruno</td><td>bruno@email.com</td></tr>
+                                        <tr class="highlighted"><td>Carlos</td><td>carlos@email.com</td></tr>
+                                    </tbody></table>`;
+                            demoWrapper.querySelector('.demo-table-wrapper').insertAdjacentHTML('beforeend', resultHtml);
+                        }, 1000);
+                        break;
+
+                    case 'self-join':
+                        const selfJoinTable = demoWrapper.querySelector('#self-join-table-1');
+                        selfJoinTable.querySelectorAll('tbody tr').forEach(r => r.classList.add('highlighted'));
+
+                        setTimeout(() => {
+                            const resultHtml = `
+                                <p style="text-align: center; color: #94a3b8; font-weight: bold; margin-top: 20px;" class="self-join-result-title">Tabela Resultante (SELF JOIN):</p>
+                                <table class="demo-table" id="self-join-result-table" style="margin-top: 10px; width: auto; margin-left: auto; margin-right: auto;">
+                                    <thead><tr><th>funcionario</th><th>gerente</th></tr></thead>
+                                    <tbody>
+                                        <tr class="highlighted"><td>Ana</td><td>Carlos</td></tr>
+                                        <tr class="highlighted"><td>Bruno</td><td>Carlos</td></tr>
+                                    </tbody></table>`;
+                            demoWrapper.querySelector('.demo-table-wrapper').insertAdjacentHTML('beforeend', resultHtml);
+                        }, 1000);
+                        break;
+
+                    case 'date-function':
+                        const dateTable = demoWrapper.querySelector('#date-source-table');
+                        const thirtyDaysAgo = new Date();
+                        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+                        dateTable.querySelectorAll('tbody tr').forEach(row => {
+                            const rowDate = new Date(row.dataset.date);
+                            // Adiciona 1 dia para incluir a data de hoje na comparação
+                            if (rowDate >= thirtyDaysAgo) {
+                                row.classList.add('highlighted');
+                            } else {
+                                row.classList.add('dimmed');
+                            }
+                        });
+                        break;
+
+                    case 'pivot':
+                        const pivotSourceTable = demoWrapper.querySelector('#pivot-source-table');
+                        pivotSourceTable.querySelectorAll('tbody tr').forEach(r => r.classList.add('highlighted'));
+
+                        setTimeout(() => {
+                            const resultHtml = `
+                                <p style="text-align: center; color: #94a3b8; font-weight: bold; margin-top: 20px;" class="pivot-result-title">Tabela Resultante (PIVOT):</p>
+                                <table class="demo-table" id="pivot-result-table" style="margin-top: 10px;">
+                                    <thead><tr><th>produto</th><th>Jan</th><th>Fev</th></tr></thead>
+                                    <tbody>
+                                        <tr class="highlighted"><td>Teclado</td><td>50</td><td>70</td></tr>
+                                        <tr class="highlighted"><td>Mouse</td><td>120</td><td>150</td></tr>
+                                    </tbody></table>`;
+                            demoWrapper.querySelector('.demo-table-wrapper').insertAdjacentHTML('beforeend', resultHtml);
+                        }, 1000);
+                        break;
+                }
+
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-redo"></i> Executar Novamente';
+                }, 2000);
+            });
+        });
+
+        // --- Lógica para Copiar SQL ---
+        document.querySelectorAll('.btn-copy-sql').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const targetId = e.currentTarget.getAttribute('data-target-id');
+                const codeElement = document.getElementById(targetId);
+                navigator.clipboard.writeText(codeElement.innerText).then(() => {
+                    e.currentTarget.classList.add('copied');
+                    setTimeout(() => {
+                        e.currentTarget.classList.remove('copied');
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Falha ao copiar query: ', err);
+                });
+            });
+        });
+
+        // --- Lógica para popular a tabela de datas dinamicamente ---
+        function populateDateTable() {
+            const tableBody = document.querySelector('#date-source-table tbody');
+            if (!tableBody) return;
+
+            const today = new Date();
+            const dates = [
+                { name: 'Mariana', date: new Date(today.setDate(today.getDate() - 5)) },   // Recente
+                { name: 'Lucas', date: new Date(today.setDate(today.getDate() - 40)) },  // Antigo
+                { name: 'Juliana', date: new Date(today.setDate(today.getDate() + 15)) }, // Recente (resetando a data)
+                { name: 'Rafael', date: new Date(today.setDate(today.getDate() - 90)) }   // Antigo
+            ];
+            
+            dates.forEach(item => {
+                const dateString = item.date.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+                tableBody.innerHTML += `<tr data-date="${dateString}"><td>${item.name}</td><td>${dateString}</td></tr>`;
+            });
+        }
+        populateDateTable();
 
         // Restaura as configurações de acessibilidade salvas
         ['a11y-large-text', 'a11y-dyslexia', 'a11y-no-animations', 'a11y-highlight-links'].forEach(feature => {
