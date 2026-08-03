@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Avançado: Diagnóstico e Análise | Flaviana Pina</title>
+    
+    <meta property="og:title" content="SQL Avançado: Queries para Diagnóstico e Análise">
+    <meta property="og:description" content="Explore queries complexas de SQL com exemplos interativos de LEFT JOIN, HAVING, CASE, Window Functions e mais.">
+    <meta property="og:image" content="https://flavianapina.com.br/site2.png">
+    <meta property="og:type" content="article">
+
+    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    
+    <style>
+        /* Estilos copiados do artigo anterior para manter a consistência */
+        .sql-example-wrapper {
+            background-color: #1e293b; border-radius: 8px; padding: 20px;
+            margin: 30px 0; border-left: 4px solid #a855f7;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2); text-align: left;
+        }
+        .sql-example-wrapper h3 { color: #f1f5f9; margin-top: 0; }
+        .sql-interactive-demo {
+            background-color: #0f172a; border: 1px solid #334155;
+            border-radius: 6px; margin-top: 20px; overflow: hidden;
+        }
+        .sql-query-header {
+            display: flex; align-items: stretch; background-color: #1e293b;
+            border-bottom: 1px solid #334155; position: relative;
+        }
+        .sql-query-display {
+            padding: 15px; font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 1rem; color: #f8fafc; white-space: pre-wrap; flex-grow: 1;
+        }
+        .sql-query-display code { color: #a855f7; font-weight: bold; }
+        .sql-query-display .table-name { color: #38bdf8; }
+        .sql-query-display .value { color: #a3e635; }
+
+        .toc-wrapper {
+            background-color: #1e293b; border-radius: 8px; padding: 20px;
+            margin: 30px 0; border-left: 4px solid #38bdf8;
+        }
+        .toc-wrapper h4 { margin-top: 0; color: #f1f5f9; border-bottom: 1px solid #334155; padding-bottom: 10px; }
+        .toc-wrapper ol {
+            list-style: none; padding: 0; display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 0;
+        }
+        .toc-wrapper ol li a {
+            display: block; padding: 10px; background-color: #334155; color: #f1f5f9;
+            text-decoration: none; border-radius: 4px; text-align: center; font-weight: bold;
+            transition: background-color 0.3s; font-size: 0.9rem;
+        }
+        .toc-wrapper ol li a:hover { background-color: #38bdf8; color: #0f172a; }
+        body.light-mode .toc-wrapper { background-color: #f1f5f9; border-left-color: #0284c7; }
+        body.light-mode .toc-wrapper h4 { color: #1e293b; border-bottom-color: #e2e8f0; }
+        body.light-mode .toc-wrapper ol li a { background-color: #e2e8f0; color: #334155; }
+        body.light-mode .toc-wrapper ol li a:hover { background-color: #0284c7; color: #ffffff; }
+        body.light-mode .sql-example-wrapper { background-color: #ffffff; border-left-color: #7e22ce; }
+        body.light-mode .sql-example-wrapper h3 { color: #1e293b; }
+    </style>
+</head>
+<body>
+    <div class="scroll-progress-container">
+        <div class="scroll-progress-bar" id="scroll-progress-bar"></div>
+    </div>
+
+    <nav>
+        <a href="index.html#articles" style="display: flex; align-items: center; gap: 8px;"><i class="fas fa-arrow-left"></i> Voltar aos Artigos</a>
+        <button id="theme-toggle" class="btn-theme" aria-label="Alternar Modo Claro/Escuro"><i class="fas fa-sun"></i></button>
+    </nav>
+
+    <main class="container article-content">
+        <div class="article-header">
+            <h1>SQL Avançado: Queries para Diagnóstico e Análise</h1>
+            <p>Um guia prático com exemplos interativos de queries complexas para resolver problemas reais de negócio, como análise de churn, relatórios gerenciais e auditoria de dados.</p>
+        </div>
+
+        <p>Se o nosso primeiro artigo de SQL foi o "cinto de utilidades" com as ferramentas essenciais, este é o seu "dicionário avançado". Aqui, vamos explorar cenários mais complexos que QAs e BAs enfrentam no dia a dia, especialmente em ambientes com grande volume de dados, como em projetos de telecomunicações ou do setor bancário.</p>
+        <p>Cada exemplo abaixo foi projetado para resolver um problema de negócio específico, transformando dados brutos em insights valiosos.</p>
+        
+        <!-- Índice de Navegação (TOC) -->
+        <div class="toc-wrapper">
+            <h4>Navegue pelos Comandos Avançados:</h4>
+            <ol>
+                <li><a href="#sql-left-join">1. LEFT JOIN</a></li>
+                <li><a href="#sql-having">2. HAVING</a></li>
+                <li><a href="#sql-case">3. CASE</a></li>
+                <li><a href="#sql-window-functions">4. Window Functions</a></li>
+                <li><a href="#sql-cte">5. CTEs</a></li>
+                <li><a href="#sql-subquery">6. Subqueries</a></li>
+                <li><a href="#sql-union">7. UNION</a></li>
+                <li><a href="#sql-self-join">8. Self-Join</a></li>
+                <li><a href="#sql-date-functions">9. Funções de Data</a></li>
+                <li><a href="#sql-pivot">10. Pivot</a></li>
+            </ol>
+        </div>
+
+        <!-- Seção de Exemplos (a ser preenchida) -->
+        <div id="advanced-sql-examples">
+            <p style="text-align: center; font-style: italic; color: #94a3b8; margin-top: 50px;">
+                <i class="fas fa-cogs"></i> Em breve: exemplos interativos para cada um dos tópicos acima serão adicionados aqui.
+            </p>
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+            <p><a href="index.html" style="color: #38bdf8; text-decoration: none;">&copy; 2026 - flavianapina.com.br</a> | Desenvolvido com <i class="fas fa-heart" style="color: #38bdf8;"></i> e Qualidade</p>
+        </div>
+    </footer>
+
+    <script>
+        // Lógica do Modo Claro / Escuro
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = themeToggleBtn.querySelector('i');
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+        }
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            themeIcon.classList.replace(isLight ? 'fa-sun' : 'fa-moon', isLight ? 'fa-moon' : 'fa-sun');
+        });
+
+        // Barra de Progresso
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollPercentage = (scrollTop / scrollHeight) * 100;
+            document.getElementById('scroll-progress-bar').style.width = scrollPercentage + '%';
+        });
+
+        // Restaura as configurações de acessibilidade salvas
+        ['a11y-large-text', 'a11y-dyslexia', 'a11y-no-animations', 'a11y-highlight-links'].forEach(feature => {
+            if (localStorage.getItem(feature) === 'true') {
+                document.documentElement.classList.add(feature);
+            }
+        });
+    </script>
+</body>
+</html>
