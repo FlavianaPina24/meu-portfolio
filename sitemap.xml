@@ -72,6 +72,18 @@
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://flavianapina.com.br/artigo-quem-sao-meus-usuarios.html</loc>
+    <lastmod>2024-08-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://flavianapina.com.br/artigo-ux-multiplataforma.html</loc>
+    <lastmod>2024-08-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
 
   <!-- Documentação -->
   <url>
