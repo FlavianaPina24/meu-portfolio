@@ -376,83 +376,107 @@
             </div>
         </section>
 
-        <section id="articles">
-            <h2>Artigos & Tutoriais</h2>
-            <div class="text-panel center" style="padding-top: 20px; padding-bottom: 20px;">
-                <p style="font-size: 1.1rem;"><i class="fas fa-book-open" style="margin-right: 8px; color: #38bdf8;"></i>Compartilhando conhecimento e ferramentas para ajudar a <strong>comunidade de tecnologia</strong> a desenvolver softwares com mais qualidade e segurança.</p>
-            </div>
-            <div class="grid-skills">
-                <div class="skill-card">               <h3>SQL Básico: Guia Interativo</h3>
-                    <p>Aprenda os comandos SQL essenciais com exemplos visuais e interativos. O ponto de partida perfeito para dominar a linguagem dos dados.</p>
-                    <a href="artigo-sql-validator.html" class="btn-link">Ler Artigo</a>
+        <section id="articles" class="container fade-in">
+            <div class="section-badge"><i class="fas fa-newspaper"></i> Artigos & Estudos</div>
+            <h2 class="section-title">Insights sobre Qualidade, Negócios e Tecnologia</h2>
+            <p class="section-subtitle">
+                Um espaço para compartilhar aprendizados, estudos de caso e reflexões sobre o universo da engenharia de software.
+            </p>
+        
+            <!-- Início do Carrossel de Artigos -->
+            <div class="articles-carousel-container">
+                <div class="articles-carousel-wrapper">
+                    <div class="articles-carousel-track">
+                        <!-- Card 1 -->
+                        <div class="skill-card">
+                            <h3><i class="fas fa-robot"></i> AI-Augmented QA</h3>
+                            <p>Como usei IA como "Pair Programmer" para construir meu Portfólio e Framework E2E.</p>
+                            <a href="artigo-ai-qa.html" class="btn-link" style="margin-top: 15px;">Ler Artigo</a>
+                        </div>
+                        <!-- Card 2 -->
+                        <div class="skill-card">
+                            <h3><i class="fas fa-universal-access"></i> Acessibilidade (A11y)</h3>
+                            <p>Muito além do layout: Acessibilidade na prática com Axe-Core e Playwright na esteira de CI/CD.</p>
+                            <a href="artigo-a11y-qa.html" class="btn-link" style="margin-top: 15px;">Ler Artigo</a>
+                        </div>
+                        <!-- Card 3 -->
+                        <div class="skill-card">
+                            <h3><i class="fas fa-users"></i> Quem são meus usuários?</h3>
+                            <p>O Guia (Bem-Humorado) de UX para BAs e QAs sobre empatia e design inclusivo.</p>
+                            <a href="artigo-quem-sao-meus-usuarios.html" class="btn-link" style="margin-top: 15px;">Ler Artigo</a>
+                        </div>
+                        <!-- Card 4 -->
+                        <div class="skill-card">
+                            <h3><i class="fas fa-mobile-alt"></i> UX Multiplataforma</h3>
+                            <p>A Visão Estratégica de UX, BA e QA para projetar experiências que brilham em qualquer tela.</p>
+                            <a href="artigo-ux-multiplataforma.html" class="btn-link" style="margin-top: 15px;">Ler Artigo</a>
+                        </div>
+                        <!-- Card 5 -->
+                        <div class="skill-card">
+                            <h3><i class="fas fa-database"></i> SQL Básico: Guia Interativo</h3>
+                            <p>Aprenda os comandos SQL essenciais com exemplos visuais e interativos para dominar a linguagem dos dados.</p>
+                            <a href="artigo-sql-validator.html" class="btn-link" style="margin-top: 15px;">Ler Artigo</a>
+                        </div>
+                        <!-- Card 6 -->
+                        <div class="skill-card">
+                            <h3><i class="fas fa-layer-group"></i> SQL Avançado: Diagnóstico</h3>
+                            <p>Queries complexas para resolver problemas de negócio, como análise de churn e auditoria de dados.</p>
+                            <a href="artigo-sql-avancado.html" class="btn-link" style="margin-top: 15px;">Ler Artigo</a>
+                        </div>
+                        <!-- Card 7 -->
+                        <div class="skill-card">
+                            <h3><i class="fas fa-shield-alt"></i> API para CNPJ Alfanumérico</h3>
+                            <p>A estratégia de automação de API para garantir a conformidade com o novo CNPJ, detalhando 22 cenários BDD.</p>
+                            <a href="artigo-amareco-testes.html" class="btn-link" style="margin-top: 15px;">Ler Artigo</a>
+                        </div>
+                        <!-- Card 8 -->
+                        <div class="skill-card">
+                            <h3><i class="fas fa-server"></i> Evolução de Arquitetura: MongoDB</h3>
+                            <p>Como transformei minha API em uma aplicação com Banco de Dados na nuvem e conceitos de Soft Delete.</p>
+                            <a href="artigo-mongodb-api.html" class="btn-link" style="margin-top: 15px;">Ler Artigo</a>
+                        </div>
+                        <!-- Card 9 -->
+                        <div class="skill-card">
+                            <h3><i class="fas fa-cloud-upload-alt"></i> DevSecOps: API Blindada</h3>
+                            <p>Como resolvi bloqueios de rede no Render, removi débitos técnicos e implementei um Honeypot anti-spam.</p>
+                            <a href="artigo-devsecops-api.html" class="btn-link" style="margin-top: 15px;">Ler Artigo</a>
+                        </div>
+                        <!-- Card 10 -->
+                        <div class="skill-card">
+                            <h3><i class="fas fa-tasks"></i> Gestão Ágil no Jira (Kanban)</h3>
+                            <p>Entenda o ciclo de vida completo de uma User Story e como organizo o fluxo de valor do Backlog ao Done.</p>
+                            <a href="artigo-jira-kanban.html" class="btn-link" style="margin-top: 15px;">Ler Artigo</a>
+                        </div>
+                        <!-- Card 11 -->
+                        <div class="skill-card">
+                            <h3><i class="fas fa-book"></i> Glossário de Business Analysis</h3>
+                            <p>Um guia de bolso prático sobre engenharia de requisitos: Framework INVEST, DoD, BRD, RTM e Modelagem Visual.</p>
+                            <a href="artigo-glossario-ba.html" class="btn-link" style="margin-top: 15px;">Ler Artigo</a>
+                        </div>
+                        <!-- Card 12 -->
+                        <div class="skill-card">
+                            <h3><i class="fas fa-cogs"></i> Boas Práticas em QA Automation</h3>
+                            <p>Dicas fundamentais que aprendi utilizando Robot Framework para garantir a estabilidade das aplicações web.</p>
+                            <a href="artigo-qa-automation.html" class="btn-link" style="margin-top: 15px;">Ler Artigo</a>
+                        </div>
+                        <!-- Card 13 -->
+                        <div class="skill-card">
+                            <h3><i class="fas fa-network-wired"></i> Guia de Testes de API</h3>
+                            <p>Um passo a passo completo sobre como estruturar seus primeiros testes de contrato e fluxo usando o Postman.</p>
+                            <a href="artigo-teste-api.html" class="btn-link" style="margin-top: 15px;">Ler Artigo</a>
+                        </div>
+                        <!-- Card 14 -->
+                        <div class="skill-card">
+                            <h3><i class="fas fa-database"></i> Gerenciamento de Dados (TDM)</h3>
+                            <p>Estratégias e exemplos práticos de SQL para Test Data Management, garantindo qualidade e conformidade.</p>
+                            <a href="artigo-tdm.html" class="btn-link" style="margin-top: 15px;">Ler Artigo</a>
+                        </div>
+                        <!-- Adicione mais cards de artigos aqui -->
+                    </div>
                 </div>
-                <div class="skill-card">
-                    <h3>SQL Avançado: Diagnóstico e Análise</h3>
-                    <p>Um guia com queries complexas para resolver problemas de negócio, como análise de churn, relatórios gerenciais e auditoria de dados.</p>
-                    <a href="artigo-sql-avancado.html" class="btn-link">Ler Artigo</a>
-                </div>
-                <div class="skill-card">
-                    <h3>API para Validação do CNPJ Alfanumérico</h3>
-                    <p>Um deep dive técnico na suíte de testes que garante a conformidade da API com o novo CNPJ alfanumérico do Brasil, detalhando 22 cenários em BDD.</p>
-                    <h3>Automação para o CNPJ Alfanumérico</h3>
-                    <p>A estratégia definitiva de automação de API para garantir a conformidade com o novo CNPJ alfanumérico, detalhando 22 cenários de teste em BDD.</p>
-                    <a href="artigo-amareco-testes.html" class="btn-link">Ler Artigo</a>
-                </div>
-                <div class="skill-card">
-                    <h3>Afinal, Quem São Meus Usuários?</h3>
-                    <p>Um guia (bem-humorado) de UX que usa a analogia de "dar uma festa" para explicar como entender as necessidades de todos os usuários.</p>
-                    <a href="artigo-quem-sao-meus-usuarios.html" class="btn-link">Ler Artigo</a>
-                </div>
-                <div class="skill-card">
-                    <h3>Projetando Experiências Multiplataforma</h3>
-                    <p>Uma análise estratégica sobre como garantir que seu produto seja excelente em qualquer tela, do desktop ao smartwatch, unindo UX, BA e QA.</p>
-                    <a href="artigo-ux-multiplataforma.html" class="btn-link">Ler Artigo</a>
-                </div>
-                <div class="skill-card">
-                    <h3>IA Blue Team & Defesa Híbrida</h3>
-                    <p>Como construí um ecossistema autônomo de cibersegurança com Machine Learning, Red Team simulado e Defesa em Profundidade.</p>
-                    <a href="artigo-ia-blue-team.html" class="btn-link">Ler Artigo</a>
-                </div>
-                <div class="skill-card">
-                    <h3>AI-Augmented QA (Pair Programming)</h3>
-                    <p>Como atuei estrategicamente com Inteligência Artificial para construir a arquitetura deste site e meu framework E2E em tempo recorde.</p>
-                    <a href="artigo-ai-qa.html" class="btn-link">Ler Artigo</a>
-                </div>
-                <div class="skill-card">
-                    <h3>Acessibilidade e Qualidade Inclusiva</h3>
-                    <p>Muito além do layout: como implementei Acessibilidade (A11y) interativa e auditei o código na esteira com Axe-Core e Playwright.</p>
-                    <a href="artigo-a11y-qa.html" class="btn-link">Ler Artigo</a>
-                </div>
-                <div class="skill-card">
-                    <h3>Evolução de Arquitetura: MongoDB</h3>
-                    <p>Como transformei minha API em uma aplicação com Banco de Dados na nuvem e conceitos de Soft Delete.</p>
-                    <a href="artigo-mongodb-api.html" class="btn-link">Ler Artigo</a>
-                </div>
-                <div class="skill-card">
-                    <h3>DevSecOps: API Blindada na Nuvem</h3>
-                    <p>Como resolvi bloqueios de rede no Render, removi débitos técnicos (Formspree) e implementei um Honeypot anti-spam.</p>
-                    <a href="artigo-devsecops-api.html" class="btn-link">Ler Artigo</a>
-                </div>
-                <div class="skill-card">
-                    <h3>Guia de Testes de API para Iniciantes</h3>
-                    <p>Um passo a passo completo sobre como estruturar seus primeiros testes de contrato e fluxo usando o Postman.</p>
-                    <a href="artigo-teste-api.html" class="btn-link">Ler Artigo</a>
-                </div>
-                <div class="skill-card">
-                    <h3>Boas Práticas em QA Automation</h3>
-                    <p>Dicas fundamentais que aprendi utilizando Robot Framework para garantir a estabilidade das aplicações web.</p>
-                    <a href="artigo-qa-automation.html" class="btn-link">Ler Artigo</a>
-                </div>
-                <div class="skill-card">
-                    <h3>Glossário de Business Analysis</h3>
-                    <p>Um guia de bolso prático sobre engenharia de requisitos: Framework INVEST, DoD, BRD, RTM e Modelagem Visual.</p>
-                    <a href="artigo-glossario-ba.html" class="btn-link">Ler Artigo</a>
-                </div>
-                <div class="skill-card">
-                    <h3>Gestão Ágil no Jira (Kanban)</h3>
-                    <p>Entenda o ciclo de vida completo de uma User Story e como organizo o fluxo de valor desde o Backlog até o Done.</p>
-                    <a href="artigo-jira-kanban.html" class="btn-link">Ler Artigo</a>
-                </div>
+                <button class="carousel-btn prev"><i class="fas fa-chevron-left"></i></button>
+                <button class="carousel-btn next"><i class="fas fa-chevron-right"></i></button>
+                <div class="carousel-dots"></div>
             </div>
         </section>
 
@@ -1383,6 +1407,85 @@
                 if (btn) btn.classList.add('active');
             }
         });
+
+    // Lógica para o Carrossel de Artigos
+    const track = document.querySelector('.articles-carousel-track');
+    if (track) {
+        const prevBtn = document.querySelector('.articles-carousel-container .prev');
+        const nextBtn = document.querySelector('.articles-carousel-container .next');
+        const cards = Array.from(track.children);
+        const dotsNav = document.querySelector('.articles-carousel-container .carousel-dots');
+        let cardWidth = cards.length > 0 ? cards[0].getBoundingClientRect().width + 20 : 0; // 20 é o gap
+
+        let currentIndex = 0;
+        let dots = [];
+
+        // --- Lógica dos Indicadores (Bolinhas) ---
+        const createDots = () => {
+            if (!dotsNav) return;
+            dotsNav.innerHTML = ''; // Limpa os dots existentes
+            const cardsToShow = window.innerWidth <= 768 ? 1 : 2;
+            const numDots = cards.length > cardsToShow ? cards.length - cardsToShow + 1 : 0;
+
+            for (let i = 0; i < numDots; i++) {
+                const dot = document.createElement('button');
+                dot.classList.add('carousel-dot');
+                if (i === currentIndex) dot.classList.add('active');
+                dotsNav.appendChild(dot);
+            }
+            dots = Array.from(dotsNav.children);
+        };
+
+        const updateDots = () => {
+            if (dots.length === 0) return;
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentIndex);
+            });
+        };
+
+        if (dotsNav) {
+            dotsNav.addEventListener('click', e => {
+                const targetDot = e.target.closest('button.carousel-dot');
+                if (!targetDot) return;
+
+                const targetIndex = dots.findIndex(dot => dot === targetDot);
+                currentIndex = targetIndex;
+                updateCarousel();
+            });
+        }
+        // --- Fim da Lógica dos Indicadores ---
+
+        function updateCarousel() {
+            if(track) track.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+            updateDots();
+        }
+
+        nextBtn.addEventListener('click', () => {
+            const cardsToShow = window.innerWidth <= 768 ? 1 : 2;
+            const maxIndex = cards.length - cardsToShow;
+            if (currentIndex < maxIndex) {
+                currentIndex++;
+                updateCarousel();
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateCarousel();
+            }
+        });
+
+        window.addEventListener('resize', () => { 
+            if(cards.length > 0) cardWidth = cards[0].getBoundingClientRect().width + 20; 
+            currentIndex = 0; 
+            createDots();
+            updateCarousel(); 
+        });
+
+        // Inicializa os dots
+        createDots();
+    }
     </script>
 </body>
 </html>
