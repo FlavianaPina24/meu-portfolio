@@ -123,6 +123,39 @@
         body.light-mode .btn-copy-code:hover { background-color: #0284c7; color: #ffffff; }
         body.light-mode .btn-copy-code.copied { background-color: #16a34a; color: #ffffff; }
     </style>
+    <style>
+        /* Estilos para o botão de copiar (consistente com outros artigos SQL) */
+        .btn-copy-sql {
+            background-color: transparent; color: #94a3b8; border: none; padding: 0 15px;
+            cursor: pointer; font-weight: bold; font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s; position: relative; border-left: 1px solid #334155;
+        }
+        .btn-copy-sql:hover { background-color: #334155; }
+        .btn-copy-sql .copy-icon, .btn-copy-sql .copied-feedback {
+            display: inline-flex; align-items: center; gap: 5px;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .btn-copy-sql .copied-feedback { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); opacity: 0; white-space: nowrap; }
+        .btn-copy-sql.copied { background-color: #22c55e; color: #fff; }
+        .btn-copy-sql.copied .copy-icon { opacity: 0; transform: scale(0.8); }
+        .btn-copy-sql.copied .copied-feedback { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        .btn-copy-sql.copied .fa-check { animation: pop-in 0.3s ease-out 0.1s; }
+        /* @keyframes pop-in já está definido acima, não precisa duplicar */
+
+        /* Estilos Light Mode para o botão de copiar */
+        body.light-mode .btn-copy-sql { background-color: transparent; color: #64748b; border-left-color: #e2e8f0; }
+        body.light-mode .btn-copy-sql:hover { background-color: #e2e8f0; }
+        body.light-mode .btn-copy-sql.copied { background-color: #16a34a; color: #ffffff; }
+    </style>
+    <style>
+        /* Estilos para as demos interativas (copiados dos outros artigos SQL) */
+        .demo-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-top: 10px; }
+        .demo-table th, .demo-table td { padding: 8px 12px; text-align: left; border: 1px solid #334155; }
+        .demo-table th { background-color: #1e293b; color: #94a3b8; }
+        .sql-actions { padding: 0 15px 15px 15px; display: flex; gap: 10px; }
+        .btn-run-query { background-color: #a855f7; color: #fff; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background-color 0.3s; }
+        .btn-run-query:hover { background-color: #9333ea; }
+    </style>
 </head>
 <body>
     <div class="scroll-progress-container">
@@ -189,38 +222,80 @@
         <p>Aqui estão algumas queries SQL que um QA/BA pode usar para gerenciar dados de teste:</p>
 
         <h3>4.1. Mascarando Dados Sensíveis (CPF/CNPJ)</h3>
-        <p>Para proteger a privacidade, podemos mascarar parte de um CPF ou CNPJ em um ambiente de teste.</p>
-        <div class="sql-code-block">
-            <code>UPDATE</code> <span class="table-name">clientes</span><br>
-            <code>SET</code> cpf = <code>CONCAT</code>(<code>SUBSTRING</code>(cpf, 1, 3), <span class="value">'***.***-'</span>, <code>SUBSTRING</code>(cpf, 11, 2))<br>
-            <code>WHERE</code> id = 123;<br><br>
-            <button class="btn-copy-code" data-target-id="sql-tdm-1" title="Copiar Query"><i class="far fa-copy"></i> Copiar</button>
+        <div class="sql-example-wrapper">
+            <p>Para proteger a privacidade em conformidade com a LGPD, uma das técnicas mais comuns é mascarar dados sensíveis, como o CPF, em ambientes de teste. A query abaixo demonstra como fazer isso, mantendo o formato do dado, mas tornando-o anônimo.</p>
+            <div class="sql-interactive-demo" data-demo-id="1">
+                <div class="sql-query-header">
+                    <div class="sql-query-display" id="sql-tdm-1"><code>UPDATE</code> <span class="table-name">clientes</span><br><code>SET</code> cpf = <code>CONCAT</code>(<code>SUBSTRING</code>(cpf, 1, 3), <span class="value">'.***.***-'</span>, <code>SUBSTRING</code>(cpf, 12, 2))<br><code>WHERE</code> id = 123;</div>
+                    <button class="btn-copy-sql" data-target-id="sql-tdm-1" title="Copiar Query">
+                        <span class="copy-icon"><i class="far fa-copy"></i> Copiar</span>
+                        <span class="copied-feedback"><i class="fas fa-check"></i> Copiado!</span>
+                    </button>
+                </div>
+                <div class="demo-table-wrapper">
+                    <table class="demo-table">
+                        <thead><tr><th>id</th><th>nome</th><th>cpf</th></tr></thead>
+                        <tbody><tr data-id="123"><td>123</td><td>João da Silva</td><td class="cell-to-update">123.456.789-00</td></tr></tbody>
+                    </table>
+                </div>
+                <div class="sql-actions">
+                    <button class="btn-run-query" data-action="update"><i class="fas fa-play"></i> Executar</button>
+                </div>
+            </div>
+            <p style="margin-top: 15px;"><em>Explicação:</em> Esta query atualiza o CPF do cliente com ID 123, substituindo os dígitos do meio por asteriscos. A função <code>CONCAT</code> une as partes, e <code>SUBSTRING</code> extrai trechos específicos da string original.</p>
         </div>
-        <p><em>Explicação:</em> Esta query atualiza o CPF do cliente com ID 123, substituindo os dígitos do meio por asteriscos, mantendo apenas os 3 primeiros e os 2 últimos. A função <code>CONCAT</code> une as partes, e <code>SUBSTRING</code> extrai trechos da string.</p>
 
         <h3>4.2. Gerando Usuários de Teste Sintéticos</h3>
-        <p>Para testar um fluxo de cadastro, precisamos de usuários únicos. Podemos gerar dados sintéticos diretamente via SQL.</p>
-        <div class="sql-code-block">
-            <code>INSERT INTO</code> <span class="table-name">usuarios</span> (nome, email, senha, data_cadastro)<br>
-            <code>VALUES</code> (<br>
-            &nbsp;&nbsp;<span class="value">'Teste '</span> || <code>FLOOR</code>(<code>RANDOM</code>() * 10000),<br>
-            &nbsp;&nbsp;<span class="value">'teste'</span> || <code>FLOOR</code>(<code>RANDOM</code>() * 10000) || <span class="value">'@exemplo.com'</span>,<br>
-            &nbsp;&nbsp;<span class="value">'senha123'</span>,<br>
-            &nbsp;&nbsp;<code>CURRENT_DATE</code><br>
-            );<br><br>
-            <button class="btn-copy-code" data-target-id="sql-tdm-2" title="Copiar Query"><i class="far fa-copy"></i> Copiar</button>
+        <div class="sql-example-wrapper">
+            <p>Para testar um fluxo de cadastro em massa ou garantir que cada teste de automação use um usuário único, podemos gerar dados sintéticos diretamente via SQL.</p>
+            <div class="sql-interactive-demo" data-demo-id="2">
+                <div class="sql-query-header">
+                    <div class="sql-query-display" id="sql-tdm-2"><code>INSERT INTO</code> <span class="table-name">usuarios</span> (nome, email, data_cadastro)<br><code>VALUES</code> (<br>  <span class="value">'Teste '</span> || <code>FLOOR</code>(<code>RANDOM</code>() * 10000),<br>  <span class="value">'teste'</span> || <code>FLOOR</code>(<code>RANDOM</code>() * 10000) || <span class="value">'@exemplo.com'</span>,<br>  <code>CURRENT_DATE</code><br>);</div>
+                    <button class="btn-copy-sql" data-target-id="sql-tdm-2" title="Copiar Query">
+                        <span class="copy-icon"><i class="far fa-copy"></i> Copiar</span>
+                        <span class="copied-feedback"><i class="fas fa-check"></i> Copiado!</span>
+                    </button>
+                </div>
+                <div class="demo-table-wrapper">
+                    <table class="demo-table">
+                        <thead><tr><th>id</th><th>nome</th><th>email</th><th>data_cadastro</th></tr></thead>
+                        <tbody id="insert-table"><tr><td>1</td><td>Usuário Base</td><td>base@email.com</td><td>2024-01-01</td></tr></tbody>
+                    </table>
+                </div>
+                <div class="sql-actions">
+                    <button class="btn-run-query" data-action="insert"><i class="fas fa-play"></i> Executar</button>
+                </div>
+            </div>
+            <p style="margin-top: 15px;"><em>Explicação:</em> Insere um novo usuário com nome e e-mail gerados aleatoriamente (usando <code>RANDOM()</code>) e a data de cadastro atual (<code>CURRENT_DATE</code>). O <code>||</code> é um operador de concatenação (pode ser `+` ou `CONCAT()` em outros dialetos SQL).</p>
         </div>
-        <p><em>Explicação:</em> Insere um novo usuário com nome e e-mail gerados aleatoriamente (usando <code>RANDOM()</code> e <code>FLOOR()</code> para números inteiros) e a data de cadastro atual (<code>CURRENT_DATE</code>). O <code>||</code> é um operador de concatenação em alguns SQLs (pode ser `+` ou `CONCAT()` em outros).</p>
 
         <h3>4.3. Limpando Tabelas para Novo Ciclo de Teste</h3>
-        <p>Após uma bateria de testes, é comum precisar "resetar" o ambiente para um estado inicial limpo e conhecido.</p>
-        <div class="sql-code-block">
-            <code>TRUNCATE TABLE</code> <span class="table-name">pedidos</span>;<br>
-            <code>TRUNCATE TABLE</code> <span class="table-name">itens_pedido</span>;<br>
-            <code>DELETE FROM</code> <span class="table-name">clientes</span> <code>WHERE</code> id > 1000; <span class="comment">-- Mantém clientes base</span><br><br>
-            <button class="btn-copy-code" data-target-id="sql-tdm-3" title="Copiar Query"><i class="far fa-copy"></i> Copiar</button>
+        <div class="sql-example-wrapper">
+            <p>Após uma bateria de testes, é comum precisar "resetar" o ambiente para um estado inicial limpo e conhecido, garantindo a repetibilidade dos testes.</p>
+            <div class="sql-interactive-demo" data-demo-id="3">
+                <div class="sql-query-header">
+                    <div class="sql-query-display" id="sql-tdm-3"><code>DELETE FROM</code> <span class="table-name">clientes</span> <code>WHERE</code> id > 1000; <span class="comment">-- Mantém clientes base</span></div>
+                    <button class="btn-copy-sql" data-target-id="sql-tdm-3" title="Copiar Query">
+                        <span class="copy-icon"><i class="far fa-copy"></i> Copiar</span>
+                        <span class="copied-feedback"><i class="fas fa-check"></i> Copiado!</span>
+                    </button>
+                </div>
+                <div class="demo-table-wrapper">
+                    <table class="demo-table">
+                        <thead><tr><th>id</th><th>nome</th><th>status</th></tr></thead>
+                        <tbody>
+                            <tr data-id="999"><td>999</td><td>Cliente Base 1</td><td>Ativo</td></tr>
+                            <tr data-id="1000"><td>1000</td><td>Cliente Base 2</td><td>Ativo</td></tr>
+                            <tr data-id="1001" class="row-to-delete"><td>1001</td><td>Cliente Teste</td><td>Pendente</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="sql-actions">
+                    <button class="btn-run-query" data-action="delete"><i class="fas fa-play"></i> Executar</button>
+                </div>
+            </div>
+            <p style="margin-top: 15px;"><em>Explicação:</em> O comando <code>DELETE FROM</code> remove registros que atendem a uma condição, permitindo manter um conjunto de dados base (neste caso, os clientes com ID até 1000). Para limpar tabelas inteiras, o comando <code>TRUNCATE TABLE</code> é ainda mais eficiente.</p>
         </div>
-        <p><em>Explicação:</em> <code>TRUNCATE TABLE</code> remove todos os registros de uma tabela de forma muito eficiente (e irreversível). <code>DELETE FROM</code> remove registros que atendem a uma condição, permitindo manter um conjunto de dados base (neste caso, os primeiros 1000 clientes).</p>
 
         <h2 id="conclusao"><i class="fas fa-check-circle" style="margin-right: 10px; color: #38bdf8;"></i>Conclusão</h2>
         <p>O Gerenciamento de Dados de Teste é um pilar fundamental para a excelência em QA. Ao dominar as estratégias e ferramentas (incluindo SQL), você não apenas garante a qualidade do software, mas também acelera o ciclo de desenvolvimento, reduz custos e assegura a conformidade com as regulamentações de privacidade. Um QA com forte conhecimento em TDM é um ativo estratégico para qualquer equipe.</p>
@@ -263,23 +338,78 @@
         });
 
         // --- Lógica para Copiar SQL ---
-        document.querySelectorAll('.btn-copy-code').forEach(button => {
+        document.querySelectorAll('.btn-copy-sql').forEach(button => {
             button.addEventListener('click', (e) => {
                 const targetId = e.currentTarget.getAttribute('data-target-id');
-                const codeElement = document.getElementById(targetId).closest('.sql-code-block'); // Pega o bloco pai
-                const codeText = codeElement.innerText.replace(/\s*Copiar\s*$/, '').trim(); // Remove o texto do botão
+                const codeElement = document.getElementById(targetId);
                 
-                navigator.clipboard.writeText(codeText).then(() => {
+                navigator.clipboard.writeText(codeElement.innerText).then(() => {
                     e.currentTarget.classList.add('copied');
-                    const originalIcon = e.currentTarget.innerHTML;
-                    e.currentTarget.innerHTML = '<i class="fas fa-check"></i> Copiado!';
                     setTimeout(() => {
                         e.currentTarget.classList.remove('copied');
-                        e.currentTarget.innerHTML = originalIcon;
                     }, 2000);
                 }).catch(err => {
                     console.error('Falha ao copiar query: ', err);
                 });
+            });
+        });
+
+        // --- Lógica das Demos Interativas de SQL (TDM) ---
+        document.querySelectorAll('.btn-run-query').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const btn = e.currentTarget;
+                const action = btn.dataset.action;
+                const demoWrapper = btn.closest('.sql-interactive-demo');
+                
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Executando...';
+
+                // Reseta estados visuais
+                demoWrapper.querySelectorAll('.demo-table tr').forEach(row => {
+                    row.style.backgroundColor = '';
+                    row.style.textDecoration = '';
+                    row.style.opacity = '1';
+                });
+                demoWrapper.querySelectorAll('.cell-to-update').forEach(cell => {
+                    cell.style.backgroundColor = '';
+                });
+
+                // Lógica para cada ação
+                switch(action) {
+                    case 'update':
+                        const cellToUpdate = demoWrapper.querySelector('.cell-to-update');
+                        if (cellToUpdate) {
+                            cellToUpdate.style.backgroundColor = 'rgba(234, 179, 8, 0.3)';
+                            cellToUpdate.textContent = '123.***.***-00';
+                        }
+                        break;
+
+                    case 'insert':
+                        const tbodyInsert = demoWrapper.querySelector('#insert-table');
+                        const newRow = document.createElement('tr');
+                        const randomId = Math.floor(Math.random() * 10000);
+                        newRow.innerHTML = `<td>${tbodyInsert.rows.length + 1}</td><td>Teste ${randomId}</td><td>teste${randomId}@exemplo.com</td><td>${new Date().toISOString().split('T')[0]}</td>`;
+                        newRow.style.opacity = '0';
+                        tbodyInsert.appendChild(newRow);
+                        setTimeout(() => {
+                            newRow.style.opacity = '1';
+                            newRow.style.backgroundColor = 'rgba(168, 85, 247, 0.2)';
+                        }, 100);
+                        break;
+
+                    case 'delete':
+                        const rowToDelete = demoWrapper.querySelector('.row-to-delete');
+                        if (rowToDelete) {
+                            rowToDelete.style.textDecoration = 'line-through';
+                            rowToDelete.style.opacity = '0.3';
+                        }
+                        break;
+                }
+
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-redo"></i> Executar Novamente';
+                }, 2000);
             });
         });
 
