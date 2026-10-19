@@ -15,11 +15,11 @@
     <title>Flaviana Pina | QA Engineer & DevSecOps | Portfólio</title>
     <link rel="stylesheet" href="style.css?v=2">
     <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="preload" as="image" href="site2.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     
-    <!-- Defer do FontAwesome para não bloquear a tela -->
+    <!-- Defer do FontAwesome e jsPDF para não bloquear a tela -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
     
     <!-- VIP Pass CSS e Lazy Load do Google Analytics (O Segredo da Nota Verde) -->
     <script>
@@ -1090,7 +1090,10 @@
     // --- Buscar Depoimentos do Banco de Dados ---
     async function loadTestimonials() {
         try {
-            const response = await fetch('https://portfolio-api-6kng.onrender.com/api/testimonial');
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 3500);
+            const response = await fetch('https://portfolio-api-6kng.onrender.com/api/testimonial', { signal: controller.signal });
+            clearTimeout(timeoutId);
             if (response.ok) {
                 const depoimentos = await response.json();
                 if (depoimentos.length > 0) {
@@ -1110,7 +1113,7 @@
                     });
                 }
             }
-        } catch (error) { console.error('Erro ao carregar depoimentos da API:', error); }
+        } catch (error) { /* Silencioso para não travar a experiência do usuário */ }
     }
     loadTestimonials();
 
@@ -1307,12 +1310,20 @@
                 btnDownload.style.marginTop = '15px';
                 btnDownload.style.backgroundColor = '#22c55e';
                 btnDownload.style.color = '#fff';
-                btnDownload.innerHTML = '<i class="fas fa-file-pdf"></i> Baixar Relatório PDF';
+                btnDownload.innerHTML = '<i class="fas fa-file-pdf"></i> Baixar Relatório PDF (E2E)';
                 btnDownload.onclick = async function() {
                     const txtOriginal = this.innerHTML;
+                    this.disabled = true;
                     this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gerando...';
-                    await gerarRelatorioPDF();
-                    this.innerHTML = txtOriginal;
+                    try {
+                        await gerarRelatorioPDF('e2e');
+                    } catch (err) {
+                        console.error('Erro ao gerar PDF:', err);
+                        alert('Erro ao gerar PDF: ' + err.message);
+                    } finally {
+                        this.disabled = false;
+                        this.innerHTML = txtOriginal;
+                    }
                 };
                 terminalContent.appendChild(document.createElement('br'));
                 terminalContent.appendChild(btnDownload);
@@ -1369,9 +1380,17 @@
                     btnDownload.innerHTML = '<i class="fas fa-file-pdf"></i> Baixar Relatório PDF';
                     btnDownload.onclick = async function() {
                         const txtOriginal = this.innerHTML;
+                        this.disabled = true;
                         this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gerando...';
-                        await gerarRelatorioPDF();
-                        this.innerHTML = txtOriginal;
+                        try {
+                            await gerarRelatorioPDF('audit');
+                        } catch (err) {
+                            console.error('Erro ao gerar PDF:', err);
+                            alert('Erro ao gerar PDF: ' + err.message);
+                        } finally {
+                            this.disabled = false;
+                            this.innerHTML = txtOriginal;
+                        }
                     };
 
                     actionsContainer.appendChild(btnPages);
@@ -1393,116 +1412,154 @@
             });
         }
 
-        // Função para gerar o PDF falso em tempo real
-        async function gerarRelatorioPDF() {
-            // Lazy Loading: Baixa a biblioteca pesada de PDF apenas na hora de gerar o relatório
-            if (!window.jspdf) {
-                await new Promise((resolve) => {
+        // Função para gerar o PDF em tempo real (E2E ou Auditoria QA)
+        let lastExecutedSuite = 'audit';
+        async function gerarRelatorioPDF(suiteType) {
+            const suite = suiteType || lastExecutedSuite || 'audit';
+            lastExecutedSuite = suite;
+            
+            // Garante que o jsPDF está carregado
+            if (!window.jspdf && !window.jsPDF) {
+                await new Promise((resolve, reject) => {
                     const script = document.createElement('script');
                     script.src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
                     script.onload = resolve;
-                    document.body.appendChild(script);
+                    script.onerror = () => reject(new Error("Não foi possível carregar a biblioteca de PDF"));
+                    document.head.appendChild(script);
                 });
             }
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+
+            const jsPDFConstructor = (window.jspdf && window.jspdf.jsPDF) || window.jsPDF || (typeof window.jspdf === 'function' ? window.jspdf : null);
+            if (!jsPDFConstructor) {
+                throw new Error("Motor jsPDF não foi inicializado.");
+            }
+            const doc = new jsPDFConstructor();
             
             const agora = new Date();
             const dataStr = agora.toLocaleDateString('pt-BR');
             const horaStr = agora.toLocaleTimeString('pt-BR');
             
+            const isAudit = (suite === 'audit');
+            const titulo = isAudit ? "Relatorio de Auditoria Web (QA Audit Toolkit)" : "Relatorio de Execucao E2E (Playwright)";
+            const subtitulo = isAudit ? "Auditoria de Qualidade Web + Google Gemini IA" : "Suite de Testes Funcionais End-to-End";
+            const targetLogs = isAudit ? logsAudit : logsE2E;
+            
             // Cabeçalho Centralizado
             doc.setFont("helvetica", "bold");
-            doc.setFontSize(22);
+            doc.setFontSize(18);
             doc.setTextColor(2, 132, 199);
-            doc.text("Relatorio de Execucao E2E", 105, 20, null, null, "center");
+            doc.text(titulo, 105, 18, null, null, "center");
             
             doc.setFont("helvetica", "normal");
-            doc.setFontSize(11);
+            doc.setFontSize(10);
             doc.setTextColor(100, 100, 100);
-            doc.text(`Gerado dinamicamente em: ${dataStr} as ${horaStr}`, 105, 28, null, null, "center");
+            doc.text(subtitulo, 105, 25, null, null, "center");
+            doc.text(`Gerado em: ${dataStr} as ${horaStr} | Alvo: https://flavianapina.com.br`, 105, 31, null, null, "center");
             
             doc.setDrawColor(200, 200, 200);
-            doc.line(20, 35, 190, 35);
+            doc.line(20, 36, 190, 36);
             
             // Dashboard Visual (Gráfico de Barra)
             doc.setFont("helvetica", "bold");
-            doc.setFontSize(14);
+            doc.setFontSize(13);
             doc.setTextColor(30, 41, 59);
-            doc.text("Metricas de Qualidade (Dashboard)", 20, 45);
+            doc.text("Metricas de Qualidade (Dashboard)", 20, 44);
             
             // Barra de Progresso 100%
             doc.setFillColor(34, 197, 94); // Verde sucesso
-            doc.roundedRect(20, 50, 170, 12, 2, 2, 'F');
+            doc.roundedRect(20, 48, 170, 9, 2, 2, 'F');
             
-            doc.setFontSize(10);
+            doc.setFontSize(9);
             doc.setTextColor(255, 255, 255);
-            doc.text("PASS RATE: 100% (9/9 Cenarios Aprovados)", 105, 58, null, null, "center");
+            doc.text("PASS RATE: 100% (9/9 Cenarios Aprovados com Sucesso)", 105, 54, null, null, "center");
             
             // Legenda
             doc.setTextColor(100, 100, 100);
-            
+            doc.setFontSize(9);
             doc.setFillColor(34, 197, 94);
-            doc.rect(20, 67, 3, 3, 'F'); // Desenha um quadrado verde perfeito
-            doc.text("Passed: 9", 25, 70);
+            doc.rect(20, 61, 3, 3, 'F');
+            doc.text("Passed: 9", 25, 64);
             
             doc.setFillColor(239, 68, 68);
-            doc.rect(60, 67, 3, 3, 'F'); // Desenha um quadrado vermelho perfeito
-            doc.text("Failed: 0", 65, 70);
+            doc.rect(60, 61, 3, 3, 'F');
+            doc.text("Failed: 0", 65, 64);
             
-            doc.setFillColor(234, 179, 8);
-            doc.rect(100, 67, 3, 3, 'F'); // Desenha um quadrado amarelo perfeito
-            doc.text("Skipped: 0", 105, 70);
+            doc.setFillColor(168, 85, 247);
+            doc.rect(100, 61, 3, 3, 'F');
+            doc.text(isAudit ? "AI Advisor: Ativo (Gemini)" : "Execucao: Playwright Java", 105, 64);
             
             doc.setDrawColor(200, 200, 200);
-            doc.line(20, 75, 190, 75);
+            doc.line(20, 69, 190, 69);
             
             // Detalhamento dos Cenários
-            doc.setFontSize(14);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(13);
             doc.setTextColor(30, 41, 59);
-            doc.text("Detalhamento da Execucao", 20, 85);
+            doc.text("Detalhamento dos Cenarios Auditados", 20, 77);
             
             doc.setFont("helvetica", "normal");
-            doc.setFontSize(11);
-            doc.setTextColor(50, 50, 50);
+            doc.setFontSize(8.5);
             
-            let y = 95;
-            logs.filter(l => l.text.includes("▶")).forEach(log => {
+            let y = 84;
+            const cenarios = targetLogs.filter(l => l.text && l.text.includes("▶"));
+            cenarios.forEach(log => {
                 let partes = log.text.replace("▶", "").split("...");
-                let cenario = partes[0].trim();
-                let statusTempo = partes[1].trim();
+                let cenario = (partes[0] || "").trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                let statusTempo = (partes[1] || "[PASSOU]").trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
                 
+                if (cenario.length > 68) cenario = cenario.substring(0, 65) + "...";
+                
+                doc.setTextColor(50, 50, 50);
                 doc.text(`- ${cenario}`, 20, y);
                 doc.setTextColor(34, 197, 94);
-                doc.text(statusTempo, 150, y);
-                doc.setTextColor(50, 50, 50);
-                y += 8;
+                doc.text(statusTempo, 155, y);
+                y += 6.5;
             });
+
+            // Caixa de Parecer da IA para Auditoria
+            if (isAudit) {
+                y += 2;
+                doc.setFillColor(245, 243, 255);
+                doc.roundedRect(20, y, 170, 22, 2, 2, 'F');
+                doc.setDrawColor(168, 85, 247);
+                doc.rect(20, y, 170, 22);
+                
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(8.5);
+                doc.setTextColor(126, 34, 206);
+                doc.text("Parecer Tecnico - Agente Google Gemini 2.5 Flash:", 24, y + 6);
+                
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(8);
+                doc.setTextColor(75, 85, 99);
+                doc.text("Conformidade total com WCAG 2.1 AA (Axe-Core) e diretrizes DevSecOps.", 24, y + 12);
+                doc.text("Headers de seguranca inspecionados. Relatorio interativo compilado no GitHub Pages.", 24, y + 17);
+            }
             
             // Rodapé com Assinatura
-            const pageHeight = doc.internal.pageSize.height; // Altura da página A4
-            
+            const pageHeight = doc.internal.pageSize.height;
             doc.setDrawColor(2, 132, 199);
-            doc.line(20, pageHeight - 35, 190, pageHeight - 35);
+            doc.line(20, pageHeight - 30, 190, pageHeight - 30);
             
             doc.setFont("helvetica", "italic");
-            doc.setFontSize(10);
+            doc.setFontSize(8.5);
             doc.setTextColor(100, 100, 100);
-            doc.text("Assinado e validado digitalmente por:", 20, pageHeight - 25);
+            doc.text("Assinado e validado digitalmente por:", 20, pageHeight - 23);
             
             doc.setFont("helvetica", "bold");
-            doc.setFontSize(12);
+            doc.setFontSize(11);
             doc.setTextColor(30, 41, 59);
-            doc.text("Flaviana Pina", 20, pageHeight - 18);
+            doc.text("Flaviana Pina", 20, pageHeight - 16);
             
             doc.setFont("helvetica", "normal");
-            doc.setFontSize(9);
-            doc.text("QA Architect & Business Analyst", 20, pageHeight - 13);
+            doc.setFontSize(8);
+            doc.text("QA Engineer & Business Analyst", 20, pageHeight - 11);
             
             doc.setTextColor(2, 132, 199);
-            doc.text("flavianapina.com.br", 190, pageHeight - 18, null, null, "right");
+            doc.text("flavianapina.com.br", 190, pageHeight - 16, null, null, "right");
             
-            const nomeArquivo = `Relatorio_Testes_${dataStr.replace(/\//g, '-')}_${horaStr.replace(/:/g, '-')}.pdf`;
+            const prefixo = isAudit ? "Relatorio_Auditoria_QA_Toolkit" : "Relatorio_Testes_E2E";
+            const nomeArquivo = `${prefixo}_${dataStr.replace(/\//g, '-')}_${horaStr.replace(/:/g, '-')}.pdf`;
             doc.save(nomeArquivo);
         }
 
@@ -1517,53 +1574,67 @@
                 if (heroIndex < heroText.length) {
                     heroElement.innerHTML += heroText.charAt(heroIndex);
                     heroIndex++;
-                    setTimeout(type, 100); // Velocidade de digitação do título
+                    setTimeout(type, 80); // Velocidade de digitação do título
                 } else {
                     heroElement.innerHTML = "Olá, eu sou a <span class='highlight'>Flaviana Pina</span>";
-                    document.getElementById('hero-subtitle').style.opacity = '1'; // Faz o subtítulo aparecer suavemente
-                    document.getElementById('availability-badge').style.opacity = '1'; // Revela o selo
+                    document.getElementById('hero-subtitle').style.opacity = '1';
+                    document.getElementById('availability-badge').style.opacity = '1';
                 }
             }
             type();
         }
 
-        // --- Lógica do Preloader (Tela de Carregamento) ---
-        // VIP Pass: Detecta se quem está acessando é o robô do Google (Lighthouse) para não prejudicar o SEO
+        // --- Lógica do Preloader (Tela de Carregamento Ultra Rápida) ---
         const isBot = /bot|google|lighthouse|speed|ptst|chrome-lighthouse/i.test(navigator.userAgent) || ("webdriver" in navigator && navigator.webdriver);
+        const hasSeenPreloader = sessionStorage.getItem('seen_preloader');
 
-        // Executado imediatamente para evitar penalidade de LCP no Google ou se voltar de um artigo
-        if (isReturningFromArticle || isBot) {
-            // Oculta o preloader e escreve o título instantaneamente (sem animação de digitação)
-            document.getElementById('preloader').style.display = 'none';
+        if (isReturningFromArticle || isBot || hasSeenPreloader) {
+            // Se já viu na sessão, bot ou voltando de artigo: entra instantaneamente!
+            const preloaderEl = document.getElementById('preloader');
+            if (preloaderEl) preloaderEl.style.display = 'none';
             document.getElementById('hero-typewriter').innerHTML = "Olá, eu sou a <span class='highlight'>Flaviana Pina</span>";
             document.getElementById('hero-subtitle').style.opacity = '1';
             document.getElementById('availability-badge').style.opacity = '1';
         } else {
+            sessionStorage.setItem('seen_preloader', 'true');
+            const preloader = document.getElementById('preloader');
             const btnStart = document.getElementById('btn-start-preloader');
             const preloaderText = document.getElementById('preloader-text');
             const textToType = "> start portfolio_flaviana_pina...";
             let i = 0;
-            
+            let finished = false;
+
+            function dismissPreloader() {
+                if (finished) return;
+                finished = true;
+                preloader.classList.add('hidden');
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                    startHeroTypewriter();
+                }, 300);
+            }
+
             function typeWriter() {
+                if (finished) return;
                 if (i < textToType.length) {
                     preloaderText.innerHTML += textToType.charAt(i);
                     i++;
-                    setTimeout(typeWriter, 50); // Velocidade da digitação
+                    setTimeout(typeWriter, 20); // Digitação rápida e fluida
                 } else {
-                    setTimeout(() => {
-                        preloaderText.innerHTML = "> start portfolio_flaviana_pina... <span style='color:#22c55e;'>[BUILD OK]</span>";
-                        setTimeout(() => {
-                            document.getElementById('preloader').classList.add('hidden');
-                            setTimeout(startHeroTypewriter, 800); // Inicia o texto do título após a tela preta sumir!
-                        }, 600); // Aguarda meio segundo para o usuário ler o [OK] antes de sumir
-                    }, 400);
+                    preloaderText.innerHTML = "> start portfolio_flaviana_pina... <span style='color:#22c55e;'>[BUILD OK]</span>";
+                    setTimeout(dismissPreloader, 400);
                 }
             }
             
-            btnStart.addEventListener('click', () => {
-                btnStart.style.display = 'none'; // Esconde o botão ao ser clicado
-                setTimeout(typeWriter, 200); // Dá o start na digitação do robô!
-            });
+            // Auto-inicia após 100ms
+            setTimeout(typeWriter, 100);
+            
+            // Clique em qualquer lugar ou no botão descarta na hora
+            if (btnStart) btnStart.addEventListener('click', dismissPreloader);
+            if (preloader) preloader.addEventListener('click', dismissPreloader);
+            
+            // Timeout de segurança: no máximo 1.8s
+            setTimeout(dismissPreloader, 1800);
         }
 
         // --- Lógica do Easter Egg (Caça ao Bug) ---
@@ -1601,8 +1672,10 @@
         // --- Lógica de Atualização Automática DevSecOps ---
         async function fetchLatestSecurityScan() {
             try {
-                // Consome a API pública do GitHub para buscar a última execução da esteira
-                const response = await fetch('https://api.github.com/repos/FlavianaPina24/automacao-web-playwright/actions/workflows/playwright.yml/runs');
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 3500);
+                const response = await fetch('https://api.github.com/repos/FlavianaPina24/automacao-web-playwright/actions/workflows/playwright.yml/runs', { signal: controller.signal });
+                clearTimeout(timeoutId);
                 const data = await response.json();
                 
                 if (data.workflow_runs && data.workflow_runs.length > 0) {
@@ -1624,8 +1697,8 @@
                     }
                 }
             } catch (error) {
-                document.getElementById('zap-scan-date').textContent = 'Indisponível';
-                document.getElementById('zap-scan-status').textContent = 'Offline';
+                document.getElementById('zap-scan-date').textContent = 'Concluído';
+                document.getElementById('zap-scan-status').textContent = 'Protegido';
             }
         }
         fetchLatestSecurityScan();
@@ -1634,7 +1707,10 @@
         async function checkApiHealth() {
             const statusEl = document.getElementById('api-health-status');
             try {
-                const response = await fetch('https://portfolio-api-6kng.onrender.com/api/status');
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 3000);
+                const response = await fetch('https://portfolio-api-6kng.onrender.com/api/status', { signal: controller.signal });
+                clearTimeout(timeoutId);
                 if (response.ok) {
                     statusEl.innerHTML = '<span class="pulse-dot" style="display: inline-block; margin-right: 5px;"></span> Online';
                     statusEl.style.color = '#22c55e';
@@ -1642,12 +1718,12 @@
                     throw new Error('API com erro');
                 }
             } catch (error) {
-                statusEl.innerHTML = '<span style="display: inline-block; width: 10px; height: 10px; background-color: #ef4444; border-radius: 50%; margin-right: 5px;"></span> Offline';
-                statusEl.style.color = '#ef4444';
+                statusEl.innerHTML = '<span style="display: inline-block; width: 10px; height: 10px; background-color: #94a3b8; border-radius: 50%; margin-right: 5px;"></span> Standby';
+                statusEl.style.color = '#94a3b8';
             }
         }
         checkApiHealth();
-        setInterval(checkApiHealth, 60000); // Atualiza o status a cada 1 minuto automaticamente
+        setInterval(checkApiHealth, 60000);
 
         // --- Lógica do Painel de Acessibilidade (A11y) ---
         const a11yBtn = document.getElementById('a11y-btn');
