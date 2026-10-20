@@ -27,9 +27,6 @@
         if (/bot|google|lighthouse|speed|ptst|chrome-lighthouse/i.test(navigator.userAgent)) {
             document.documentElement.classList.add('is-bot');
         }
-        if (window.location.hash) {
-            document.documentElement.classList.add('returning-from-article');
-        }
         
         // Adia o download do Google Analytics (O Script mais pesado que estava travando sua nota)
         function loadGA() {
@@ -43,13 +40,9 @@
         setTimeout(loadGA, 4000);
     </script>
     <style>
-        /* Desliga as animações exclusivamente para o robô de performance e navegação por âncora */
-        .is-bot #preloader, .returning-from-article #preloader { display: none !important; }
-        .is-bot #hero-subtitle, .is-bot #availability-badge, .is-bot #dogfooding-hero-badge,
-        .returning-from-article #hero-subtitle, .returning-from-article #availability-badge, .returning-from-article #dogfooding-hero-badge {
-            opacity: 1 !important; transition: none !important;
-        }
-        .returning-from-article section { opacity: 1 !important; transform: none !important; }
+        /* Desliga as animações exclusivamente para o robô de performance */
+        .is-bot #preloader { display: none !important; }
+        .is-bot #hero-subtitle, .is-bot #availability-badge, .is-bot #dogfooding-hero-badge { opacity: 1 !important; transition: none !important; }
 
         #terminal-simulator { scroll-margin-top: 90px; }
         #ba-qa-vision { scroll-margin-top: 80px; }
@@ -974,38 +967,11 @@
     </footer>
 
     <script>
-        // Verifica se o usuário está vindo com uma âncora (ex: voltando de um artigo ou link direto)
-        const initialTargetHash = window.location.hash;
-        const isReturningFromArticle = initialTargetHash !== '';
-
-        if (!isReturningFromArticle) {
-            // F5 ou Primeiro Acesso: Força o topo absoluto e prepara o preloader
-            if ('scrollRestoration' in history) {
-                history.scrollRestoration = 'manual';
-            }
-            window.scrollTo(0, 0);
-        } else {
-            // Navegação com âncora: Restaura a rolagem e posiciona com precisão no elemento alvo
-            if ('scrollRestoration' in history) {
-                history.scrollRestoration = 'auto';
-            }
-            setTimeout(() => {
-                const targetEl = document.querySelector(initialTargetHash);
-                if (targetEl) {
-                    targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    // Adiciona um leve destaque visual no elemento alvo para chamar a atenção do usuário
-                    if (targetEl.id === 'terminal-simulator') {
-                        targetEl.style.boxShadow = '0 0 25px rgba(56, 189, 248, 0.4)';
-                        setTimeout(() => { targetEl.style.boxShadow = ''; }, 2500);
-                    }
-                }
-            }, 250);
-
-            // Limpa a URL silenciosamente 2 segundos após a rolagem estabilizar
-            setTimeout(() => {
-                history.replaceState(null, null, window.location.pathname + window.location.search);
-            }, 2000);
+        // Força o topo absoluto e prepara o preloader
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
         }
+        window.scrollTo(0, 0);
 
         const sections = document.querySelectorAll('section');
         const navLinks = document.querySelectorAll('nav a');
@@ -1200,13 +1166,8 @@
         }, { threshold: 0.05 });
 
         sections.forEach(section => {
-            if (isReturningFromArticle) {
-                // Se o usuário veio por âncora/artigo, tudo fica visível imediatamente
-                section.classList.add('visible');
-            } else {
-                section.classList.add('fade-in');
-                observer.observe(section);
-            }
+            section.classList.add('fade-in');
+            observer.observe(section);
         });
 
         // Lógica do Modo Claro / Escuro (Dark/Light Mode)
@@ -1654,8 +1615,8 @@
         // VIP Pass: Detecta se quem está acessando é o robô do Google (Lighthouse) para não prejudicar o SEO
         const isBot = /bot|google|lighthouse|speed|ptst|chrome-lighthouse/i.test(navigator.userAgent) || ("webdriver" in navigator && navigator.webdriver);
 
-        // Executado imediatamente para evitar penalidade de LCP no Google ou se voltar de um artigo
-        if (isReturningFromArticle || isBot) {
+        // Executado exclusivamente para o robô do Google (Lighthouse/SEO)
+        if (isBot) {
             // Oculta o preloader e escreve o título instantaneamente (sem animação de digitação)
             const preloaderEl = document.getElementById('preloader');
             if (preloaderEl) preloaderEl.style.display = 'none';
