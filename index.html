@@ -42,7 +42,7 @@
     <style>
         /* Desliga as animações exclusivamente para o robô de performance */
         .is-bot #preloader { display: none !important; }
-        .is-bot #hero-subtitle, .is-bot #availability-badge { opacity: 1 !important; transition: none !important; }
+        .is-bot #hero-subtitle, .is-bot #availability-badge, .is-bot #dogfooding-hero-badge { opacity: 1 !important; transition: none !important; }
 
         /* Ajuste para reduzir a altura do banner principal */
         header {
@@ -85,6 +85,11 @@
             </div>
             <div id="availability-badge" class="availability-badge" style="opacity: 0; transition: opacity 1s ease 0.5s;">
                 <span class="pulse-dot"></span> Disponível para oportunidades 100% Remotas
+            </div>
+            <div id="dogfooding-hero-badge" class="dogfooding-hero-badge" style="opacity: 0; transition: opacity 1s ease 0.7s;">
+                <a href="#ba-qa-vision" class="dogfooding-hero-link" title="Ver Painel de Auditoria ao Vivo">
+                    <i class="fas fa-shield-alt"></i> <span>Auditado Continuamente com <strong>QA Audit Toolkit</strong></span> <span class="badge-tag-pass"><i class="fas fa-check"></i> 100% WCAG 2.1 AA</span>
+                </a>
             </div>
         </div>
     </header>
@@ -904,8 +909,24 @@
                 <div class="footer-links">
                     <a href="#about"><i class="fas fa-chevron-right"></i> Sobre Mim</a>
                     <a href="#projects"><i class="fas fa-chevron-right"></i> Projetos Técnicos</a>
+                    <a href="#ba-qa-vision"><i class="fas fa-chevron-right"></i> Central de Qualidade & IA</a>
                     <a href="#articles"><i class="fas fa-chevron-right"></i> Artigos & Tutoriais</a>
                     <a href="#contact"><i class="fas fa-chevron-right"></i> Contato</a>
+                </div>
+            </div>
+            <div class="footer-section" style="max-width: 380px;">
+                <h3>Garantia de Qualidade</h3>
+                <div class="dogfooding-box">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <span class="pulse-dot" style="display: inline-block;"></span>
+                        <span style="color: #22c55e; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">Auditoria Ativa & Dogfooding</span>
+                    </div>
+                    <p class="dogfooding-desc">
+                        Este portfólio é auditado continuamente pelo <strong>QA Audit Toolkit</strong>: conformidade com acessibilidade WCAG 2.1 AA (Axe-Core), DevSecOps e diagnósticos do Google Gemini IA.
+                    </p>
+                    <a href="https://flavianapina24.github.io/qa-audit-toolkit/" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; color: #38bdf8; font-weight: bold; text-decoration: none;">
+                        <i class="fas fa-chart-pie"></i> Ver Relatório de Conformidade <i class="fas fa-external-link-alt" style="font-size: 0.7rem;"></i>
+                    </a>
                 </div>
             </div>
             <div class="footer-section">
@@ -917,7 +938,18 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2026 - flavianapina.com.br | Desenvolvido com <i class="fas fa-heart" style="color: #38bdf8;"></i> e Qualidade</p>
+            <div style="margin-bottom: 12px; display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <span class="tech-tag" style="background: rgba(34, 197, 94, 0.1); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3); font-size: 0.75rem; padding: 4px 10px;">
+                    <i class="fas fa-universal-access"></i> WCAG 2.1 AA Compliant
+                </span>
+                <span class="tech-tag" style="background: rgba(56, 189, 248, 0.1); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); font-size: 0.75rem; padding: 4px 10px;">
+                    <i class="fas fa-shield-alt"></i> DevSecOps Protected
+                </span>
+                <span class="tech-tag" style="background: rgba(168, 85, 247, 0.1); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); font-size: 0.75rem; padding: 4px 10px;">
+                    <i class="fas fa-robot"></i> AI Quality Audited
+                </span>
+            </div>
+            <p>© 2026 - flavianapina.com.br | Desenvolvido com <i class="fas fa-heart" style="color: #38bdf8;"></i> e Engenharia de Qualidade</p>
         </div>
     </footer>
 
@@ -1579,6 +1611,8 @@
                     heroElement.innerHTML = "Olá, eu sou a <span class='highlight'>Flaviana Pina</span>";
                     document.getElementById('hero-subtitle').style.opacity = '1';
                     document.getElementById('availability-badge').style.opacity = '1';
+                    const dogHero = document.getElementById('dogfooding-hero-badge');
+                    if (dogHero) dogHero.style.opacity = '1';
                 }
             }
             type();
@@ -1595,6 +1629,8 @@
             document.getElementById('hero-typewriter').innerHTML = "Olá, eu sou a <span class='highlight'>Flaviana Pina</span>";
             document.getElementById('hero-subtitle').style.opacity = '1';
             document.getElementById('availability-badge').style.opacity = '1';
+            const dogHeroFast = document.getElementById('dogfooding-hero-badge');
+            if (dogHeroFast) dogHeroFast.style.opacity = '1';
         } else {
             sessionStorage.setItem('seen_preloader', 'true');
             const preloader = document.getElementById('preloader');
