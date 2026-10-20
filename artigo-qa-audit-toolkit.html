@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA Audit Toolkit & Gemini IA - Flaviana Pina</title>
+    
+    <!-- Open Graph para compartilhamento social (LinkedIn, WhatsApp) -->
+    <meta property="og:title" content="Além dos Testes Funcionais: Como criei um Framework de Auditoria Web com Java 17, Axe-Core e Google Gemini IA">
+    <meta property="og:description" content="Descubra como arquitetei um toolkit de auditoria contínua que avalia Acessibilidade WCAG 2.1, DevSecOps, Performance e gera diagnósticos inteligentes com IA.">
+    <meta property="og:image" content="https://flavianapina.com.br/site2.png">
+    <meta property="og:type" content="article">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .code-block {
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.88rem;
+            color: #e2e8f0;
+            line-height: 1.5;
+        }
+        .code-keyword { color: #c084fc; font-weight: bold; }
+        .code-string { color: #86efac; }
+        .code-comment { color: #64748b; font-style: italic; }
+        .code-func { color: #38bdf8; }
+        .pillar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 25px 0;
+        }
+        .pillar-card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid #334155;
+            border-left: 4px solid #38bdf8;
+            padding: 16px;
+            border-radius: 6px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+        .pillar-card:hover {
+            transform: translateY(-2px);
+            border-color: #38bdf8;
+        }
+        .pillar-card h4 {
+            margin: 0 0 6px 0;
+            color: #f1f5f9;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .pillar-card p {
+            margin: 0;
+            font-size: 0.88rem;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+        body.light-mode .code-block {
+            background-color: #f8fafc;
+            border-color: #cbd5e1;
+            color: #1e293b;
+        }
+        body.light-mode .pillar-card {
+            background: #ffffff;
+            border-color: #e2e8f0;
+            border-left-color: #0284c7;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        body.light-mode .pillar-card h4 { color: #0f172a; }
+        body.light-mode .pillar-card p { color: #64748b; }
+    </style>
+</head>
+<body>
+    <nav style="justify-content: flex-start; gap: 20px;">
+        <a href="index.html#articles" style="font-size: 1.1rem;"><i class="fas fa-arrow-left"></i> Voltar para o Portfólio</a>
+    </nav>
+
+    <main class="container">
+        <section style="margin-top: 40px; text-align: left;">
+            <div class="section-badge" style="margin-bottom: 20px;"><i class="fas fa-shield-virus"></i> Estudo de Caso & Engenharia de Qualidade</div>
+            <h1 style="font-size: 2.2rem; color: #f1f5f9; margin-bottom: 12px; line-height: 1.3;">Além dos Testes Funcionais: Como criei um Framework de Auditoria Web com Java 17, Axe-Core e Google Gemini IA</h1>
+            
+            <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: center; color: #94a3b8; font-size: 0.95rem; margin-bottom: 35px; border-bottom: 1px solid #334155; padding-bottom: 15px;">
+                <span><i class="fas fa-user-edit" style="color: #38bdf8;"></i> Flaviana Pina</span>
+                <span><i class="fas fa-clock"></i> Leitura: 5 min</span>
+                <span><i class="fas fa-tag"></i> Java 17 • Playwright • Axe-Core • ExtentReports • Gemini 2.5</span>
+            </div>
+
+            <div class="article-content">
+                <p>Na rotina de qualidade de software, é muito comum nos depararmos com esteiras de testes automatizados que cobrem apenas o <strong>caminho feliz funcional</strong>: <em>"O usuário preencheu o formulário? O botão clicou? O redirecionamento aconteceu? Sucesso!"</em>.</p>
+                
+                <p>Contudo, atuando na intersecção entre <strong>Análise de Negócios (BA)</strong> e <strong>Engenharia de Qualidade (QA)</strong>, percebi que essa visão deixa de fora aspectos vitais para a saúde da aplicação:</p>
+                
+                <ul style="display: flex; flex-direction: column; gap: 8px; margin: 15px 0 25px 20px;">
+                    <li><strong>Acessibilidade (A11y):</strong> Usuários com deficiência visual ou motora conseguem navegar sem barreiras?</li>
+                    <li><strong>DevSecOps:</strong> O cabeçalho HTTP protege contra sequestro de frames (Clickjacking) e injeção de scripts (XSS)?</li>
+                    <li><strong>Performance Real:</strong> O Time to First Byte (TTFB) e o First Contentful Paint (FCP) mantêm o usuário engajado?</li>
+                    <li><strong>SEO & Metadados:</strong> A aplicação é corretamente interpretada por robôs de busca e redes sociais?</li>
+                </ul>
+
+                <p>Para resolver essa lacuna de ponta a ponta, desenvolvi o <strong><code>qa-audit-toolkit</code></strong>: um framework modular em Java 17 que audita qualquer aplicação web em <strong>9 pilares críticos</strong> e utiliza um <strong>Agente de IA (Google Gemini 2.5 Flash)</strong> para fornecer diagnósticos consultivos automáticos com sugestões de código para correção imediata.</p>
+
+                <div class="info-banner" style="margin: 30px 0; border-left: 4px solid #38bdf8;">
+                    <h3 style="margin-top: 0; color: #38bdf8;"><i class="fas fa-bullseye"></i> Objetivo Central do Projeto</h3>
+                    <p style="margin: 0; color: #cbd5e1;">Capacitar times de tecnologia a executar auditorias contínuas automatizadas em menos de 10 segundos, integrando relatórios interativos ricos (ExtentReports) no GitHub Pages e permitindo intervenção técnica proativa antes do deploy em produção.</p>
+                </div>
+
+                <h2>1. A Arquitetura em 9 Pilares de Qualidade</h2>
+                <p>O toolkit foi estruturado sobre a robustez do <strong>Playwright Java</strong> e do <strong>JUnit 5</strong>, garantindo execuções headless ultra velozes em navegadores baseados em Chromium, Firefox e WebKit:</p>
+
+                <div class="pillar-grid">
+                    <div class="pillar-card">
+                        <h4><i class="fas fa-universal-access" style="color: #38bdf8;"></i> 1. Acessibilidade (Axe-Core)</h4>
+                        <p>Injeta a biblioteca Axe-Core no DOM para identificar violações WCAG 2.1 A/AA, categorizadas por impacto (Crítico, Sério, Moderado).</p>
+                    </div>
+                    <div class="pillar-card">
+                        <h4><i class="fas fa-shield-alt" style="color: #ef4444;"></i> 2. DevSecOps & Headers</h4>
+                        <p>Inspeciona os headers HTTP (CSP, HSTS, X-Content-Type-Options) e detecta links externos vulneráveis a <em>Reverse Tabnabbing</em>.</p>
+                    </div>
+                    <div class="pillar-card">
+                        <h4><i class="fas fa-tachometer-alt" style="color: #eab308;"></i> 3. Performance & Web Vitals</h4>
+                        <p>Extrai métricas de tempo em tempo real (TTFB, DOM Interactive, Load Event) via <code>window.performance.timing</code>.</p>
+                    </div>
+                    <div class="pillar-card">
+                        <h4><i class="fas fa-search" style="color: #22c55e;"></i> 4. SEO & Canonical Tags</h4>
+                        <p>Garante integridade de tags Title, Meta Description, Links Canônicos e conformidade de Open Graph.</p>
+                    </div>
+                    <div class="pillar-card">
+                        <h4><i class="fas fa-camera" style="color: #f97316;"></i> 5. Regressão Visual</h4>
+                        <p>Captura screenshots automáticos da viewport para baseline e comparação visual entre sprints.</p>
+                    </div>
+                    <div class="pillar-card">
+                        <h4><i class="fas fa-brain" style="color: #c084fc;"></i> 6. AI Quality Advisor</h4>
+                        <p>Serviço inteligente que consome os dados do escaneamento e gera o parecer técnico de remediação.</p>
+                    </div>
+                </div>
+
+                <h2>2. O Diferencial: Agente de IA com Google Gemini (<code>AiAdvisorService</code>)</h2>
+                <p>Relatórios tradicionais de automação mostram apenas <em>o que falhou</em>, mas raramente auxiliam o desenvolvedor ou o analista de negócios a entender <em>como resolver</em>. No <code>qa-audit-toolkit</code>, criei a classe <strong><code>AiAdvisorService</code></strong> conectada à API REST do <strong>Google Gemini 2.5 Flash</strong>:</p>
+
+                <div class="code-block">
+<span class="code-keyword">public class</span> <span class="code-func">AiAdvisorService</span> {
+    <span class="code-keyword">private static final</span> String GEMINI_API_URL = 
+        <span class="code-string">"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"</span>;
+
+    <span class="code-keyword">public</span> String <span class="code-func">analyzeAuditResults</span>(List&lt;AuditViolation&gt; violations, MetricsSummary metrics) {
+        String prompt = <span class="code-string">"""
+            Você é um Engenheiro de Qualidade Sênior e Especialista em DevSecOps e A11y.
+            Analise as violações detectadas nesta auditoria web:
+            - Violações WCAG: %s
+            - Headers Ausentes: %s
+            - TTFB: %d ms
+            Gere um diagnóstico conciso contendo:
+            1. Resumo do impacto no negócio e no usuário;
+            2. Código exato (snippet) de remediação imediata.
+            """</span>.formatted(violations, metrics.missingHeaders(), metrics.ttfb());
+
+        <span class="code-comment">// Chamada assíncrona com timeout e fallback nativo</span>
+        <span class="code-keyword">return</span> client.call(prompt);
+    }
+}</div>
+
+                <p>Com essa abordagem, quando uma violação de contraste ou falta de header CSP é detectada, o console e o relatório HTML já trazem a diretiva exata que deve ser aplicada no Nginx, Apache ou no código HTML.</p>
+
+                <h2>3. Dogfooding na Prática: Auditando Meu Próprio Portfólio</h2>
+                <p>Para comprovar a eficiência do framework, adotei o conceito de <strong>Dogfooding</strong>: utilizei o <code>qa-audit-toolkit</code> para auditar de forma contínua o meu próprio portfólio (<code>https://flavianapina.com.br</code>).</p>
+                
+                <p>O resultado é mensurável:</p>
+                <ul style="display: flex; flex-direction: column; gap: 8px; margin: 15px 0 25px 20px;">
+                    <li><strong>Zero Violações Críticas WCAG 2.1 AA:</strong> O leitor de tela e as ferramentas assistivas conseguem navegar com 100% de clareza semântica;</li>
+                    <li><strong>DevSecOps Blindado:</strong> Meta tag CSP configurada, zero links externos com brecha de segurança e honeypot anti-spam funcional;</li>
+                    <li><strong>Core Web Vitals Otimizados:</strong> Carregamento inicial leve com tempos de resposta de servidor inferiores a 200ms.</li>
+                </ul>
+
+                <h2>4. CI/CD e Relatórios Vivos com ExtentReports no GitHub Pages</h2>
+                <p>Nenhuma ferramenta de qualidade subsiste isolada. O toolkit foi desenhado para rodar nativamente em pipelines de <strong>CI/CD via GitHub Actions</strong>. A cada execução disparada por agendamento ou commit:</p>
+                <ol style="display: flex; flex-direction: column; gap: 10px; margin: 15px 0 25px 20px;">
+                    <li>A suíte roda o comando <code>mvn test -DtargetUrl="https://flavianapina.com.br"</code>;</li>
+                    <li>O motor do <strong>ExtentReports</strong> compila gráficos interativos em formato HTML;</li>
+                    <li>A pipeline publica o relatório diretamente no GitHub Pages do repositório: <a href="https://flavianapina24.github.io/qa-audit-toolkit/" target="_blank" rel="noopener noreferrer" style="color: #38bdf8; font-weight: bold;">flavianapina24.github.io/qa-audit-toolkit <i class="fas fa-external-link-alt"></i></a>.</li>
+                </ol>
+
+                <h2>Conclusão: O Valor Estratégico da Qualidade Holística</h2>
+                <p>Criar o <code>qa-audit-toolkit</code> consolidou a visão que defendo diariamente: <strong>qualidade não é apenas encontrar bugs em telas, é construir software acessível, seguro, veloz e focado no usuário</strong>.</p>
+                <p>Ao integrar automação em Java com a inteligência consultiva de Modelos de Linguagem (LLMs), conseguimos transformar relatórios frios de falha em verdadeiros planos de ação técnicos, acelerando a entrega contínua dos times de engenharia.</p>
+
+                <div style="margin-top: 40px; padding: 25px; background: rgba(56, 189, 248, 0.05); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 8px;">
+                    <h3 style="margin-top: 0; color: #38bdf8;"><i class="fas fa-rocket"></i> Experimente e Explore o Código</h3>
+                    <p style="color: #cbd5e1; margin-bottom: 20px;">O projeto é totalmente de código aberto e documentado com instruções de execução via Maven e Docker.</p>
+                    
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                        <a href="https://github.com/FlavianaPina24/qa-audit-toolkit" target="_blank" rel="noopener noreferrer" class="btn-link" style="margin: 0; background-color: #38bdf8; color: #0f172a; font-weight: bold;">
+                            <i class="fab fa-github"></i> Ver Código no GitHub
+                        </a>
+                        <a href="https://flavianapina24.github.io/qa-audit-toolkit/" target="_blank" rel="noopener noreferrer" class="btn-link" style="margin: 0; background: transparent; border: 1px solid #38bdf8; color: #38bdf8;">
+                            <i class="fas fa-chart-pie"></i> Abrir Relatório Interativo
+                        </a>
+                        <a href="index.html#ba-qa-vision" class="btn-link" style="margin: 0; background: transparent; border: 1px solid #22c55e; color: #22c55e;">
+                            <i class="fas fa-terminal"></i> Simular no Portfólio
+                        </a>
+                    </div>
+                </div>
+
+                <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #334155; display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+                    <strong style="font-size: 1.1rem;">Gostou do artigo?</strong>
+                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://flavianapina.com.br/artigo-qa-audit-toolkit.html" target="_blank" class="btn-link" style="background-color: #0077b5; color: #ffffff; margin-top: 0;"><i class="fab fa-linkedin"></i> Compartilhar no LinkedIn</a>
+                    <a href="index.html#contact" class="btn-link" style="margin-top: 0;"><i class="fas fa-envelope"></i> Vamos Conversar</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer style="margin-top: 40px; padding: 25px; text-align: center; border-top: 1px solid #334155; color: #94a3b8;">
+        <p>© 2026 - flavianapina.com.br | Artigo escrito por <strong>Flaviana Pina</strong> (QA Engineer & Business Analyst).</p>
+    </footer>
+
+    <script>
+        // Restaura a cor do tema selecionada
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+        }
+        // Restaura acessibilidade
+        ['a11y-large-text', 'a11y-dyslexia', 'a11y-no-animations', 'a11y-highlight-links'].forEach(feature => {
+            if (localStorage.getItem(feature) === 'true') document.documentElement.classList.add(feature);
+        });
+    </script>
+</body>
+</html>
