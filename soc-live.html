@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-SOC Virtual Room: Monitoria ao Vivo Multi-Agentes | Flaviana Pina</title>
+    
+    <meta property="og:title" content="AI-SOC Virtual Room: Defesa Cibernética com Agentes Autônomos de IA">
+    <meta property="og:description" content="Entre na sala de operações de SOC interativa com agentes de IA colaborando ao vivo na resposta a incidentes cibernéticos.">
+    <meta property="og:image" content="https://flavianapina.com.br/site2.png">
+    <meta property="og:type" content="website">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code:wght@400;500;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --soc-bg: #090d16;
+            --soc-card: #0f172a;
+            --soc-border: #1e293b;
+            --neon-blue: #38bdf8;
+            --neon-green: #22c55e;
+            --neon-purple: #c084fc;
+            --neon-amber: #f59e0b;
+            --neon-red: #ef4444;
+        }
+
+        body {
+            background-color: var(--soc-bg);
+            color: #f1f5f9;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Top Bar */
+        .soc-nav {
+            background: rgba(15, 23, 42, 0.95);
+            border-bottom: 1px solid var(--soc-border);
+            padding: 12px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        .soc-nav-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .soc-nav-back {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.92rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+        .soc-nav-back:hover {
+            color: var(--neon-blue);
+        }
+        .soc-badge-live {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            color: var(--neon-green);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 0.5px;
+        }
+        .pulse-live-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--neon-green);
+            border-radius: 50%;
+            animation: pulseGreen 1.5s infinite;
+        }
+        @keyframes pulseGreen {
+            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.8); }
+            70% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
+        /* Metrics Bar */
+        .soc-metrics-container {
+            max-width: 1200px;
+            margin: 20px auto 10px;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .soc-metric-box {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid var(--soc-border);
+            border-radius: 8px;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        .soc-metric-icon {
+            font-size: 1.8rem;
+        }
+        .soc-metric-info h5 {
+            margin: 0;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #94a3b8;
+        }
+        .soc-metric-info span {
+            font-size: 1.25rem;
+            font-weight: 700;
+            font-family: 'Fira Code', monospace;
+            color: #f1f5f9;
+        }
+
+        /* Main Stage: The Habbo-Style SOC Room */
+        .stage-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        .soc-room-wrapper {
+            background: #0b1120;
+            border: 2px solid #334155;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), inset 0 0 50px rgba(15, 23, 42, 0.8);
+            min-height: 520px;
+        }
+
+        /* Isometric/Habbo Grid Floor */
+        .cyber-grid-floor {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 380px;
+            background: 
+                linear-gradient(rgba(56, 189, 248, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.08) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-color: #0d1527;
+            border-top: 2px solid #1e293b;
+            transform: perspective(600px) rotateX(25deg);
+            transform-origin: bottom center;
+            z-index: 1;
+        }
+
+        /* Wall Decor & Big Screen */
+        .soc-back-wall {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 180px;
+            background: linear-gradient(180deg, #090e1a 0%, #0d1527 100%);
+            border-bottom: 2px solid #1e293b;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 20px;
+        }
+        .big-siem-screen {
+            background: #040812;
+            border: 2px solid #38bdf8;
+            border-radius: 8px;
+            width: 85%;
+            max-width: 780px;
+            height: 125px;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.25), inset 0 0 15px rgba(56, 189, 248, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 10px 15px;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Fira Code', monospace;
+        }
+        .siem-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px dashed rgba(56, 189, 248, 0.3);
+            padding-bottom: 5px;
+            font-size: 0.75rem;
+        }
+        .siem-status-pill {
+            font-weight: bold;
+            color: var(--neon-green);
+        }
+        .siem-status-pill.under-attack {
+            color: var(--neon-red);
+            animation: blink 0.8s infinite;
+        }
+        .siem-main-display {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+        .siem-alert-text {
+            font-size: 0.88rem;
+            color: #e2e8f0;
+            font-weight: 600;
+        }
+        .siem-radar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.78rem;
+            color: #94a3b8;
+        }
+        .radar-circle {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #38bdf8;
+            border-radius: 50%;
+            position: relative;
+            animation: radarSpin 3s linear infinite;
+        }
+        .radar-circle::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 5px;
+            height: 5px;
+            background: var(--neon-green);
+            border-radius: 50%;
+        }
+        @keyframes radarSpin {
+            100% { transform: rotate(360deg); }
+        }
+        .siem-ticker {
+            font-size: 0.72rem;
+            color: #38bdf8;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            opacity: 0.9;
+        }
+
+        /* Server Racks on sides */
+        .server-rack {
+            position: absolute;
+            bottom: 60px;
+            width: 55px;
+            height: 220px;
+            background: #111827;
+            border: 2px solid #334155;
+            border-radius: 6px;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            padding: 8px 6px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        }
+        .server-rack.left { left: 20px; }
+        .server-rack.right { right: 20px; }
+        .server-blade {
+            background: #1e293b;
+            height: 18px;
+            border-radius: 3px;
+            border: 1px solid #334155;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4px;
+        }
+        .server-led {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 5px #22c55e;
+            animation: blinkLed 1.2s infinite alternate;
+        }
+        .server-led.amber { background: #f59e0b; box-shadow: 0 0 5px #f59e0b; animation-delay: 0.4s; }
+        .server-led.blue { background: #38bdf8; box-shadow: 0 0 5px #38bdf8; animation-delay: 0.8s; }
+        @keyframes blinkLed {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        /* Agents Arena */
+        .agents-stage {
+            position: relative;
+            z-index: 10;
+            height: 340px;
+            margin-top: 175px;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            padding: 0 50px 30px;
+        }
+
+        /* Agent Station / Desk */
+        .agent-station {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .agent-station:hover {
+            transform: translateY(-4px);
+        }
+        .agent-station:hover .agent-name-tag {
+            border-color: #38bdf8;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+        }
+
+        /* Habbo-Style Avatar */
+        .habbo-avatar {
+            position: relative;
+            width: 80px;
+            height: 110px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 5;
+        }
+        .avatar-head {
+            width: 44px;
+            height: 44px;
+            background: #fbcfe8;
+            border-radius: 10px;
+            border: 3px solid #0f172a;
+            position: relative;
+            box-shadow: 0 3px 0 rgba(0, 0, 0, 0.3);
+        }
+        .avatar-hair {
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            height: 22px;
+            border-radius: 10px 10px 4px 4px;
+            background: #475569;
+            border: 2px solid #0f172a;
+        }
+        .avatar-hair.flaviana {
+            background: #78350f;
+            height: 38px;
+            border-radius: 12px 12px 16px 16px;
+        }
+        .avatar-hair.sentinel { background: #0284c7; }
+        .avatar-hair.cipher { background: #334155; }
+        .avatar-hair.aegis { background: #059669; }
+
+        .avatar-glasses {
+            position: absolute;
+            top: 14px;
+            left: 5px;
+            width: 28px;
+            height: 10px;
+            border: 2px solid #38bdf8;
+            background: rgba(56, 189, 248, 0.3);
+            border-radius: 2px;
+            z-index: 6;
+        }
+        .avatar-eyes {
+            position: absolute;
+            top: 17px;
+            left: 8px;
+            width: 22px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .avatar-eyes span {
+            width: 4px;
+            height: 5px;
+            background: #0f172a;
+            border-radius: 1px;
+        }
+
+        .avatar-body {
+            width: 48px;
+            height: 45px;
+            border-radius: 6px;
+            border: 3px solid #0f172a;
+            margin-top: -3px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .avatar-body.flaviana { background: #0284c7; }
+        .avatar-body.sentinel { background: #1e293b; border-color: #38bdf8; }
+        .avatar-body.cipher { background: #6b21a8; }
+        .avatar-body.aegis { background: #065f46; }
+
+        .avatar-badge-icon {
+            font-size: 0.85rem;
+            color: #fff;
+        }
+
+        /* Computer Desk */
+        .agent-desk {
+            width: 130px;
+            height: 50px;
+            background: linear-gradient(180deg, #334155 0%, #1e293b 100%);
+            border: 2px solid #475569;
+            border-radius: 6px;
+            margin-top: -20px;
+            position: relative;
+            z-index: 6;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .desk-monitor {
+            width: 48px;
+            height: 32px;
+            background: #040812;
+            border: 2px solid #38bdf8;
+            border-radius: 3px;
+            position: absolute;
+            top: -24px;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.55rem;
+            color: #22c55e;
+            font-family: 'Fira Code', monospace;
+            padding: 2px;
+            overflow: hidden;
+        }
+        .desk-monitor-stand {
+            position: absolute;
+            top: 8px;
+            width: 8px;
+            height: 6px;
+            background: #64748b;
+        }
+        .desk-coffee {
+            position: absolute;
+            right: 12px;
+            top: -10px;
+            width: 10px;
+            height: 12px;
+            background: #cbd5e1;
+            border: 1px solid #475569;
+            border-radius: 2px;
+        }
+
+        .agent-name-tag {
+            margin-top: 10px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid #334155;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        .agent-role-pill {
+            font-size: 0.65rem;
+            color: #38bdf8;
+            text-transform: uppercase;
+        }
+
+        /* Speech Bubble (Estilo Balão de Habbo / RPG) */
+        .speech-bubble {
+            position: absolute;
+            bottom: 135px;
+            min-width: 220px;
+            max-width: 280px;
+            background: #ffffff;
+            color: #0f172a;
+            border: 2px solid #0f172a;
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            z-index: 100;
+            display: none;
+            opacity: 0;
+            transform: translateY(10px) scale(0.95);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+        }
+        .speech-bubble.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 10px 8px 0 8px;
+            border-style: solid;
+            border-color: #ffffff transparent transparent transparent;
+        }
+        .bubble-header {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #0284c7;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Action Controls & Simulation Buttons */
+        .controls-deck {
+            background: #0f172a;
+            border: 1px solid var(--soc-border);
+            border-radius: 10px;
+            padding: 20px 25px;
+            margin-top: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        .deck-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+        .deck-header h3 {
+            margin: 0;
+            font-size: 1.15rem;
+            color: #38bdf8;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .sim-buttons-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .sim-btn {
+            background: #1e293b;
+            color: #f1f5f9;
+            border: 1px solid #334155;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .sim-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            border-color: #38bdf8;
+            color: #38bdf8;
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
+        }
+        .sim-btn.danger:hover:not(:disabled) {
+            border-color: #ef4444;
+            color: #ef4444;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+        }
+        .sim-btn.active-loop {
+            background: #0284c7;
+            color: #ffffff;
+            border-color: #38bdf8;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+        }
+        .sim-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Dual Layout: Transcript & Threat Intel */
+        .soc-details-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 20px;
+            margin-top: 25px;
+        }
+        .feed-card {
+            background: #0f172a;
+            border: 1px solid var(--soc-border);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        .feed-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--soc-border);
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+        }
+        .feed-header h4 {
+            margin: 0;
+            font-size: 1.05rem;
+            color: #38bdf8;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .chat-logs-stream {
+            height: 280px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-right: 8px;
+            font-size: 0.88rem;
+        }
+        .chat-msg {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid #334155;
+            border-left: 3px solid #38bdf8;
+            padding: 10px 14px;
+            border-radius: 6px;
+            line-height: 1.5;
+            animation: fadeInMsg 0.3s ease;
+        }
+        .chat-msg.sentinel { border-left-color: #38bdf8; }
+        .chat-msg.cipher { border-left-color: #c084fc; }
+        .chat-msg.aegis { border-left-color: #22c55e; }
+        .chat-msg.flaviana { border-left-color: #eab308; background: rgba(56, 189, 248, 0.08); }
+        .chat-msg-author {
+            font-weight: 700;
+            font-size: 0.78rem;
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .chat-msg-time {
+            color: #64748b;
+            font-size: 0.72rem;
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* MITRE & Threat Card */
+        .mitre-badge {
+            display: inline-block;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-family: 'Fira Code', monospace;
+            font-weight: bold;
+        }
+        .playbook-step {
+            margin-top: 12px;
+            padding: 10px 14px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid #334155;
+            border-radius: 6px;
+            font-size: 0.84rem;
+        }
+        .playbook-step h6 {
+            margin: 0 0 4px 0;
+            color: #22c55e;
+            font-size: 0.82rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Agent Dossier Modal */
+        .dossier-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .dossier-modal.hidden {
+            display: none;
+        }
+        .dossier-content {
+            background: #0f172a;
+            border: 2px solid #38bdf8;
+            border-radius: 12px;
+            max-width: 550px;
+            width: 100%;
+            padding: 25px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+            position: relative;
+        }
+        .dossier-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        .dossier-close:hover { color: #fff; }
+
+        @keyframes fadeInMsg {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsividade */
+        @media (max-width: 900px) {
+            .agents-stage {
+                padding: 0 10px 20px;
+                gap: 15px;
+            }
+            .agent-desk {
+                width: 90px;
+            }
+            .agent-name-tag {
+                font-size: 0.68rem;
+                padding: 3px 6px;
+            }
+            .speech-bubble {
+                min-width: 180px;
+                max-width: 220px;
+                font-size: 0.78rem;
+                bottom: 120px;
+            }
+            .soc-details-grid {
+                grid-template-columns: 1fr;
+            }
+            .server-rack {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation -->
+    <header class="soc-nav">
+        <div class="soc-nav-left">
+            <a href="index.html" class="soc-nav-back"><i class="fas fa-arrow-left"></i> Voltar ao Portfólio</a>
+            <span class="soc-badge-live"><span class="pulse-live-dot"></span> AI-SOC LIVE OPS</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <button id="btn-toggle-sound" class="btn-link" style="margin: 0; font-size: 0.82rem; padding: 6px 12px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); color: #38bdf8; cursor: pointer;">
+                <i class="fas fa-volume-up"></i> Áudio: Ativado
+            </button>
+        </div>
+    </header>
+
+    <!-- Metrics Bar -->
+    <div class="soc-metrics-container">
+        <div class="soc-metric-box">
+            <i class="fas fa-shield-virus soc-metric-icon" style="color: var(--neon-green);"></i>
+            <div class="soc-metric-info">
+                <h5>Status da Defesa</h5>
+                <span id="metric-defense-status" style="color: var(--neon-green);">PROTEGIDO</span>
+            </div>
+        </div>
+        <div class="soc-metric-box">
+            <i class="fas fa-user-secret soc-metric-icon" style="color: var(--neon-red);"></i>
+            <div class="soc-metric-info">
+                <h5>Ataques Mitigados</h5>
+                <span id="metric-attacks-counter">148</span>
+            </div>
+        </div>
+        <div class="soc-metric-box">
+            <i class="fas fa-stopwatch soc-metric-icon" style="color: var(--neon-blue);"></i>
+            <div class="soc-metric-info">
+                <h5>MTTR Médio (Resposta)</h5>
+                <span id="metric-mttr">1.8s</span>
+            </div>
+        </div>
+        <div class="soc-metric-box">
+            <i class="fas fa-robot soc-metric-icon" style="color: var(--neon-purple);"></i>
+            <div class="soc-metric-info">
+                <h5>Agentes Ativos</h5>
+                <span style="color: var(--neon-purple);">4 de 4</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Stage: Virtual Habbo / Pixel Room -->
+    <main class="stage-container">
+        <div class="soc-room-wrapper">
+            <!-- Back Wall with SIEM Screen -->
+            <div class="soc-back-wall">
+                <div class="big-siem-screen" id="siem-screen-board">
+                    <div class="siem-header">
+                        <span><i class="fas fa-desktop"></i> GLOBAL SIEM & THREAT RADAR</span>
+                        <span class="siem-status-pill" id="siem-status-pill">● SISTEMA SEGURO</span>
+                    </div>
+                    <div class="siem-main-display">
+                        <div class="siem-alert-text" id="siem-alert-text">
+                            Varredura Contínua: Nenhum vetor de ataque ativo detectado nas portas públicas.
+                        </div>
+                        <div class="siem-radar">
+                            <div class="radar-circle"></div>
+                            <span>WAF ON</span>
+                        </div>
+                    </div>
+                    <div class="siem-ticker" id="siem-ticker">
+                        [LOG] IDS/IPS ativo • Snort Rules v3.2 • Honeypot escutando rotas • Gemini 2.5 Flash conectado
+                    </div>
+                </div>
+            </div>
+
+            <!-- Server Racks with Blinking LEDs -->
+            <div class="server-rack left">
+                <div class="server-blade"><span class="server-led"></span><span class="server-led blue"></span></div>
+                <div class="server-blade"><span class="server-led amber"></span><span class="server-led"></span></div>
+                <div class="server-blade"><span class="server-led blue"></span><span class="server-led amber"></span></div>
+                <div class="server-blade"><span class="server-led"></span><span class="server-led blue"></span></div>
+                <div class="server-blade"><span class="server-led amber"></span><span class="server-led"></span></div>
+            </div>
+            <div class="server-rack right">
+                <div class="server-blade"><span class="server-led blue"></span><span class="server-led"></span></div>
+                <div class="server-blade"><span class="server-led"></span><span class="server-led amber"></span></div>
+                <div class="server-blade"><span class="server-led amber"></span><span class="server-led blue"></span></div>
+                <div class="server-blade"><span class="server-led"></span><span class="server-led"></span></div>
+                <div class="server-blade"><span class="server-led blue"></span><span class="server-led amber"></span></div>
+            </div>
+
+            <!-- Grid Floor in Perspective -->
+            <div class="cyber-grid-floor"></div>
+
+            <!-- Agents Arena (Avatares e Mesas) -->
+            <div class="agents-stage">
+
+                <!-- Agente 1: Sentinel (Tier 1 Triage) -->
+                <div class="agent-station" onclick="openAgentDossier('sentinel')">
+                    <div class="speech-bubble" id="bubble-sentinel">
+                        <div class="bubble-header"><i class="fas fa-shield-alt"></i> Sentinel (Tier 1)</div>
+                        <div class="bubble-text" id="text-sentinel">Monitorando logs de tráfego...</div>
+                    </div>
+                    <div class="habbo-avatar">
+                        <div class="avatar-head">
+                            <div class="avatar-hair sentinel"></div>
+                            <div class="avatar-glasses"></div>
+                            <div class="avatar-eyes"><span></span><span></span></div>
+                        </div>
+                        <div class="avatar-body sentinel">
+                            <i class="fas fa-shield-alt avatar-badge-icon"></i>
+                        </div>
+                    </div>
+                    <div class="agent-desk">
+                        <div class="desk-monitor"><i class="fas fa-terminal"></i>LOGS</div>
+                        <div class="desk-monitor-stand"></div>
+                        <div class="desk-coffee"></div>
+                    </div>
+                    <div class="agent-name-tag">
+                        <span>🛡️ Sentinel</span>
+                        <span class="agent-role-pill">Triage</span>
+                    </div>
+                </div>
+
+                <!-- Agente 2: Cipher (Threat Intelligence) -->
+                <div class="agent-station" onclick="openAgentDossier('cipher')">
+                    <div class="speech-bubble" id="bubble-cipher">
+                        <div class="bubble-header"><i class="fas fa-globe-americas"></i> Cipher (Threat Intel)</div>
+                        <div class="bubble-text" id="text-cipher">Bases AbuseIPDB e VirusTotal sincronizadas.</div>
+                    </div>
+                    <div class="habbo-avatar">
+                        <div class="avatar-head">
+                            <div class="avatar-hair cipher"></div>
+                            <div class="avatar-eyes"><span></span><span></span></div>
+                        </div>
+                        <div class="avatar-body cipher">
+                            <i class="fas fa-search avatar-badge-icon"></i>
+                        </div>
+                    </div>
+                    <div class="agent-desk">
+                        <div class="desk-monitor" style="border-color: #c084fc; color: #c084fc;"><i class="fas fa-satellite-dish"></i>INTEL</div>
+                        <div class="desk-monitor-stand"></div>
+                    </div>
+                    <div class="agent-name-tag">
+                        <span>🕵️ Cipher</span>
+                        <span class="agent-role-pill">Intel</span>
+                    </div>
+                </div>
+
+                <!-- Agente 3: Aegis (Forense & MITRE) -->
+                <div class="agent-station" onclick="openAgentDossier('aegis')">
+                    <div class="speech-bubble" id="bubble-aegis">
+                        <div class="bubble-header"><i class="fas fa-microchip"></i> Aegis (MITRE & DevSecOps)</div>
+                        <div class="bubble-text" id="text-aegis">Matriz MITRE ATT&CK pronta para correlação.</div>
+                    </div>
+                    <div class="habbo-avatar">
+                        <div class="avatar-head">
+                            <div class="avatar-hair aegis"></div>
+                            <div class="avatar-eyes"><span></span><span></span></div>
+                        </div>
+                        <div class="avatar-body aegis">
+                            <i class="fas fa-code avatar-badge-icon"></i>
+                        </div>
+                    </div>
+                    <div class="agent-desk">
+                        <div class="desk-monitor" style="border-color: #22c55e; color: #22c55e;"><i class="fas fa-project-diagram"></i>ATT&CK</div>
+                        <div class="desk-monitor-stand"></div>
+                    </div>
+                    <div class="agent-name-tag">
+                        <span>🔬 Aegis</span>
+                        <span class="agent-role-pill">Forense</span>
+                    </div>
+                </div>
+
+                <!-- Agente 4: Flaviana (Incident Commander / Lead) -->
+                <div class="agent-station" onclick="openAgentDossier('flaviana')">
+                    <div class="speech-bubble" id="bubble-flaviana">
+                        <div class="bubble-header" style="color: #0284c7;"><i class="fas fa-star"></i> Flaviana (Lead)</div>
+                        <div class="bubble-text" id="text-flaviana">Equipe apostos. Qual incidente vamos simular?</div>
+                    </div>
+                    <div class="habbo-avatar">
+                        <div class="avatar-head">
+                            <div class="avatar-hair flaviana"></div>
+                            <div class="avatar-glasses" style="border-color: #0284c7;"></div>
+                            <div class="avatar-eyes"><span></span><span></span></div>
+                        </div>
+                        <div class="avatar-body flaviana">
+                            <i class="fas fa-certificate avatar-badge-icon" style="color: #facc15;"></i>
+                        </div>
+                    </div>
+                    <div class="agent-desk" style="border-color: #0284c7; box-shadow: 0 0 15px rgba(2, 132, 199, 0.4);">
+                        <div class="desk-monitor" style="border-color: #0284c7; color: #38bdf8; width: 56px;"><i class="fas fa-crown"></i>SOAR</div>
+                        <div class="desk-monitor-stand"></div>
+                        <div class="desk-coffee" style="background: #38bdf8;"></div>
+                    </div>
+                    <div class="agent-name-tag" style="border-color: #0284c7; background: rgba(2, 132, 199, 0.2);">
+                        <span>👩‍💼 Flaviana Pina</span>
+                        <span class="agent-role-pill" style="color: #facc15; font-weight: bold;">Lead</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Controls Deck: Dispare Cenários Reais -->
+        <div class="controls-deck">
+            <div class="deck-header">
+                <div>
+                    <h3><i class="fas fa-gamepad"></i> Painel de Controle de Simulação</h3>
+                    <p style="margin: 4px 0 0; font-size: 0.88rem; color: #94a3b8;">
+                        Selecione um vetor de ataque para observar a comunicação, correlação e mitigação autônoma dos agentes de IA:
+                    </p>
+                </div>
+                <button id="btn-loop-mode" class="sim-btn" onclick="toggleLoopMode()">
+                    <i class="fas fa-sync-alt"></i> Modo Autônomo (Ao Vivo): Desligado
+                </button>
+            </div>
+
+            <div class="sim-buttons-grid">
+                <button class="sim-btn danger" onclick="triggerScenario('sqli')">
+                    <i class="fas fa-syringe"></i> 1. SQL Injection (OWASP #1)
+                </button>
+                <button class="sim-btn" onclick="triggerScenario('bruteforce')">
+                    <i class="fas fa-key"></i> 2. Brute Force SSH (Credential Stuffing)
+                </button>
+                <button class="sim-btn danger" onclick="triggerScenario('ransomware')">
+                    <i class="fas fa-skull"></i> 3. Phishing + Ransomware LockBit
+                </button>
+                <button class="sim-btn" onclick="triggerScenario('ddos')">
+                    <i class="fas fa-network-wired"></i> 4. Ataque DDoS Volumétrico
+                </button>
+            </div>
+        </div>
+
+        <!-- Details Grid: Transcript dos Agentes e Análise MITRE -->
+        <div class="soc-details-grid">
+            <!-- Transcript ao vivo estilo Slack/Discord -->
+            <div class="feed-card">
+                <div class="feed-header">
+                    <h4><i class="fas fa-comments"></i> Comunicação Interna dos Agentes (War Room)</h4>
+                    <span style="font-size: 0.75rem; color: #64748b; font-family: 'Fira Code', monospace;">#soc-incidents</span>
+                </div>
+                <div class="chat-logs-stream" id="chat-stream">
+                    <div class="chat-msg sentinel">
+                        <div class="chat-msg-author">
+                            <span style="color: #38bdf8;">🛡️ Sentinel (Tier 1)</span>
+                            <span class="chat-msg-time">Agora</span>
+                        </div>
+                        <div>Ambiente inicializado. Monitorando fluxo HTTP, DNS e conexões SSH em tempo real.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card de Threat Intelligence e MITRE ATT&CK -->
+            <div class="feed-card">
+                <div class="feed-header">
+                    <h4><i class="fas fa-fingerprint"></i> Threat Intel & Playbook SOAR</h4>
+                    <span class="mitre-badge" id="card-mitre-tag">MITRE: STANDBY</span>
+                </div>
+                <div>
+                    <h5 id="card-incident-title" style="margin: 0 0 8px 0; color: #f1f5f9; font-size: 1rem;">Nenhum Incidente Ativo</h5>
+                    <p id="card-incident-desc" style="font-size: 0.86rem; color: #94a3b8; line-height: 1.5; margin: 0 0 15px 0;">
+                        Aguardando disparo de ataque para exibir o diagnóstico técnico, correlação da inteligência de ameaças e o script de remediação.
+                    </p>
+
+                    <div class="playbook-step">
+                        <h6><i class="fas fa-check-double"></i> Playbook Executado:</h6>
+                        <span id="card-playbook-action" style="color: #cbd5e1; font-family: 'Fira Code', monospace; font-size: 0.78rem;">
+                            Regra padrão: WAF em modo de monitoramento. Honeypot ativo.
+                        </span>
+                    </div>
+
+                    <div style="margin-top: 15px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                        <span style="font-size: 0.75rem; color: #64748b;"><i class="fas fa-brain"></i> IA Engine: Google Gemini 2.5 Flash</span>
+                        <a href="https://github.com/FlavianaPina24/IA_Blue_Team" target="_blank" class="btn-link" style="margin: 0; font-size: 0.78rem; padding: 6px 10px;">
+                            Ver Repositório Blue Team <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Agent Dossier Modal -->
+    <div id="dossier-modal" class="dossier-modal hidden" onclick="closeAgentDossier(event)">
+        <div class="dossier-content" onclick="event.stopPropagation()">
+            <button class="dossier-close" onclick="closeAgentDossier()"><i class="fas fa-times"></i></button>
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                <div id="dossier-avatar-icon" style="font-size: 2.2rem; color: #38bdf8;"></div>
+                <div>
+                    <h3 id="dossier-name" style="margin: 0; color: #f1f5f9; font-size: 1.3rem;">Nome do Agente</h3>
+                    <span id="dossier-role" style="color: #38bdf8; font-weight: bold; font-size: 0.85rem;">Papel / Função</span>
+                </div>
+            </div>
+            
+            <div style="background: #090d16; padding: 12px 16px; border-radius: 6px; border: 1px solid #1e293b; margin-bottom: 15px; font-size: 0.86rem;">
+                <strong style="color: #cbd5e1;">Prompt do Sistema (Persona):</strong>
+                <p id="dossier-prompt" style="margin: 6px 0 0; color: #94a3b8; line-height: 1.5; font-style: italic;"></p>
+            </div>
+
+            <div style="font-size: 0.86rem; color: #cbd5e1; line-height: 1.6;">
+                <div><strong>Ferramentas e APIs Integradas:</strong> <span id="dossier-tools" style="color: #38bdf8;"></span></div>
+                <div><strong>Modelo de IA:</strong> <span style="color: var(--neon-purple);">Google Gemini 2.5 Flash / Scikit-Learn</span></div>
+                <div><strong>Tempo de Decisão:</strong> <span style="color: var(--neon-green); font-family: 'Fira Code', monospace;">&lt; 400ms</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer style="margin-top: 50px; padding: 25px; text-align: center; border-top: 1px solid var(--soc-border); color: #94a3b8; font-size: 0.9rem;">
+        <p>© 2026 - flavianapina.com.br | AI-SOC Multi-Agent Architecture idealizada por <strong>Flaviana Pina</strong> (QA & Cybersecurity).</p>
+    </footer>
+
+    <!-- JavaScript da Sala Multi-Agentes -->
+    <script>
+        // --- Web Audio API: Efeitos 8-bit Sintetizados (Sem arquivos externos!) ---
+        let audioEnabled = true;
+        let audioCtx = null;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playBlip(freq = 600, duration = 0.08, type = 'sine') {
+            if (!audioEnabled) return;
+            try {
+                const ctx = getAudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, ctx.currentTime);
+                gain.gain.setValueAtTime(0.12, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + duration);
+            } catch (e) {}
+        }
+
+        function playAlertSound() {
+            if (!audioEnabled) return;
+            playBlip(880, 0.1, 'sawtooth');
+            setTimeout(() => playBlip(550, 0.15, 'sawtooth'), 120);
+        }
+
+        function playSuccessSound() {
+            if (!audioEnabled) return;
+            playBlip(523.25, 0.08, 'sine');
+            setTimeout(() => playBlip(659.25, 0.08, 'sine'), 90);
+            setTimeout(() => playBlip(783.99, 0.14, 'sine'), 180);
+        }
+
+        // Toggle Sound Button
+        const btnToggleSound = document.getElementById('btn-toggle-sound');
+        btnToggleSound.addEventListener('click', () => {
+            audioEnabled = !audioEnabled;
+            btnToggleSound.innerHTML = audioEnabled 
+                ? '<i class="fas fa-volume-up"></i> Áudio: Ativado' 
+                : '<i class="fas fa-volume-mute"></i> Áudio: Mudo';
+            btnToggleSound.style.color = audioEnabled ? '#38bdf8' : '#94a3b8';
+            if (audioEnabled) playSuccessSound();
+        });
+
+        // --- Definição dos Agentes e seus Perfis (Dossier) ---
+        const AGENTS_DOSSIER = {
+            sentinel: {
+                name: "Sentinel (Tier 1 Triage Agent)",
+                role: "Triagem de Logs & Detecção de Anomalias",
+                icon: '<i class="fas fa-shield-alt"></i>',
+                prompt: "Você é o sentinela da rede. Seu trabalho é inspecionar logs brutos em tempo real, filtrar falso-positivos e identificar anomalias volumétricas ou assinaturas conhecidas (OWASP Top 10).",
+                tools: "SIEM Snort, Suricata, Elastic Agent, Honeypot Tracker"
+            },
+            cipher: {
+                name: "Cipher (Threat Intelligence Agent)",
+                role: "Enriquecimento de Ameaças & Caça a IoCs",
+                icon: '<i class="fas fa-search"></i>',
+                prompt: "Você é o especialista em inteligência cibernética. Recebe IPs, hashes e URLs e consulta bases globais para mensurar a reputação, ASN de origem e nós de saída Tor.",
+                tools: "AbuseIPDB API, VirusTotal API, Shodan, AlienVault OTX"
+            },
+            aegis: {
+                name: "Aegis (Forense & DevSecOps)",
+                role: "Classificação MITRE ATT&CK & Análise de Payload",
+                icon: '<i class="fas fa-microchip"></i>',
+                prompt: "Você correlaciona ataques às táticas e técnicas do framework MITRE ATT&CK. Identifica a intenção do adversário e gera a regra exata de bloqueio (WAF/EDR).",
+                tools: "MITRE Navigator, Sigma Rules, YARA, OWASP ModSecurity"
+            },
+            flaviana: {
+                name: "Flaviana Pina (Incident Commander / Lead)",
+                role: "Orquestração Estratégica, SOAR & Tomada de Decisão",
+                icon: '<i class="fas fa-crown"></i>',
+                prompt: "Como Líder do SOC e Business Analyst, você avalia o impacto financeiro, operacional e regulatório (LGPD) do incidente. Autoriza a execução do playbook automatizado SOAR.",
+                tools: "SOAR Engine, Cloudflare WAF API, Firewall Manager, Jira Incident Response"
+            }
+        };
+
+        function openAgentDossier(agentId) {
+            const data = AGENTS_DOSSIER[agentId];
+            if (!data) return;
+            document.getElementById('dossier-name').textContent = data.name;
+            document.getElementById('dossier-role').textContent = data.role;
+            document.getElementById('dossier-avatar-icon').innerHTML = data.icon;
+            document.getElementById('dossier-prompt').textContent = `"${data.prompt}"`;
+            document.getElementById('dossier-tools').textContent = data.tools;
+            document.getElementById('dossier-modal').classList.remove('hidden');
+            playBlip(750, 0.05);
+        }
+
+        function closeAgentDossier(e) {
+            document.getElementById('dossier-modal').classList.add('hidden');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeAgentDossier();
+        });
+
+        // --- Base de Cenários de Ataque e Diálogos Multi-Agentes ---
+        const SCENARIOS = {
+            sqli: {
+                title: "SQL Injection Crítico detectado no endpoint de Login",
+                mitre: "T1190: Exploit Public-Facing App",
+                alertBanner: "🚨 ATAQUE DETECTADO: Injeção SQL na rota /api/login [Severidade: CRÍTICA]",
+                ticker: "[ALERTA] Payload recebido: ' UNION SELECT username, password_hash FROM users--",
+                desc: "Tentativa de extração de credenciais através de bypass em formulário web.",
+                playbook: "WAF Rule ID 10042 ativada: IP 185.220.101.5 bloqueado por 24h. Endpoint sanitizado com Prepared Statements.",
+                dialogues: [
+                    { agent: "sentinel", delay: 400, text: "🚨 Alerta Crítico! Detectei 15 requisições de SQL Injection no /api/login vindas do IP 185.220.101.5!" },
+                    { agent: "cipher", delay: 1800, text: "🕵️‍♂️ Consultando AbuseIPDB... Confirmado: IP com 100% de confiança de abuso (nó de saída Tor registrado)." },
+                    { agent: "aegis", delay: 1900, text: "🔬 Mapeado no MITRE ATT&CK: Técnica T1190. O atacante tentava extrair a tabela de usuários." },
+                    { agent: "flaviana", delay: 2000, text: "👩‍💼 Autorizado! Disparando SOAR: IP banido no WAF, sessões inválidas canceladas e incidente encerrado!" }
+                ]
+            },
+            bruteforce: {
+                title: "Ataque de Força Bruta e Credential Stuffing via SSH",
+                mitre: "T1110.001: Password Guessing",
+                alertBanner: "⚠️ ALERTA: Força Bruta SSH detectada na porta 22 [45 tentativas/segundo]",
+                ticker: "[ALERTA] Múltiplas falhas de autenticação com usuário 'root' e 'admin'",
+                desc: "Botnet automatizada tentando adivinhar senhas via dicionário.",
+                playbook: "Fail2ban ativado: Bloqueio do range de IP /24. Autenticação por senha desativada (apenas chave SSH pública).",
+                dialogues: [
+                    { agent: "sentinel", delay: 400, text: "⚠️ Pessoal, pico de conexões anômalas na porta 22! Mais de 45 tentativas de login por segundo." },
+                    { agent: "cipher", delay: 1700, text: "🕵️‍♂️ Checando telemetria... O IP 194.26.29.112 pertence a uma botnet conhecida de varredura." },
+                    { agent: "aegis", delay: 1800, text: "🔬 Técnica MITRE T1110.001. O atacante está executando dicionário contra contas administrativas." },
+                    { agent: "flaviana", delay: 2000, text: "👩‍💼 Ação imediata: Fail2ban ativado, range bloqueado no iptables e portas restritas à VPN corporativa!" }
+                ]
+            },
+            ransomware: {
+                title: "Phishing com anexo executável malicioso (Trojan LockBit)",
+                mitre: "T1566.001 + T1486: Ransomware",
+                alertBanner: "💀 AMEAÇA GRAVE: E-mail malicioso com anexo executável interceptado",
+                ticker: "[GATEWAY] Arquivo retido na sandbox: Fatura_Urgente_Dezembro.pdf.exe",
+                desc: "Tentativa de infecção inicial para criptografia de dados corporativos.",
+                playbook: "EDR Quarentine: Hash SHA-256 isolada globalmente. E-mail purgado de todas as caixas postais.",
+                dialogues: [
+                    { agent: "sentinel", delay: 400, text: "🚨 Atenção máxima! E-mail com anexo suspeito de dupla extensão (.pdf.exe) enviado ao setor financeiro." },
+                    { agent: "cipher", delay: 1800, text: "🕵️‍♂️ Hash extraída e enviada ao VirusTotal: 58 de 72 motores identificaram como Trojan LockBit!" },
+                    { agent: "aegis", delay: 1900, text: "🔬 Combinação MITRE T1566.001 (Spearphishing) com T1486 (Data Encrypted for Impact). Risco iminente." },
+                    { agent: "flaviana", delay: 2100, text: "👩‍💼 Contenção total: Estação isolada da rede em quarentena via EDR, hash bloqueada e e-mail purgado!" }
+                ]
+            },
+            ddos: {
+                title: "Ataque DDoS Volumétrico por Amplificação UDP",
+                mitre: "T1498.002: Reflection Amplification",
+                alertBanner: "🌐 ANOMALIA DE REDE: Inundação volumétrica de tráfego UDP excedendo 45 Gbps",
+                ticker: "[VOLUMETRIA] Picos de tráfego DNS/NTP Reflection saturando canais de entrada",
+                desc: "Tentativa de negação de serviço distribuída para derrubar a API pública.",
+                playbook: "Cloudflare Under-Attack Mode ativado. Regra de Rate Limiting agressiva e tráfego desviado para scrubbers Anycast.",
+                dialogues: [
+                    { agent: "sentinel", delay: 400, text: "⚠️ Tráfego UDP subindo exponencialmente! Mais de 45 Gbps inundando nossos servidores DNS." },
+                    { agent: "cipher", delay: 1700, text: "🕵️‍♂️ Mapeamento geográfico: Milhares de servidores mal configurados sendo usados como refletores." },
+                    { agent: "aegis", delay: 1800, text: "🔬 Classificação MITRE T1498.002. Risco de indisponibilidade geral da aplicação." },
+                    { agent: "flaviana", delay: 2000, text: "👩‍💼 Ativando proteção avançada: Rate Limiting ativado no WAF e mitigação Anycast aplicada. Site 100% no ar!" }
+                ]
+            }
+        };
+
+        let isRunningScenario = false;
+        let attacksMitigatedCount = 148;
+        let loopModeInterval = null;
+
+        async function triggerScenario(type) {
+            if (isRunningScenario) return;
+            const scenario = SCENARIOS[type];
+            if (!scenario) return;
+
+            isRunningScenario = true;
+            disableSimButtons(true);
+            playAlertSound();
+
+            // Atualiza Telão SIEM
+            const siemScreen = document.getElementById('siem-screen-board');
+            const siemStatus = document.getElementById('siem-status-pill');
+            const siemAlert = document.getElementById('siem-alert-text');
+            const siemTicker = document.getElementById('siem-ticker');
+            const defStatus = document.getElementById('metric-defense-status');
+
+            siemScreen.style.borderColor = '#ef4444';
+            siemScreen.style.boxShadow = '0 0 25px rgba(239, 68, 68, 0.4)';
+            siemStatus.className = 'siem-status-pill under-attack';
+            siemStatus.textContent = '🚨 SOB ATAQUE';
+            siemAlert.textContent = scenario.alertBanner;
+            siemTicker.textContent = scenario.ticker;
+            defStatus.textContent = 'INCIDENTE ATIVO';
+            defStatus.style.color = '#ef4444';
+
+            // Atualiza Card de Threat Intel
+            document.getElementById('card-mitre-tag').textContent = `MITRE: ${scenario.mitre}`;
+            document.getElementById('card-incident-title').textContent = scenario.title;
+            document.getElementById('card-incident-desc').textContent = scenario.desc;
+            document.getElementById('card-playbook-action').textContent = "Playbook em execução pelos agentes...";
+
+            // Limpa balões anteriores
+            hideAllBubbles();
+
+            // Executa Diálogos dos Agentes em Sequência
+            for (const step of scenario.dialogues) {
+                await new Promise(r => setTimeout(r, step.delay));
+                showSpeechBubble(step.agent, step.text);
+                addChatLog(step.agent, step.text);
+                playBlip(step.agent === 'flaviana' ? 800 : 650, 0.08);
+            }
+
+            // Conclusão e Mitigação do Incidente
+            await new Promise(r => setTimeout(r, 2200));
+            hideAllBubbles();
+            playSuccessSound();
+
+            // Restaura Telão SIEM para Estado Protegido
+            siemScreen.style.borderColor = '#38bdf8';
+            siemScreen.style.boxShadow = '0 0 20px rgba(56, 189, 248, 0.25)';
+            siemStatus.className = 'siem-status-pill';
+            siemStatus.textContent = '● SISTEMA SEGURO';
+            siemAlert.textContent = `Ameaça neutralizada com sucesso! Playbook concluído em 1.${Math.floor(Math.random() * 5 + 4)}s.`;
+            siemTicker.textContent = "[SOAR] Ação executada: " + scenario.playbook;
+            defStatus.textContent = 'PROTEGIDO';
+            defStatus.style.color = '#22c55e';
+
+            // Incrementa contador
+            attacksMitigatedCount++;
+            document.getElementById('metric-attacks-counter').textContent = attacksMitigatedCount;
+            document.getElementById('card-playbook-action').textContent = scenario.playbook;
+
+            // Log final no chat
+            addChatLog('system', `✅ Incidente contido com sucesso pela equipe. Resposta registrada em conformidade com NIST.`);
+
+            isRunningScenario = false;
+            disableSimButtons(false);
+        }
+
+        function showSpeechBubble(agentId, text) {
+            hideAllBubbles();
+            const bubble = document.getElementById(`bubble-${agentId}`);
+            const bubbleText = document.getElementById(`text-${agentId}`);
+            if (bubble && bubbleText) {
+                bubbleText.textContent = text;
+                bubble.classList.add('active');
+            }
+        }
+
+        function hideAllBubbles() {
+            document.querySelectorAll('.speech-bubble').forEach(b => b.classList.remove('active'));
+        }
+
+        function addChatLog(agentKey, message) {
+            const stream = document.getElementById('chat-stream');
+            const msgEl = document.createElement('div');
+            msgEl.className = `chat-msg ${agentKey}`;
+
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+            let authorName = "Sistema";
+            let color = "#38bdf8";
+
+            if (agentKey === 'sentinel') { authorName = "🛡️ Sentinel (Tier 1)"; color = "#38bdf8"; }
+            else if (agentKey === 'cipher') { authorName = "🕵️ Cipher (Threat Intel)"; color = "#c084fc"; }
+            else if (agentKey === 'aegis') { authorName = "🔬 Aegis (Forense)"; color = "#22c55e"; }
+            else if (agentKey === 'flaviana') { authorName = "👩‍💼 Flaviana Pina (Lead)"; color = "#eab308"; }
+            else if (agentKey === 'system') { authorName = "🤖 SOAR Engine"; color = "#94a3b8"; }
+
+            msgEl.innerHTML = `
+                <div class="chat-msg-author">
+                    <span style="color: ${color};">${authorName}</span>
+                    <span class="chat-msg-time">${timeStr}</span>
+                </div>
+                <div>${message}</div>
+            `;
+            stream.appendChild(msgEl);
+            stream.scrollTop = stream.scrollHeight;
+        }
+
+        function disableSimButtons(disable) {
+            document.querySelectorAll('.sim-btn').forEach(btn => {
+                if (btn.id !== 'btn-loop-mode') {
+                    btn.disabled = disable;
+                }
+            });
+        }
+
+        // --- Loop Mode (Modo Autônomo Ao Vivo) ---
+        function toggleLoopMode() {
+            const btnLoop = document.getElementById('btn-loop-mode');
+            if (loopModeInterval) {
+                clearInterval(loopModeInterval);
+                loopModeInterval = null;
+                btnLoop.classList.remove('active-loop');
+                btnLoop.innerHTML = '<i class="fas fa-sync-alt"></i> Modo Autônomo (Ao Vivo): Desligado';
+                addChatLog('system', 'Modo autônomo pausado pelo operador.');
+            } else {
+                btnLoop.classList.add('active-loop');
+                btnLoop.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Modo Autônomo (Ao Vivo): ATIVO';
+                addChatLog('system', 'Modo autônomo ativado: Simulando incidentes aleatórios periodicamente.');
+                
+                // Dispara o primeiro imediatamente se não estiver rodando
+                const scenarioKeys = Object.keys(SCENARIOS);
+                const randomFirst = scenarioKeys[Math.floor(Math.random() * scenarioKeys.length)];
+                triggerScenario(randomFirst);
+
+                loopModeInterval = setInterval(() => {
+                    if (!isRunningScenario) {
+                        const randomKey = scenarioKeys[Math.floor(Math.random() * scenarioKeys.length)];
+                        triggerScenario(randomKey);
+                    }
+                }, 14000);
+            }
+        }
+    </script>
+</body>
+</html>
