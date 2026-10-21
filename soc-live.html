@@ -300,48 +300,310 @@
             100% { opacity: 1; }
         }
 
-        /* Agents Arena */
-        .agents-stage {
+        /* ========================================================
+           GATHER-STYLE VIRTUAL SOC ARENA (2D INTERACTIVE ROAMING)
+           ======================================================== */
+        
+        .soc-room-wrapper {
+            background: #0b1120;
+            border: 2px solid #334155;
+            border-radius: 12px;
             position: relative;
-            z-index: 10;
-            height: 340px;
-            margin-top: 175px;
-            display: flex;
-            justify-content: space-around;
-            align-items: flex-end;
-            padding: 0 50px 30px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), inset 0 0 50px rgba(15, 23, 42, 0.8);
+            min-height: 560px;
+            user-select: none;
         }
 
-        /* Agent Station / Desk */
-        .agent-station {
-            position: relative;
+        /* Interactive Walkable Floor Container */
+        .interactive-floor {
+            position: absolute;
+            top: 160px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            cursor: crosshair;
+        }
+
+        /* Waypoint Ping when user clicks to guide agent */
+        .floor-waypoint {
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 2px solid #38bdf8;
+            background: rgba(56, 189, 248, 0.25);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 15;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            animation: waypointPing 1.2s infinite ease-out;
+        }
+        @keyframes waypointPing {
+            0% { transform: translate(-50%, -50%) scale(0.6); opacity: 1; box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.8); }
+            70% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.5; box-shadow: 0 0 0 14px rgba(56, 189, 248, 0); }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0; box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
+        }
+
+        /* ========================================================
+           FIXED FURNITURE & SCENERY (Desks, Coffee Lounge, War Room)
+           ======================================================== */
+
+        /* War Room Central Hologram Rug */
+        .war-room-hub {
+            position: absolute;
+            left: 50%;
+            top: 48%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px dashed rgba(56, 189, 248, 0.45);
+            background: radial-gradient(ellipse, rgba(56, 189, 248, 0.15) 0%, transparent 75%);
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            z-index: 8;
+            pointer-events: none;
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.15);
+        }
+        .war-room-hub i {
+            color: #38bdf8;
+            font-size: 1.4rem;
+            animation: pulseGlow 2.5s infinite ease-in-out;
+        }
+        .war-room-label {
+            font-size: 0.62rem;
+            color: #94a3b8;
+            letter-spacing: 1px;
+            font-weight: 700;
+            font-family: 'Fira Code', monospace;
+            margin-top: 4px;
+        }
+
+        /* Coffee & Break Lounge (Bottom Left) */
+        .coffee-lounge {
+            position: absolute;
+            left: 20px;
+            bottom: 18px;
+            z-index: 12;
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            pointer-events: none;
+        }
+        .coffee-machine-box {
+            background: #1e293b;
+            border: 2px solid #475569;
+            border-radius: 6px;
+            width: 48px;
+            height: 58px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+        .coffee-steam {
+            position: absolute;
+            top: -16px;
+            font-size: 0.85rem;
+            animation: steamFloat 2s infinite ease-in-out;
+        }
+        @keyframes steamFloat {
+            0%, 100% { transform: translateY(0); opacity: 0.5; }
+            50% { transform: translateY(-5px); opacity: 1; }
+        }
+        .water-cooler-box {
+            background: #1e293b;
+            border: 2px solid #38bdf8;
+            border-radius: 6px;
+            width: 32px;
+            height: 52px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding-bottom: 5px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            position: relative;
+        }
+        .water-bottle {
+            width: 22px;
+            height: 22px;
+            background: #38bdf8;
+            border-radius: 50% 50% 4px 4px;
+            position: absolute;
+            top: -14px;
+            border: 2px solid #0284c7;
+        }
+        .lounge-tag {
+            font-size: 0.55rem;
+            color: #94a3b8;
+            font-family: 'Fira Code', monospace;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        /* Fixed Workstation Desks */
+        .workstation-desk {
+            position: absolute;
+            width: 125px;
+            height: 54px;
+            z-index: 14;
+            transform: translate(-50%, 0);
+            pointer-events: none;
+        }
+        .desk-top {
+            width: 100%;
+            height: 48px;
+            background: linear-gradient(180deg, #334155 0%, #1e293b 100%);
+            border: 2px solid #475569;
+            border-radius: 6px;
+            position: relative;
+            box-shadow: 0 10px 18px rgba(0, 0, 0, 0.55);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .desk-screen {
+            width: 48px;
+            height: 30px;
+            background: #040812;
+            border: 2px solid #38bdf8;
+            border-radius: 3px;
+            position: absolute;
+            top: -24px;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.55rem;
+            color: #22c55e;
+            font-family: 'Fira Code', monospace;
+            padding: 2px;
+            overflow: hidden;
+        }
+        .desk-screen.cipher { border-color: #c084fc; color: #c084fc; }
+        .desk-screen.aegis { border-color: #22c55e; color: #22c55e; }
+        .desk-screen.flaviana { border-color: #eab308; color: #facc15; }
+        .desk-chair {
+            width: 44px;
+            height: 28px;
+            background: #0f172a;
+            border: 2px solid #475569;
+            border-radius: 8px 8px 4px 4px;
+            position: absolute;
+            top: -18px;
+            z-index: -1;
+        }
+        .desk-tag {
+            position: absolute;
+            bottom: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid #334155;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: #94a3b8;
+            white-space: nowrap;
+        }
+
+        /* ========================================================
+           DYNAMIC ROAMING AVATARS (GATHER-STYLE MOVING ENTITIES)
+           ======================================================== */
+
+        .gather-avatar-entity {
+            position: absolute;
+            width: 76px;
+            height: 105px;
+            z-index: 25;
             cursor: pointer;
-            transition: transform 0.2s ease;
+            transform-origin: bottom center;
+            transition: left 0.8s linear, top 0.8s linear;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        .agent-station:hover {
-            transform: translateY(-4px);
-        }
-        .agent-station:hover .agent-name-tag {
+        .gather-avatar-entity:hover .avatar-name-pill {
             border-color: #38bdf8;
             box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+            color: #38bdf8;
+        }
+        .gather-avatar-entity.selected .avatar-shadow {
+            background: rgba(56, 189, 248, 0.7);
+            box-shadow: 0 0 15px #38bdf8;
+            border: 1px solid #38bdf8;
         }
 
-        /* Habbo-Style Avatar */
-        .habbo-avatar {
+        /* Avatar Floating Status Pill (Emoji) */
+        .avatar-status-pill {
+            position: absolute;
+            top: -14px;
+            right: 4px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #0f172a;
+            border: 2px solid #38bdf8;
+            font-size: 0.78rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 35;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+            animation: statusBounce 2s infinite ease-in-out;
+        }
+        @keyframes statusBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        /* Visual Character Group (Supports flipping and walking bob) */
+        .avatar-character {
             position: relative;
-            width: 80px;
-            height: 110px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            transform-origin: bottom center;
+            transition: transform 0.15s ease;
             z-index: 5;
         }
+        .gather-avatar-entity.facing-left .avatar-character {
+            transform: scaleX(-1);
+        }
+        .gather-avatar-entity.facing-right .avatar-character {
+            transform: scaleX(1);
+        }
+
+        /* Walking and Running Bobbing Animations */
+        @keyframes gatherStep {
+            0% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-5px) rotate(-3deg); }
+            75% { transform: translateY(-5px) rotate(3deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+        .gather-avatar-entity.is-walking .avatar-character {
+            animation: gatherStep 0.32s infinite ease-in-out;
+        }
+        .gather-avatar-entity.is-running .avatar-character {
+            animation: gatherStep 0.16s infinite ease-in-out;
+        }
+
+        /* Habbo-Style Avatar Parts */
         .avatar-head {
-            width: 44px;
-            height: 44px;
+            width: 42px;
+            height: 42px;
             background: #fbcfe8;
             border-radius: 10px;
             border: 3px solid #0f172a;
@@ -371,7 +633,7 @@
             position: absolute;
             top: 14px;
             left: 5px;
-            width: 28px;
+            width: 26px;
             height: 10px;
             border: 2px solid #38bdf8;
             background: rgba(56, 189, 248, 0.3);
@@ -382,7 +644,7 @@
             position: absolute;
             top: 17px;
             left: 8px;
-            width: 22px;
+            width: 20px;
             display: flex;
             justify-content: space-between;
         }
@@ -394,8 +656,8 @@
         }
 
         .avatar-body {
-            width: 48px;
-            height: 45px;
+            width: 46px;
+            height: 40px;
             border-radius: 6px;
             border: 3px solid #0f172a;
             margin-top: -3px;
@@ -410,89 +672,101 @@
         .avatar-body.aegis { background: #065f46; }
 
         .avatar-badge-icon {
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             color: #fff;
         }
 
-        /* Computer Desk */
-        .agent-desk {
-            width: 130px;
-            height: 50px;
-            background: linear-gradient(180deg, #334155 0%, #1e293b 100%);
-            border: 2px solid #475569;
-            border-radius: 6px;
-            margin-top: -20px;
-            position: relative;
-            z-index: 6;
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+        /* Legs and Footsteps */
+        .avatar-legs {
             display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .desk-monitor {
-            width: 48px;
-            height: 32px;
-            background: #040812;
-            border: 2px solid #38bdf8;
-            border-radius: 3px;
-            position: absolute;
-            top: -24px;
-            box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-size: 0.55rem;
-            color: #22c55e;
-            font-family: 'Fira Code', monospace;
-            padding: 2px;
-            overflow: hidden;
-        }
-        .desk-monitor-stand {
-            position: absolute;
-            top: 8px;
-            width: 8px;
-            height: 6px;
-            background: #64748b;
-        }
-        .desk-coffee {
-            position: absolute;
-            right: 12px;
-            top: -10px;
-            width: 10px;
+            justify-content: space-between;
+            width: 26px;
             height: 12px;
-            background: #cbd5e1;
-            border: 1px solid #475569;
-            border-radius: 2px;
+            margin-top: -2px;
+            position: relative;
+            z-index: 4;
+        }
+        .avatar-foot {
+            width: 10px;
+            height: 9px;
+            background: #0f172a;
+            border-radius: 3px 3px 4px 4px;
+            border: 1px solid #334155;
+            position: relative;
+        }
+        @keyframes footStepL {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        @keyframes footStepR {
+            0%, 100% { transform: translateY(-5px); }
+            50% { transform: translateY(0); }
+        }
+        .gather-avatar-entity.is-walking .avatar-foot.left,
+        .gather-avatar-entity.is-running .avatar-foot.left {
+            animation: footStepL 0.28s infinite ease-in-out;
+        }
+        .gather-avatar-entity.is-walking .avatar-foot.right,
+        .gather-avatar-entity.is-running .avatar-foot.right {
+            animation: footStepR 0.28s infinite ease-in-out;
         }
 
-        .agent-name-tag {
-            margin-top: 10px;
-            background: rgba(15, 23, 42, 0.9);
+        /* Foot Shadow */
+        .avatar-shadow {
+            width: 44px;
+            height: 11px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            margin-top: 2px;
+            filter: blur(2px);
+            transition: all 0.3s ease;
+        }
+
+        /* Floating Name Pill */
+        .avatar-name-pill {
+            margin-top: 4px;
+            background: rgba(15, 23, 42, 0.92);
             border: 1px solid #334155;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.72rem;
             font-weight: 700;
             color: #cbd5e1;
             display: flex;
             align-items: center;
-            gap: 6px;
-            transition: all 0.3s ease;
+            gap: 5px;
             white-space: nowrap;
-        }
-        .agent-role-pill {
-            font-size: 0.65rem;
-            color: #38bdf8;
-            text-transform: uppercase;
+            transition: all 0.2s ease;
         }
 
-        /* Speech Bubble (Estilo Balão de Habbo / RPG) */
+        /* Dash Dust Particle while Running */
+        .run-dust {
+            position: absolute;
+            bottom: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+        .gather-avatar-entity.is-running .run-dust {
+            opacity: 0.9;
+            animation: dustPuff 0.22s infinite alternate ease-in-out;
+        }
+        @keyframes dustPuff {
+            0% { transform: translate(-50%, 0) scale(0.9); }
+            100% { transform: translate(-50%, -4px) scale(1.2); }
+        }
+
+        /* Speech Bubble (Stays directly above moving agent) */
         .speech-bubble {
             position: absolute;
-            bottom: 135px;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%) translateY(8px) scale(0.95);
             min-width: 220px;
-            max-width: 280px;
+            max-width: 290px;
             background: #ffffff;
             color: #0f172a;
             border: 2px solid #0f172a;
@@ -500,18 +774,17 @@
             padding: 10px 14px;
             font-size: 0.85rem;
             line-height: 1.4;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
             z-index: 100;
             display: none;
             opacity: 0;
-            transform: translateY(10px) scale(0.95);
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            transition: opacity 0.25s ease, transform 0.25s ease;
             pointer-events: none;
         }
         .speech-bubble.active {
             display: block;
             opacity: 1;
-            transform: translateY(0) scale(1);
+            transform: translateX(-50%) translateY(0) scale(1);
         }
         .speech-bubble::after {
             content: '';
@@ -532,6 +805,32 @@
             display: flex;
             align-items: center;
             gap: 5px;
+        }
+
+        /* Gather Command Bar */
+        .gather-command-bar {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid var(--soc-border);
+            border-radius: 8px;
+            padding: 12px 20px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .gather-selected-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.88rem;
+        }
+        .gather-quick-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         /* Action Controls & Simulation Buttons */
@@ -858,16 +1157,77 @@
             <!-- Grid Floor in Perspective -->
             <div class="cyber-grid-floor"></div>
 
-            <!-- Agents Arena (Avatares e Mesas) -->
-            <div class="agents-stage">
+            <!-- Interactive Walkable Floor (Gather-Style Stage) -->
+            <div class="interactive-floor" id="interactive-floor" title="Clique no chão para movimentar o agente selecionado">
 
-                <!-- Agente 1: Sentinel (Tier 1 Triage) -->
-                <div class="agent-station" onclick="openAgentDossier('sentinel')">
+                <!-- Waypoint Marker on click -->
+                <div class="floor-waypoint" id="floor-waypoint" style="display: none;">🎯</div>
+
+                <!-- Central War Room Hologram Table -->
+                <div class="war-room-hub">
+                    <i class="fas fa-shield-virus"></i>
+                    <span class="war-room-label">WAR ROOM SOAR</span>
+                </div>
+
+                <!-- Coffee & Rest Lounge (Bottom Left) -->
+                <div class="coffee-lounge">
+                    <div class="coffee-machine-box">
+                        <span class="coffee-steam">♨️</span>
+                        <i class="fas fa-mug-hot" style="color: #eab308; font-size: 1rem;"></i>
+                        <span class="lounge-tag">CAFÉ</span>
+                    </div>
+                    <div class="water-cooler-box">
+                        <div class="water-bottle"></div>
+                        <i class="fas fa-tint" style="color: #38bdf8; font-size: 0.8rem;"></i>
+                        <span class="lounge-tag">ÁGUA</span>
+                    </div>
+                </div>
+
+                <!-- 4 Workstations (Fixed Furniture Desks) -->
+                <div class="workstation-desk" id="desk-sentinel" style="left: 14%; top: 62%;">
+                    <div class="desk-top">
+                        <div class="desk-screen"><i class="fas fa-terminal"></i>LOGS</div>
+                        <div class="desk-chair"></div>
+                    </div>
+                    <div class="desk-tag">Posto 01: Sentinel</div>
+                </div>
+
+                <div class="workstation-desk" id="desk-cipher" style="left: 38%; top: 62%;">
+                    <div class="desk-top">
+                        <div class="desk-screen cipher"><i class="fas fa-satellite-dish"></i>INTEL</div>
+                        <div class="desk-chair"></div>
+                    </div>
+                    <div class="desk-tag">Posto 02: Cipher</div>
+                </div>
+
+                <div class="workstation-desk" id="desk-aegis" style="left: 64%; top: 62%;">
+                    <div class="desk-top">
+                        <div class="desk-screen aegis"><i class="fas fa-project-diagram"></i>ATT&CK</div>
+                        <div class="desk-chair"></div>
+                    </div>
+                    <div class="desk-tag">Posto 03: Aegis</div>
+                </div>
+
+                <div class="workstation-desk" id="desk-flaviana" style="left: 88%; top: 62%;">
+                    <div class="desk-top" style="border-color: #0284c7;">
+                        <div class="desk-screen flaviana"><i class="fas fa-crown"></i>SOAR</div>
+                        <div class="desk-chair"></div>
+                    </div>
+                    <div class="desk-tag" style="border-color: #0284c7; color: #38bdf8;">Posto 04: Flaviana (Lead)</div>
+                </div>
+
+                <!-- ========================================================
+                     4 ROAMING AUTONOMOUS AGENTS (Gather Entities)
+                     ======================================================== -->
+
+                <!-- Agente 1: Sentinel -->
+                <div class="gather-avatar-entity" id="agent-sentinel" style="left: 14%; top: 56%;" onclick="onAgentClick('sentinel', event)" ondblclick="openAgentDossier('sentinel')" title="Clique para selecionar e falar • Duplo clique para abrir Dossiê">
                     <div class="speech-bubble" id="bubble-sentinel">
                         <div class="bubble-header"><i class="fas fa-shield-alt"></i> Sentinel (Tier 1)</div>
                         <div class="bubble-text" id="text-sentinel">Monitorando logs de tráfego...</div>
                     </div>
-                    <div class="habbo-avatar">
+                    <div class="avatar-status-pill" id="badge-sentinel">💻</div>
+                    <div class="avatar-character">
                         <div class="avatar-head">
                             <div class="avatar-hair sentinel"></div>
                             <div class="avatar-glasses"></div>
@@ -876,25 +1236,26 @@
                         <div class="avatar-body sentinel">
                             <i class="fas fa-shield-alt avatar-badge-icon"></i>
                         </div>
+                        <div class="avatar-legs">
+                            <span class="avatar-foot left"></span>
+                            <span class="avatar-foot right"></span>
+                        </div>
                     </div>
-                    <div class="agent-desk">
-                        <div class="desk-monitor"><i class="fas fa-terminal"></i>LOGS</div>
-                        <div class="desk-monitor-stand"></div>
-                        <div class="desk-coffee"></div>
-                    </div>
-                    <div class="agent-name-tag">
+                    <div class="avatar-shadow"></div>
+                    <div class="avatar-name-pill">
                         <span>🛡️ Sentinel</span>
-                        <span class="agent-role-pill">Triage</span>
                     </div>
+                    <div class="run-dust">💨</div>
                 </div>
 
-                <!-- Agente 2: Cipher (Threat Intelligence) -->
-                <div class="agent-station" onclick="openAgentDossier('cipher')">
+                <!-- Agente 2: Cipher -->
+                <div class="gather-avatar-entity" id="agent-cipher" style="left: 38%; top: 56%;" onclick="onAgentClick('cipher', event)" ondblclick="openAgentDossier('cipher')" title="Clique para selecionar e falar • Duplo clique para abrir Dossiê">
                     <div class="speech-bubble" id="bubble-cipher">
                         <div class="bubble-header"><i class="fas fa-globe-americas"></i> Cipher (Threat Intel)</div>
                         <div class="bubble-text" id="text-cipher">Bases AbuseIPDB e VirusTotal sincronizadas.</div>
                     </div>
-                    <div class="habbo-avatar">
+                    <div class="avatar-status-pill" id="badge-cipher">💻</div>
+                    <div class="avatar-character">
                         <div class="avatar-head">
                             <div class="avatar-hair cipher"></div>
                             <div class="avatar-eyes"><span></span><span></span></div>
@@ -902,24 +1263,26 @@
                         <div class="avatar-body cipher">
                             <i class="fas fa-search avatar-badge-icon"></i>
                         </div>
+                        <div class="avatar-legs">
+                            <span class="avatar-foot left"></span>
+                            <span class="avatar-foot right"></span>
+                        </div>
                     </div>
-                    <div class="agent-desk">
-                        <div class="desk-monitor" style="border-color: #c084fc; color: #c084fc;"><i class="fas fa-satellite-dish"></i>INTEL</div>
-                        <div class="desk-monitor-stand"></div>
-                    </div>
-                    <div class="agent-name-tag">
+                    <div class="avatar-shadow"></div>
+                    <div class="avatar-name-pill">
                         <span>🕵️ Cipher</span>
-                        <span class="agent-role-pill">Intel</span>
                     </div>
+                    <div class="run-dust">💨</div>
                 </div>
 
-                <!-- Agente 3: Aegis (Forense & MITRE) -->
-                <div class="agent-station" onclick="openAgentDossier('aegis')">
+                <!-- Agente 3: Aegis -->
+                <div class="gather-avatar-entity" id="agent-aegis" style="left: 64%; top: 56%;" onclick="onAgentClick('aegis', event)" ondblclick="openAgentDossier('aegis')" title="Clique para selecionar e falar • Duplo clique para abrir Dossiê">
                     <div class="speech-bubble" id="bubble-aegis">
                         <div class="bubble-header"><i class="fas fa-microchip"></i> Aegis (MITRE & DevSecOps)</div>
                         <div class="bubble-text" id="text-aegis">Matriz MITRE ATT&CK pronta para correlação.</div>
                     </div>
-                    <div class="habbo-avatar">
+                    <div class="avatar-status-pill" id="badge-aegis">💻</div>
+                    <div class="avatar-character">
                         <div class="avatar-head">
                             <div class="avatar-hair aegis"></div>
                             <div class="avatar-eyes"><span></span><span></span></div>
@@ -927,24 +1290,26 @@
                         <div class="avatar-body aegis">
                             <i class="fas fa-code avatar-badge-icon"></i>
                         </div>
+                        <div class="avatar-legs">
+                            <span class="avatar-foot left"></span>
+                            <span class="avatar-foot right"></span>
+                        </div>
                     </div>
-                    <div class="agent-desk">
-                        <div class="desk-monitor" style="border-color: #22c55e; color: #22c55e;"><i class="fas fa-project-diagram"></i>ATT&CK</div>
-                        <div class="desk-monitor-stand"></div>
-                    </div>
-                    <div class="agent-name-tag">
+                    <div class="avatar-shadow"></div>
+                    <div class="avatar-name-pill">
                         <span>🔬 Aegis</span>
-                        <span class="agent-role-pill">Forense</span>
                     </div>
+                    <div class="run-dust">💨</div>
                 </div>
 
-                <!-- Agente 4: Flaviana (Incident Commander / Lead) -->
-                <div class="agent-station" onclick="openAgentDossier('flaviana')">
+                <!-- Agente 4: Flaviana (Lead & Selected by default) -->
+                <div class="gather-avatar-entity selected" id="agent-flaviana" style="left: 88%; top: 56%;" onclick="onAgentClick('flaviana', event)" ondblclick="openAgentDossier('flaviana')" title="Clique para selecionar e falar • Duplo clique para abrir Dossiê">
                     <div class="speech-bubble" id="bubble-flaviana">
                         <div class="bubble-header" style="color: #0284c7;"><i class="fas fa-star"></i> Flaviana (Lead)</div>
-                        <div class="bubble-text" id="text-flaviana">Equipe apostos. Qual incidente vamos simular?</div>
+                        <div class="bubble-text" id="text-flaviana">Equipe apostos! Clique no piso para me movimentar ou teste os ataques.</div>
                     </div>
-                    <div class="habbo-avatar">
+                    <div class="avatar-status-pill" id="badge-flaviana">👑</div>
+                    <div class="avatar-character">
                         <div class="avatar-head">
                             <div class="avatar-hair flaviana"></div>
                             <div class="avatar-glasses" style="border-color: #0284c7;"></div>
@@ -953,23 +1318,40 @@
                         <div class="avatar-body flaviana">
                             <i class="fas fa-certificate avatar-badge-icon" style="color: #facc15;"></i>
                         </div>
+                        <div class="avatar-legs">
+                            <span class="avatar-foot left"></span>
+                            <span class="avatar-foot right"></span>
+                        </div>
                     </div>
-                    <div class="agent-desk" style="border-color: #0284c7; box-shadow: 0 0 15px rgba(2, 132, 199, 0.4);">
-                        <div class="desk-monitor" style="border-color: #0284c7; color: #38bdf8; width: 56px;"><i class="fas fa-crown"></i>SOAR</div>
-                        <div class="desk-monitor-stand"></div>
-                        <div class="desk-coffee" style="background: #38bdf8;"></div>
-                    </div>
-                    <div class="agent-name-tag" style="border-color: #0284c7; background: rgba(2, 132, 199, 0.2);">
+                    <div class="avatar-shadow"></div>
+                    <div class="avatar-name-pill" style="border-color: #0284c7; color: #38bdf8;">
                         <span>👩‍💼 Flaviana Pina</span>
-                        <span class="agent-role-pill" style="color: #facc15; font-weight: bold;">Lead</span>
                     </div>
+                    <div class="run-dust">💨</div>
                 </div>
 
             </div>
         </div>
 
-        <!-- Controls Deck: Dispare Cenários Reais -->
+        <!-- Controls Deck: Dispare Cenários Reais & Ações de Equipe -->
         <div class="controls-deck">
+            <!-- Gather Command Bar -->
+            <div class="gather-command-bar">
+                <div class="gather-selected-info">
+                    <i class="fas fa-crosshairs" style="color: #38bdf8; font-size: 1.1rem;"></i>
+                    <span>Agente em Foco: <strong id="selected-agent-display" style="color: #38bdf8;">👩‍💼 Flaviana Pina</strong></span>
+                    <button class="btn-link" onclick="openCurrentAgentDossier()" style="margin: 0; padding: 3px 8px; font-size: 0.75rem; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8; cursor: pointer;">
+                        <i class="fas fa-id-card"></i> Ver Dossiê
+                    </button>
+                    <span style="color: #94a3b8; font-size: 0.8rem;">(Clique no piso para guiá-la)</span>
+                </div>
+                <div class="gather-quick-actions">
+                    <button class="sim-btn" onclick="callWarRoom()"><i class="fas fa-users"></i> Reunião War Room</button>
+                    <button class="sim-btn" onclick="callCoffeeBreak()"><i class="fas fa-coffee"></i> Pausa do Café</button>
+                    <button class="sim-btn" onclick="returnAllToDesks()"><i class="fas fa-desktop"></i> Voltar às Mesas</button>
+                    <button class="sim-btn active-loop" id="btn-toggle-patrol" onclick="togglePatrolMode()"><i class="fas fa-walking"></i> Patrulha: ATIVA</button>
+                </div>
+            </div>
             <div class="deck-header">
                 <div>
                     <h3><i class="fas fa-gamepad"></i> Painel de Controle de Simulação</h3>
@@ -1247,10 +1629,319 @@
             }
         };
 
+        // --- Estado dos Agentes no Espaço 2D Gather ---
+        const agents = {
+            sentinel: {
+                key: 'sentinel',
+                name: '🛡️ Sentinel',
+                x: 14,
+                y: 56,
+                homeX: 14,
+                homeY: 56,
+                status: '💻',
+                isMoving: false,
+                element: null,
+                badge: null
+            },
+            cipher: {
+                key: 'cipher',
+                name: '🕵️ Cipher',
+                x: 38,
+                y: 56,
+                homeX: 38,
+                homeY: 56,
+                status: '💻',
+                isMoving: false,
+                element: null,
+                badge: null
+            },
+            aegis: {
+                key: 'aegis',
+                name: '🔬 Aegis',
+                x: 64,
+                y: 56,
+                homeX: 64,
+                homeY: 56,
+                status: '💻',
+                isMoving: false,
+                element: null,
+                badge: null
+            },
+            flaviana: {
+                key: 'flaviana',
+                name: '👩‍💼 Flaviana Pina',
+                x: 88,
+                y: 56,
+                homeX: 88,
+                homeY: 56,
+                status: '👑',
+                isMoving: false,
+                element: null,
+                badge: null
+            }
+        };
+
+        let selectedAgentKey = 'flaviana';
         let isRunningScenario = false;
         let attacksMitigatedCount = 148;
         let loopModeInterval = null;
+        let isPatrolActive = true;
+        let patrolInterval = null;
 
+        // Inicializa referências DOM dos agentes
+        window.addEventListener('DOMContentLoaded', () => {
+            Object.keys(agents).forEach(k => {
+                agents[k].element = document.getElementById(`agent-${k}`);
+                agents[k].badge = document.getElementById(`badge-${k}`);
+            });
+            setupFloorClick();
+            startAutonomousPatrol();
+        });
+
+        function setAgentStatus(agentKey, emoji) {
+            const agent = agents[agentKey];
+            if (agent && agent.badge) {
+                agent.status = emoji;
+                agent.badge.textContent = emoji;
+            }
+        }
+
+        // --- Motor de Movimentação Gather (Promised-Based Movement) ---
+        function moveAgentTo(agentKey, targetX, targetY, isRunning = false) {
+            return new Promise(resolve => {
+                const agent = agents[agentKey];
+                if (!agent || !agent.element) return resolve();
+
+                const currentX = agent.x;
+                const currentY = agent.y;
+
+                // Direção que o avatar está olhando
+                if (targetX < currentX - 1) {
+                    agent.element.classList.add('facing-left');
+                    agent.element.classList.remove('facing-right');
+                } else if (targetX > currentX + 1) {
+                    agent.element.classList.add('facing-right');
+                    agent.element.classList.remove('facing-left');
+                }
+
+                const dx = targetX - currentX;
+                const dy = targetY - currentY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < 1.2) {
+                    return resolve();
+                }
+
+                // Velocidade: ~20% por segundo andando, ~48% por segundo correndo
+                const speed = isRunning ? 48 : 20;
+                const durationSec = Math.max(0.4, Math.min(3.2, distance / speed));
+
+                agent.element.style.transition = `left ${durationSec}s cubic-bezier(0.25, 1, 0.5, 1), top ${durationSec}s cubic-bezier(0.25, 1, 0.5, 1)`;
+
+                if (isRunning) {
+                    agent.element.classList.add('is-running');
+                    agent.element.classList.remove('is-walking');
+                    setAgentStatus(agentKey, '🏃');
+                } else {
+                    agent.element.classList.add('is-walking');
+                    agent.element.classList.remove('is-running');
+                    setAgentStatus(agentKey, '🚶');
+                }
+
+                agent.x = targetX;
+                agent.y = targetY;
+                agent.element.style.left = `${targetX}%`;
+                agent.element.style.top = `${targetY}%`;
+                agent.isMoving = true;
+
+                playBlip(isRunning ? 450 : 320, 0.03, 'triangle');
+
+                setTimeout(() => {
+                    agent.element.classList.remove('is-walking', 'is-running');
+                    agent.isMoving = false;
+                    resolve();
+                }, durationSec * 1000);
+            });
+        }
+
+        // --- Seleção e Controle de Agentes ---
+        function onAgentClick(agentKey, event) {
+            if (event) event.stopPropagation();
+            selectAgent(agentKey);
+
+            const greetings = {
+                sentinel: '🛡️ Sentinel a postos! Monitorando tráfego e pronto para patrulhar.',
+                cipher: '🕵️ Cipher em prontidão! Analisando inteligência de ameaças.',
+                aegis: '🔬 Aegis operando! Mapeando técnicas no framework MITRE.',
+                flaviana: '👩‍💼 Flaviana liderando! Clique no chão para me guiar pela sala.'
+            };
+            showSpeechBubble(agentKey, greetings[agentKey] || 'Pronto!');
+            setTimeout(hideAllBubbles, 2800);
+        }
+
+        function openCurrentAgentDossier() {
+            openAgentDossier(selectedAgentKey);
+        }
+
+        function selectAgent(agentKey) {
+            selectedAgentKey = agentKey;
+            Object.keys(agents).forEach(k => {
+                if (agents[k].element) {
+                    agents[k].element.classList.toggle('selected', k === agentKey);
+                }
+            });
+            const display = document.getElementById('selected-agent-display');
+            if (display && agents[agentKey]) {
+                display.textContent = agents[agentKey].name;
+            }
+            playBlip(680, 0.04);
+        }
+
+        // --- Clique no Chão para Mover Agente Selecionado (Estilo Gather.town) ---
+        function setupFloorClick() {
+            const floor = document.getElementById('interactive-floor');
+            if (!floor) return;
+
+            floor.addEventListener('click', (e) => {
+                if (isRunningScenario) return;
+
+                const rect = floor.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                const clickY = e.clientY - rect.top;
+
+                const pctX = Math.round((clickX / rect.width) * 100);
+                const pctY = Math.round((clickY / rect.height) * 100);
+
+                // Limites do piso navegável
+                const clampedX = Math.max(6, Math.min(92, pctX));
+                const clampedY = Math.max(25, Math.min(78, pctY));
+
+                // Exibe Waypoint animado
+                const waypoint = document.getElementById('floor-waypoint');
+                if (waypoint) {
+                    waypoint.style.left = `${clampedX}%`;
+                    waypoint.style.top = `${clampedY}%`;
+                    waypoint.style.display = 'flex';
+                    setTimeout(() => { waypoint.style.display = 'none'; }, 2000);
+                }
+
+                playBlip(750, 0.06);
+                moveAgentTo(selectedAgentKey, clampedX, clampedY, false).then(() => {
+                    setAgentStatus(selectedAgentKey, '📍');
+                });
+            });
+        }
+
+        // --- Ações Rápidas de Equipe Gather ---
+        async function callWarRoom() {
+            if (isRunningScenario) return;
+            hideAllBubbles();
+            addChatLog('system', '📣 Flaviana convocou reunião de emergência na mesa central War Room.');
+            playBlip(700, 0.1);
+
+            await Promise.all([
+                moveAgentTo('flaviana', 48, 40, true),
+                moveAgentTo('sentinel', 40, 48, true),
+                moveAgentTo('cipher', 56, 48, true),
+                moveAgentTo('aegis', 48, 54, true)
+            ]);
+
+            setAgentStatus('flaviana', '👑');
+            setAgentStatus('sentinel', '📋');
+            setAgentStatus('cipher', '🔍');
+            setAgentStatus('aegis', '🔬');
+
+            showSpeechBubble('flaviana', 'Equipe reunida! Todos os postos operacionais em prontidão para resposta.');
+        }
+
+        async function callCoffeeBreak() {
+            if (isRunningScenario) return;
+            hideAllBubbles();
+            addChatLog('system', '☕ Pausa coletiva no lounge de café do SOC.');
+            playBlip(550, 0.1);
+
+            await Promise.all([
+                moveAgentTo('sentinel', 8, 76, false),
+                moveAgentTo('cipher', 15, 78, false),
+                moveAgentTo('aegis', 20, 75, false),
+                moveAgentTo('flaviana', 12, 72, false)
+            ]);
+
+            Object.keys(agents).forEach(k => setAgentStatus(k, '☕'));
+            showSpeechBubble('cipher', 'Hum, café quentinho! Recarregando antes da próxima varredura.');
+        }
+
+        async function returnAllToDesks() {
+            hideAllBubbles();
+            await Promise.all([
+                moveAgentTo('sentinel', agents.sentinel.homeX, agents.sentinel.homeY, false),
+                moveAgentTo('cipher', agents.cipher.homeX, agents.cipher.homeY, false),
+                moveAgentTo('aegis', agents.aegis.homeX, agents.aegis.homeY, false),
+                moveAgentTo('flaviana', agents.flaviana.homeX, agents.flaviana.homeY, false)
+            ]);
+
+            Object.keys(agents).forEach(k => {
+                setAgentStatus(k, k === 'flaviana' ? '👑' : '💻');
+                if (agents[k].element) {
+                    agents[k].element.classList.remove('facing-left', 'facing-right');
+                }
+            });
+        }
+
+        function togglePatrolMode() {
+            isPatrolActive = !isPatrolActive;
+            const btn = document.getElementById('btn-toggle-patrol');
+            if (isPatrolActive) {
+                btn.classList.add('active-loop');
+                btn.innerHTML = '<i class="fas fa-walking"></i> Patrulha: ATIVA';
+                addChatLog('system', 'Modo patrulha livre Gather ativado: Agentes transitando entre as mesas.');
+            } else {
+                btn.classList.remove('active-loop');
+                btn.innerHTML = '<i class="fas fa-pause"></i> Patrulha: PAUSADA';
+                addChatLog('system', 'Modo patrulha pausado.');
+            }
+        }
+
+        // --- Patrulha Autônoma Gather (Wandering Loop) ---
+        function startAutonomousPatrol() {
+            if (patrolInterval) clearInterval(patrolInterval);
+            patrolInterval = setInterval(() => {
+                if (isRunningScenario || !isPatrolActive) return;
+
+                const agentKeys = Object.keys(agents);
+                const randomKey = agentKeys[Math.floor(Math.random() * agentKeys.length)];
+                const agent = agents[randomKey];
+                if (agent.isMoving) return;
+
+                const activities = [
+                    { x: 10 + Math.random() * 8, y: 76, status: '☕', msg: 'Pegando um expresso rápido...' },
+                    { x: 8, y: 32, status: '🔧', msg: 'Conferindo conexões no rack 01.' },
+                    { x: 90, y: 32, status: '🔧', msg: 'Inspeção física no rack 02.' },
+                    { x: 44 + Math.random() * 12, y: 32, status: '👀', msg: 'Checando telemetria no SIEM.' },
+                    { x: 48 + Math.random() * 6, y: 46, status: '📋', msg: 'Revisando métricas de MTTR.' },
+                    { x: agent.homeX, y: agent.homeY, status: '💻', msg: null }
+                ];
+
+                const isAway = Math.abs(agent.x - agent.homeX) > 6 || Math.abs(agent.y - agent.homeY) > 6;
+                let chosen;
+                if (isAway && Math.random() < 0.5) {
+                    chosen = activities[activities.length - 1]; // volta para a mesa
+                } else {
+                    chosen = activities[Math.floor(Math.random() * (activities.length - 1))];
+                }
+
+                moveAgentTo(randomKey, chosen.x, chosen.y, false).then(() => {
+                    setAgentStatus(randomKey, chosen.status);
+                    if (chosen.msg && Math.random() < 0.3) {
+                        showSpeechBubble(randomKey, chosen.msg);
+                        setTimeout(hideAllBubbles, 3200);
+                    }
+                });
+
+            }, 5500);
+        }
+
+        // --- Execução de Incidentes com Coreografia de Movimento Real ---
         async function triggerScenario(type) {
             if (isRunningScenario) return;
             const scenario = SCENARIOS[type];
@@ -1282,21 +1973,129 @@
             document.getElementById('card-incident-desc').textContent = scenario.desc;
             document.getElementById('card-playbook-action').textContent = "Playbook em execução pelos agentes...";
 
-            // Limpa balões anteriores
             hideAllBubbles();
 
-            // Executa Diálogos dos Agentes em Sequência
-            for (const step of scenario.dialogues) {
-                await new Promise(r => setTimeout(r, step.delay));
-                showSpeechBubble(step.agent, step.text);
-                addChatLog(step.agent, step.text);
-                playBlip(step.agent === 'flaviana' ? 800 : 650, 0.08);
+            // Coreografia Gather com corrida entre as estações
+            if (type === 'sqli') {
+                // Sentinel corre para o Telão SIEM
+                await moveAgentTo('sentinel', 42, 30, true);
+                showSpeechBubble('sentinel', scenario.dialogues[0].text);
+                addChatLog('sentinel', scenario.dialogues[0].text);
+                playBlip(650, 0.08);
+
+                // Cipher corre para o lado do Sentinel no SIEM
+                await new Promise(r => setTimeout(r, 1400));
+                await moveAgentTo('cipher', 54, 30, true);
+                showSpeechBubble('cipher', scenario.dialogues[1].text);
+                addChatLog('cipher', scenario.dialogues[1].text);
+                playBlip(650, 0.08);
+
+                // Aegis corre até o rack de servidores direito
+                await new Promise(r => setTimeout(r, 1400));
+                await moveAgentTo('aegis', 88, 32, true);
+                showSpeechBubble('aegis', scenario.dialogues[2].text);
+                addChatLog('aegis', scenario.dialogues[2].text);
+                playBlip(650, 0.08);
+
+                // Flaviana avança até o War Room central
+                await new Promise(r => setTimeout(r, 1400));
+                await moveAgentTo('flaviana', 48, 42, false);
+                showSpeechBubble('flaviana', scenario.dialogues[3].text);
+                addChatLog('flaviana', scenario.dialogues[3].text);
+                playBlip(800, 0.08);
+
+            } else if (type === 'bruteforce') {
+                // Sentinel corre para o Rack de Servidores da Esquerda
+                await moveAgentTo('sentinel', 8, 32, true);
+                showSpeechBubble('sentinel', scenario.dialogues[0].text);
+                addChatLog('sentinel', scenario.dialogues[0].text);
+                playBlip(650, 0.08);
+
+                // Cipher corre para a mesa do Sentinel para auditar logs
+                await new Promise(r => setTimeout(r, 1400));
+                await moveAgentTo('cipher', 20, 56, true);
+                showSpeechBubble('cipher', scenario.dialogues[1].text);
+                addChatLog('cipher', scenario.dialogues[1].text);
+                playBlip(650, 0.08);
+
+                // Aegis corre para o SIEM
+                await new Promise(r => setTimeout(r, 1400));
+                await moveAgentTo('aegis', 48, 30, true);
+                showSpeechBubble('aegis', scenario.dialogues[2].text);
+                addChatLog('aegis', scenario.dialogues[2].text);
+                playBlip(650, 0.08);
+
+                // Flaviana vai à mesa central autorizar Fail2ban
+                await new Promise(r => setTimeout(r, 1400));
+                await moveAgentTo('flaviana', 48, 42, false);
+                showSpeechBubble('flaviana', scenario.dialogues[3].text);
+                addChatLog('flaviana', scenario.dialogues[3].text);
+                playBlip(800, 0.08);
+
+            } else if (type === 'ransomware') {
+                // Sentinel corre desesperado até a mesa da Flaviana
+                await moveAgentTo('sentinel', 78, 56, true);
+                showSpeechBubble('sentinel', scenario.dialogues[0].text);
+                addChatLog('sentinel', scenario.dialogues[0].text);
+                playBlip(650, 0.08);
+
+                // Cipher corre para o SIEM verificar reputação do Trojan
+                await new Promise(r => setTimeout(r, 1400));
+                await moveAgentTo('cipher', 44, 30, true);
+                showSpeechBubble('cipher', scenario.dialogues[1].text);
+                addChatLog('cipher', scenario.dialogues[1].text);
+                playBlip(650, 0.08);
+
+                // Aegis corre para o rack de servidores direito
+                await new Promise(r => setTimeout(r, 1400));
+                await moveAgentTo('aegis', 88, 32, true);
+                showSpeechBubble('aegis', scenario.dialogues[2].text);
+                addChatLog('aegis', scenario.dialogues[2].text);
+                playBlip(650, 0.08);
+
+                // Flaviana se junta ao SIEM para contenção global
+                await new Promise(r => setTimeout(r, 1400));
+                await moveAgentTo('flaviana', 52, 30, true);
+                showSpeechBubble('flaviana', scenario.dialogues[3].text);
+                addChatLog('flaviana', scenario.dialogues[3].text);
+                playBlip(800, 0.08);
+
+            } else if (type === 'ddos') {
+                // Sentinel corre para o SIEM Radar
+                await moveAgentTo('sentinel', 42, 30, true);
+                showSpeechBubble('sentinel', scenario.dialogues[0].text);
+                addChatLog('sentinel', scenario.dialogues[0].text);
+                playBlip(650, 0.08);
+
+                // Cipher corre até a estação do Aegis
+                await new Promise(r => setTimeout(r, 1400));
+                await moveAgentTo('cipher', 56, 56, true);
+                showSpeechBubble('cipher', scenario.dialogues[1].text);
+                addChatLog('cipher', scenario.dialogues[1].text);
+                playBlip(650, 0.08);
+
+                // Aegis corre para o SIEM
+                await new Promise(r => setTimeout(r, 1400));
+                await moveAgentTo('aegis', 52, 30, true);
+                showSpeechBubble('aegis', scenario.dialogues[2].text);
+                addChatLog('aegis', scenario.dialogues[2].text);
+                playBlip(650, 0.08);
+
+                // Flaviana avança até o centro para acionar Anycast
+                await new Promise(r => setTimeout(r, 1400));
+                await moveAgentTo('flaviana', 48, 42, false);
+                showSpeechBubble('flaviana', scenario.dialogues[3].text);
+                addChatLog('flaviana', scenario.dialogues[3].text);
+                playBlip(800, 0.08);
             }
 
             // Conclusão e Mitigação do Incidente
-            await new Promise(r => setTimeout(r, 2200));
+            await new Promise(r => setTimeout(r, 2400));
             hideAllBubbles();
             playSuccessSound();
+
+            // Celebração nos avatares
+            Object.keys(agents).forEach(k => setAgentStatus(k, '🎉'));
 
             // Restaura Telão SIEM para Estado Protegido
             siemScreen.style.borderColor = '#38bdf8';
@@ -1313,11 +2112,17 @@
             document.getElementById('metric-attacks-counter').textContent = attacksMitigatedCount;
             document.getElementById('card-playbook-action').textContent = scenario.playbook;
 
-            // Log final no chat
-            addChatLog('system', `✅ Incidente contido com sucesso pela equipe. Resposta registrada em conformidade com NIST.`);
+            addChatLog('system', `✅ Incidente mitigado com sucesso pela equipe. Defesa em profundidade reestabelecida.`);
 
             isRunningScenario = false;
             disableSimButtons(false);
+
+            // Retorno calmo para as mesas após celebrar
+            setTimeout(() => {
+                if (!isRunningScenario) {
+                    returnAllToDesks();
+                }
+            }, 3000);
         }
 
         function showSpeechBubble(agentId, text) {
@@ -1364,7 +2169,7 @@
 
         function disableSimButtons(disable) {
             document.querySelectorAll('.sim-btn').forEach(btn => {
-                if (btn.id !== 'btn-loop-mode') {
+                if (btn.id !== 'btn-loop-mode' && btn.id !== 'btn-toggle-patrol') {
                     btn.disabled = disable;
                 }
             });
@@ -1384,7 +2189,6 @@
                 btnLoop.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Modo Autônomo (Ao Vivo): ATIVO';
                 addChatLog('system', 'Modo autônomo ativado: Simulando incidentes aleatórios periodicamente.');
                 
-                // Dispara o primeiro imediatamente se não estiver rodando
                 const scenarioKeys = Object.keys(SCENARIOS);
                 const randomFirst = scenarioKeys[Math.floor(Math.random() * scenarioKeys.length)];
                 triggerScenario(randomFirst);
@@ -1394,7 +2198,7 @@
                         const randomKey = scenarioKeys[Math.floor(Math.random() * scenarioKeys.length)];
                         triggerScenario(randomKey);
                     }
-                }, 14000);
+                }, 16000);
             }
         }
     </script>
