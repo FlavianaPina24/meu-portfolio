@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-SOC Virtual: Arquitetura Multi-Agentes, Threat Intel & SOAR | Flaviana Pina</title>
+    
+    <!-- Open Graph para compartilhamento social (LinkedIn, WhatsApp) -->
+    <meta property="og:title" content="AI-SOC Virtual: Arquitetura de Defesa Multi-Agentes com Threat Intelligence ao Vivo e SOAR">
+    <meta property="og:description" content="Como arquitetei uma Sala de Operações de Cibersegurança interativa estilo Gather: 4 agentes de IA autônomos, feed mundial de CVEs (CIRCL CERT) e playbooks SOAR.">
+    <meta property="og:image" content="https://flavianapina.com.br/site2.png">
+    <meta property="og:type" content="article">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LEKMM5EXM6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-LEKMM5EXM6');
+    </script>
+    
+    <style>
+        .code-block {
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.88rem;
+            color: #e2e8f0;
+            line-height: 1.5;
+        }
+        .code-keyword { color: #c084fc; font-weight: bold; }
+        .code-string { color: #86efac; }
+        .code-comment { color: #64748b; font-style: italic; }
+        .code-func { color: #38bdf8; }
+        .code-number { color: #f59e0b; }
+
+        .agent-roles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin: 25px 0;
+        }
+        .agent-role-card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid #334155;
+            padding: 18px;
+            border-radius: 8px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+        .agent-role-card:hover {
+            transform: translateY(-3px);
+        }
+        .agent-role-card.sentinel { border-left: 4px solid #38bdf8; }
+        .agent-role-card.cipher { border-left: 4px solid #c084fc; }
+        .agent-role-card.aegis { border-left: 4px solid #22c55e; }
+        .agent-role-card.flaviana { border-left: 4px solid #eab308; }
+
+        .agent-role-card h4 {
+            margin: 0 0 6px 0;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .agent-role-card p {
+            margin: 0 0 10px 0;
+            font-size: 0.88rem;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+        .agent-role-card .role-tools {
+            font-size: 0.78rem;
+            color: #cbd5e1;
+            font-family: 'Fira Code', monospace;
+            background: rgba(15, 23, 42, 0.8);
+            padding: 6px 10px;
+            border-radius: 4px;
+            border: 1px solid #1e293b;
+        }
+
+        .mitre-table-wrapper {
+            overflow-x: auto;
+            margin: 25px 0;
+            border: 1px solid #334155;
+            border-radius: 8px;
+        }
+        .mitre-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+            text-align: left;
+        }
+        .mitre-table th, .mitre-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #334155;
+        }
+        .mitre-table th {
+            background: #0f172a;
+            color: #38bdf8;
+            font-weight: 700;
+        }
+        .mitre-table tr:hover td {
+            background: rgba(56, 189, 248, 0.05);
+        }
+
+        body.light-mode .code-block {
+            background-color: #f8fafc;
+            border-color: #cbd5e1;
+            color: #1e293b;
+        }
+        body.light-mode .agent-role-card {
+            background: #ffffff;
+            border-color: #e2e8f0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        body.light-mode .agent-role-card h4 { color: #0f172a; }
+        body.light-mode .agent-role-card .role-tools {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            color: #334155;
+        }
+        body.light-mode .mitre-table th {
+            background: #f1f5f9;
+            color: #0284c7;
+        }
+        body.light-mode .mitre-table th, body.light-mode .mitre-table td {
+            border-bottom-color: #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+    <nav style="justify-content: flex-start; gap: 20px;">
+        <a href="index.html#articles" style="font-size: 1.1rem;"><i class="fas fa-arrow-left"></i> Voltar para o Portfólio</a>
+        <a href="soc-live.html" style="font-size: 0.95rem; color: #38bdf8; margin-left: 10px; display: inline-flex; align-items: center; gap: 6px;"><i class="fas fa-satellite-dish"></i> Acessar Sala AI-SOC ao Vivo</a>
+        <button id="theme-toggle" class="btn-theme" aria-label="Alternar Modo Claro/Escuro" style="margin-left: auto;"><i class="fas fa-sun"></i></button>
+    </nav>
+
+    <main class="container">
+        <section style="margin-top: 40px; text-align: left;">
+            <div class="section-badge" style="margin-bottom: 20px; background: rgba(34, 197, 94, 0.12); color: #22c55e; border-color: rgba(34, 197, 94, 0.35);">
+                <i class="fas fa-shield-alt"></i> Cibersegurança, Sistemas Multi-Agentes & Business Analysis
+            </div>
+            
+            <h1 style="font-size: 2.2rem; color: #f1f5f9; margin-bottom: 12px; line-height: 1.25;">
+                Arquitetando um AI-SOC Virtual: Defesa Cibernética Multi-Agentes, Threat Intelligence em Tempo Real e Gestão de Incidentes com Visão de Negócios
+            </h1>
+            
+            <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 35px;">
+                <i class="fas fa-calendar-alt"></i> Estudo de Caso | <i class="fas fa-clock"></i> Leitura: 6 min | Por <strong>Flaviana Pina</strong> (QA Engineer & Business Analyst)
+            </p>
+
+            <div class="article-content" style="line-height: 1.7; font-size: 1.05rem; color: #cbd5e1;">
+                
+                <p>
+                    Com o crescimento exponencial de incidentes cibernéticos e a proliferação de vetores automatizados de invasão, os Centros de Operações de Segurança (<strong>SOC</strong>) enfrentam um dos maiores gargalos da indústria de tecnologia: a <strong>fadiga de alertas (alert fatigue)</strong>. Diariamente, analistas de Nível 1 são soterrados por milhares de logs, falsos-positivos e eventos isolados, tornando o tempo médio de resposta (<strong>MTTR</strong>) lento e custoso para as organizações.
+                </p>
+
+                <p>
+                    Como <strong>Business Analyst e Engenheira de Qualidade (QA)</strong>, meu foco sempre foi conectar processos de negócio, análise crítica de riscos e engenharia de software para construir soluções robustas. Foi a partir dessa visão que decidi conceber e projetar o <strong>AI-SOC Virtual Operations</strong>: uma sala de operações 2D interativa (inspirada na dinamicidade colaborativa do Gather.town), onde <strong>agentes autônomos de Inteligência Artificial</strong> trabalham cooperativamente, investigam ameaças e executam playbooks de resposta automática (SOAR).
+                </p>
+
+                <div class="info-banner" style="margin: 30px 0; border-left: 4px solid #22c55e; background: rgba(34, 197, 94, 0.08);">
+                    <h3 style="color: #22c55e; margin: 0 0 8px 0; font-size: 1.15rem; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-bullseye"></i> O Objetivo do Projeto
+                    </h3>
+                    <p style="margin: 0; color: #cbd5e1; font-size: 0.95rem; line-height: 1.6;">
+                        Construir uma prova de conceito funcional que demonstrasse como sistemas multi-agentes podem colaborar em tempo real, integrando <strong>Threat Intelligence ao vivo</strong> (via API pública do CIRCL CERT), correlação com a matriz <strong>MITRE ATT&CK</strong> e orquestração de playbooks de contenção alinhados às diretrizes do <strong>NIST SP 800-61</strong>.
+                    </p>
+                </div>
+
+                <h2 style="color: #38bdf8; margin-top: 40px; font-size: 1.6rem; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-users-cog"></i> 1. A Divisão de Papéis da Equipe Multi-Agentes
+                </h2>
+                <p>
+                    Um dos pilares da <strong>Análise de Negócios</strong> é o desenho de papéis e responsabilidades claras (RACI). Em um SOC, delegar tarefas genéricas a uma única IA monolítica gera alucinações e perda de contexto. Por isso, a arquitetura foi dividida em <strong>4 personas altamente especializadas</strong>:
+                </p>
+
+                <div class="agent-roles-grid">
+                    <div class="agent-role-card sentinel">
+                        <h4 style="color: #38bdf8;"><i class="fas fa-shield-alt"></i> Sentinel (Tier 1 Triage)</h4>
+                        <p>Responsável pelo monitoramento contínuo de tráfego HTTP/HTTPS, conexões SSH e queries DNS. Filtra o ruído e identifica picos anômalos em microssegundos.</p>
+                        <div class="role-tools">Tools: SIEM Snort, Suricata, Elastic Agent, Honeypot</div>
+                    </div>
+
+                    <div class="agent-role-card cipher">
+                        <h4 style="color: #c084fc;"><i class="fas fa-search"></i> Cipher (Threat Intelligence)</h4>
+                        <p>Caça a indicadores de comprometimento (IoCs). Conectado à API global do CIRCL CERT para ingestão de novas CVEs e checagem de reputação de IPs e nós Tor.</p>
+                        <div class="role-tools">Tools: CIRCL CERT API, AbuseIPDB, VirusTotal, AlienVault</div>
+                    </div>
+
+                    <div class="agent-role-card aegis">
+                        <h4 style="color: #22c55e;"><i class="fas fa-microchip"></i> Aegis (Forense & MITRE)</h4>
+                        <p>Especialista em engenharia reversa de payloads e correlação com a matriz MITRE ATT&CK. Avalia o Software Bill of Materials (SBOM) e cria regras Sigma/YARA.</p>
+                        <div class="role-tools">Tools: MITRE Navigator, Sigma Rules, YARA, ModSecurity</div>
+                    </div>
+
+                    <div class="agent-role-card flaviana">
+                        <h4 style="color: #eab308;"><i class="fas fa-crown"></i> Flaviana Pina (Incident Commander / Lead)</h4>
+                        <p>Orquestradora estratégica. Avalia o impacto financeiro, operacional e de compliance (LGPD) antes de autorizar a execução do playbook automatizado no SOAR.</p>
+                        <div class="role-tools">Tools: SOAR Engine, Cloudflare WAF API, Jira Incident Response</div>
+                    </div>
+                </div>
+
+                <h2 style="color: #38bdf8; margin-top: 40px; font-size: 1.6rem; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-network-wired"></i> 2. Ingestão de Dados Reais: Conexão com o CIRCL CERT
+                </h2>
+                <p>
+                    Um questionamento comum em simuladores é: <em>"os dados são reais ou fictícios?"</em>. Para elevar a maturidade técnica da solução sem comprometer chaves de API privadas (visto que o portfólio é hospedado estaticamente no GitHub Pages), integrei a aplicação à API pública do <strong>CIRCL (Computer Emergency Response Center Luxembourg)</strong> via <code>cve.circl.lu/api/last</code>.
+                </p>
+                <p>
+                    Essa API transmite em tempo real as últimas vulnerabilidades divulgadas globalmente, permitindo que o telão SIEM e o agente <strong>Cipher</strong> processem ameaças verdadeiras do dia:
+                </p>
+
+                <div class="code-block">
+                    <span class="code-comment">// Ingestão assíncrona do Feed Global de CVEs (CIRCL CERT API)</span><br>
+                    <span class="code-keyword">async function</span> <span class="code-func">fetchRealThreatFeed</span>() {<br>
+                    &nbsp;&nbsp;<span class="code-keyword">try</span> {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">const</span> response = <span class="code-keyword">await</span> <span class="code-func">fetch</span>(<span class="code-string">'https://cve.circl.lu/api/last'</span>);<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">const</span> data = <span class="code-keyword">await</span> response.<span class="code-func">json</span>();<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">// Extração e sanitização dos metadados da CVE</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;realThreatsList = data.<span class="code-func">map</span>(item => ({<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id: item.aliases?.[<span class="code-number">0</span>] || item.id,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;summary: item.details || <span class="code-string">'Vulnerabilidade crítica de segurança.'</span>,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;date: <span class="code-keyword">new</span> <span class="code-func">Date</span>(item.published).<span class="code-func">toLocaleDateString</span>(<span class="code-string">'pt-BR'</span>)<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;}));<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-func">startSIEMRealTicker</span>(); <span class="code-comment">// Alimenta o letreiro do SIEM em tempo real</span><br>
+                    &nbsp;&nbsp;} <span class="code-keyword">catch</span> (err) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-func">loadResilientFallbackCVEs</span>(); <span class="code-comment">// Fallback resiliente com CVEs de 2024/2025</span><br>
+                    &nbsp;&nbsp;}<br>
+                    }
+                </div>
+
+                <h2 style="color: #38bdf8; margin-top: 40px; font-size: 1.6rem; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-shield-virus"></i> 3. Mapeamento MITRE ATT&CK e Playbooks SOAR
+                </h2>
+                <p>
+                    Para demonstrar a resposta a incidentes na prática, estruturei 4 cenários baseados nas técnicas adversárias mais frequentes reportadas pelos relatórios globais de ameaças:
+                </p>
+
+                <div class="mitre-table-wrapper">
+                    <table class="mitre-table">
+                        <thead>
+                            <tr>
+                                <th>Vetor de Ataque</th>
+                                <th>Técnica MITRE</th>
+                                <th>Severidade</th>
+                                <th>Ação do Playbook SOAR</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>SQL Injection</strong></td>
+                                <td><code>T1190: Exploit Public App</code></td>
+                                <td><span style="color: #ef4444; font-weight: bold;">CRÍTICA</span></td>
+                                <td>WAF Rule ID 10042 ativada, bloqueio de IP por 24h e Prepared Statements reforçados.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Brute Force SSH</strong></td>
+                                <td><code>T1110.001: Password Guessing</code></td>
+                                <td><span style="color: #f59e0b; font-weight: bold;">ALTA</span></td>
+                                <td>Fail2ban ativado no iptables, bloqueio de range /24 e imposição de chaves públicas.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Phishing + LockBit</strong></td>
+                                <td><code>T1566.001 + T1486</code></td>
+                                <td><span style="color: #ef4444; font-weight: bold;">CRÍTICA</span></td>
+                                <td>EDR Quarantine: Estação isolada da LAN, hash SHA-256 banida globalmente e purge de e-mails.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>DDoS Volumétrico UDP</strong></td>
+                                <td><code>T1498.002: Amplification</code></td>
+                                <td><span style="color: #38bdf8; font-weight: bold;">MÉDIA-ALTA</span></td>
+                                <td>Cloudflare Under-Attack Mode, Rate Limiting agressivo e desvio de tráfego para Anycast Scrubbers.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2 style="color: #38bdf8; margin-top: 40px; font-size: 1.6rem; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-brain"></i> 4. O Papel do Business Analyst na Gestão de Crises
+                </h2>
+                <p>
+                    Muitos profissionais acreditam que Segurança da Informação se resume a comandos no terminal e configurações de firewall. No entanto, sem uma sólida visão de <strong>Análise de Negócios</strong>, respostas técnicas podem causar danos piores que a própria invasão:
+                </p>
+                <ul style="padding-left: 20px; line-height: 1.8;">
+                    <li><strong>Avaliação de Continuidade do Negócio (BCP):</strong> Bloquear uma subnet inteira de IPs pode derrubar transações de clientes legítimos e causar perdas financeiras severas.</li>
+                    <li><strong>Conformidade Regulatória (LGPD / GDPR):</strong> Um vazamento de dados via SQL Injection exige notificação imediata à ANPD dentro dos prazos legais. O analista precisa mapear quais dados sensíveis foram acessados.</li>
+                    <li><strong>Comunicação Estratégica com Stakeholders:</strong> A diretoria executiva não quer ver logs hexadecimais brutos; ela precisa entender o risco financeiro, o impacto operacional e o tempo estimado para restauração completa.</li>
+                </ul>
+
+                <h2 style="color: #38bdf8; margin-top: 40px; font-size: 1.6rem; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-gamepad"></i> 5. Experiência do Usuário (UX): Gamificação Estilo Gather
+                </h2>
+                <p>
+                    Para tornar a experiência imersiva e agradável para quem visita o portfólio, adotei elementos de gamificação 2D:
+                </p>
+                <ul style="padding-left: 20px; line-height: 1.8;">
+                    <li><strong>Avatares com Movimentação Livre:</strong> Os agentes caminham pelo piso, alternam passos, mudam de direção e correm com efeito visual de impulso quando um alarme dispara.</li>
+                    <li><strong>Interatividade Point-and-Click:</strong> O visitante pode clicar em qualquer lugar da sala para guiar o agente selecionado, ou convocar uma reunião de emergência na mesa do War Room.</li>
+                    <li><strong>Efeitos Sonoros Retro (Web Audio API):</strong> Toda a sonorização de blips, alertas e sirenes foi sintetizada matematicamente pelo navegador sem a necessidade de baixar arquivos de áudio pesados (.mp3), garantindo performance impecável no carregamento.</li>
+                </ul>
+
+                <h2>Conclusão</h2>
+                <p style="margin-top: 25px;">
+                    O futuro da Qualidade de Software e da Cibersegurança não pertence a silos isolados, mas à convergência estratégica: <strong>Qualidade (QA) garantindo que a aplicação funcione corretamente</strong>, <strong>Segurança (SecOps) garantindo que ela resista a adversidades</strong> e <strong>Análise de Negócios (BA) assegurando que cada decisão gere valor real para a organização</strong>.
+                </p>
+                <p>
+                    A sala do AI-SOC é uma materialização prática dessa mentalidade: tecnologia de ponta, inteligência artificial como aliada e foco obsessivo na proteção dos objetivos estratégicos do negócio.
+                </p>
+
+                <!-- Call to Action Box -->
+                <div style="background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(13, 21, 39, 0.98) 100%); border: 2px solid #22c55e; border-radius: 10px; padding: 25px; margin: 40px 0; text-align: center; box-shadow: 0 10px 30px rgba(34, 197, 94, 0.2);">
+                    <h3 style="color: #22c55e; margin: 0 0 10px 0; font-size: 1.4rem;">
+                        🕹️ Que tal testar a Sala de Operações ao Vivo?
+                    </h3>
+                    <p style="color: #cbd5e1; max-width: 650px; margin: 0 auto 20px; font-size: 0.98rem; line-height: 1.6;">
+                        Acesse a sala interativa, guie os avatares pelo piso, teste os ataques simulados ou investigue as CVEs reais que estão sendo monitoradas no mundo agora.
+                    </p>
+                    <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                        <a href="soc-live.html" class="btn-link pulse-btn" style="background-color: #22c55e; color: #022c22; font-weight: bold; margin: 0; padding: 12px 24px; font-size: 1rem; display: inline-flex; align-items: center; gap: 8px;">
+                            <i class="fas fa-play-circle"></i> Abrir Sala AI-SOC ao Vivo <i class="fas fa-arrow-right"></i>
+                        </a>
+                        <a href="index.html" class="btn-link" style="margin: 0; background: transparent; border: 1px solid #38bdf8; color: #38bdf8; padding: 12px 24px; font-size: 1rem; display: inline-flex; align-items: center; gap: 8px;">
+                            <i class="fas fa-home"></i> Voltar ao Início
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Footer de Compartilhamento -->
+                <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #334155; display: flex; align-items: center; justify-content: space-between; gap: 15px; flex-wrap: wrap;">
+                    <div>
+                        <strong style="font-size: 1.1rem; color: #f1f5f9;">Gostou do estudo de caso?</strong>
+                        <p style="margin: 4px 0 0; color: #94a3b8; font-size: 0.88rem;">Compartilhe com a sua rede profissional:</p>
+                    </div>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://flavianapina.com.br/artigo-ai-soc.html" target="_blank" rel="noopener noreferrer" class="btn-link" style="background-color: #0077b5; color: #ffffff; margin: 0; display: inline-flex; align-items: center; gap: 8px;">
+                            <i class="fab fa-linkedin"></i> Compartilhar no LinkedIn
+                        </a>
+                        <a href="https://github.com/FlavianaPina24" target="_blank" rel="noopener noreferrer" class="btn-link" style="background-color: #1e293b; border: 1px solid #475569; color: #f1f5f9; margin: 0; display: inline-flex; align-items: center; gap: 8px;">
+                            <i class="fab fa-github"></i> GitHub Flaviana
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer style="margin-top: 50px; padding: 25px; text-align: center; border-top: 1px solid #1e293b; color: #94a3b8; font-size: 0.9rem;">
+        <p>© 2026 - flavianapina.com.br | Artigo escrito por <strong>Flaviana Pina</strong> (QA & Business Analyst).</p>
+    </footer>
+
+    <script>
+        // Restaura a cor do tema selecionada
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = themeToggleBtn.querySelector('i');
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+        }
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            themeIcon.classList.replace(isLight ? 'fa-sun' : 'fa-moon', isLight ? 'fa-moon' : 'fa-sun');
+        });
+        // Restaura acessibilidade
+        ['a11y-large-text', 'a11y-dyslexia', 'a11y-no-animations', 'a11y-highlight-links'].forEach(feature => {
+            if (localStorage.getItem(feature) === 'true') document.documentElement.classList.add(feature);
+        });
+    </script>
+</body>
+</html>
