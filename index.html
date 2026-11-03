@@ -319,6 +319,9 @@
                         <a href="soc-live.html" class="btn-link pulse-btn" style="background-color: #22c55e; color: #022c22; font-weight: 700; margin: 0; display: inline-flex; align-items: center; gap: 8px;">
                             <i class="fas fa-play-circle"></i> Acessar Sala de Operações ao Vivo <i class="fas fa-arrow-right"></i>
                         </a>
+                        <a href="artigo-ai-soc.html" class="btn-link" style="margin: 0; background: rgba(34, 197, 94, 0.12); border: 1px solid #22c55e; color: #22c55e; font-weight: 700; display: inline-flex; align-items: center; gap: 8px;">
+                            <i class="fas fa-file-alt"></i> Ler Artigo do Estudo de Caso
+                        </a>
                         <a href="soc-live.html" class="btn-link" style="margin: 0; background: transparent; border: 1px solid #38bdf8; color: #38bdf8; display: inline-flex; align-items: center; gap: 8px;">
                             <i class="fas fa-id-badge"></i> Ver Dossiers dos Agentes
                         </a>
@@ -1728,6 +1731,7 @@
                             setTimeout(() => {
                                 if (preloader) preloader.style.display = 'none';
                                 startHeroTypewriter(); // Inicia a digitação do título após a tela preta sumir
+                                window.dispatchEvent(new Event('resize'));
                             }, 500);
                         }, 500); // Aguarda meio segundo para o usuário ler o [BUILD OK] antes de sumir
                     }, 350);
@@ -1901,6 +1905,10 @@
         // --- Fim da Lógica dos Indicadores ---
 
         function updateCarousel() {
+            if (cards.length > 0) {
+                const w = cards[0].getBoundingClientRect().width;
+                if (w > 0) cardWidth = w + 20;
+            }
             if(track) track.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
             updateDots();
         }
