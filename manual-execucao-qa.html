@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Manual Operacional de Execução - QA Audit Toolkit & Serviços B2B | Flaviana Pina</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        @page {
+            size: A4;
+            margin: 15mm 15mm 20mm 15mm;
+            @bottom-right {
+                content: counter(page);
+            }
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1e293b;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: #fff;
+            font-size: 10pt;
+        }
+        .header-cover {
+            background: linear-gradient(135deg, #090d16 0%, #0f172a 100%);
+            color: #f8fafc;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 6px solid #22c55e;
+        }
+        .header-cover h1 {
+            font-size: 20pt;
+            margin: 0 0 6px 0;
+            color: #fff;
+            letter-spacing: -0.5px;
+        }
+        .header-cover .subtitle {
+            font-size: 11pt;
+            color: #38bdf8;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .meta-badges {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        .badge {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 8pt;
+            font-family: 'Fira Code', monospace;
+            color: #cbd5e1;
+        }
+        .badge.green {
+            background: rgba(34, 197, 94, 0.2);
+            border-color: rgba(34, 197, 94, 0.5);
+            color: #4ade80;
+        }
+        .badge.blue {
+            background: rgba(56, 189, 248, 0.2);
+            border-color: rgba(56, 189, 248, 0.5);
+            color: #38bdf8;
+        }
+        h2 {
+            font-size: 13pt;
+            color: #0f172a;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 6px;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        h3 {
+            font-size: 11pt;
+            color: #1e293b;
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+        p {
+            margin: 0 0 10px 0;
+        }
+        .card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin-bottom: 16px;
+            page-break-inside: avoid;
+        }
+        .card.highlight {
+            border-left: 4px solid #38bdf8;
+            background: #f0f9ff;
+        }
+        .card.success {
+            border-left: 4px solid #22c55e;
+            background: #f0fdf4;
+        }
+        .card.warning {
+            border-left: 4px solid #f59e0b;
+            background: #fffbeb;
+        }
+        .code-box {
+            background: #0f172a;
+            color: #f1f5f9;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-family: 'Fira Code', Consolas, monospace;
+            font-size: 9pt;
+            overflow-x: auto;
+            margin: 10px 0 14px 0;
+            border-left: 4px solid #38bdf8;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .code-comment {
+            color: #94a3b8;
+        }
+        .code-cmd {
+            color: #4ade80;
+            font-weight: 600;
+        }
+        .code-param {
+            color: #38bdf8;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0 16px 0;
+            font-size: 9pt;
+            page-break-inside: avoid;
+        }
+        th, td {
+            border: 1px solid #cbd5e1;
+            padding: 8px 10px;
+            text-align: left;
+        }
+        th {
+            background: #0f172a;
+            color: #f8fafc;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background: #f8fafc;
+        }
+        .step-num {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: #0f172a;
+            color: #fff;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 20px;
+            font-size: 8pt;
+            font-weight: bold;
+            margin-right: 6px;
+        }
+        ul, ol {
+            margin: 0 0 12px 0;
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        .page-break {
+            page-break-before: always;
+        }
+        .footer-note {
+            font-size: 8pt;
+            color: #64748b;
+            text-align: center;
+            margin-top: 30px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Capa / Cabeçalho -->
+    <div class="header-cover">
+        <h1>MANUAL OPERACIONAL DE EXECUÇÃO</h1>
+        <div class="subtitle">QA Audit Toolkit & Entrega de Serviços de Consultoria B2B</div>
+        <p style="margin: 0; color: #cbd5e1; font-size: 9.5pt;">
+            Guia rápido e definitivo com comandos práticos, fluxo de execução, geração de relatórios e atendimento aos pacotes comerciais de QA & Business Analysis.
+        </p>
+        <div class="meta-badges">
+            <span class="badge green">● SISTEMA OPERACIONAL</span>
+            <span class="badge blue">Java 21 + Playwright + Axe-Core + Gemini IA</span>
+            <span class="badge">Flaviana Pina — flavianapina.com.br</span>
+        </div>
+    </div>
+
+    <!-- 1. Onde fica o Framework -->
+    <h2><span class="step-num">1</span> Localização do Projeto na sua Máquina</h2>
+    <div class="card">
+        <p>O seu framework de automação está instalado e pronto na sua Área de Trabalho:</p>
+        <div class="code-box">C:\Users\Flaviana Pina\OneDrive\Área de Trabalho\qa-audit-toolkit</div>
+        <p><strong>Para abrir o terminal diretamente na pasta do projeto:</strong></p>
+        <ol>
+            <li>Abra o <strong>PowerShell</strong> ou <strong>Prompt de Comando (CMD)</strong>.</li>
+            <li>Copie e cole o comando abaixo e aperte Enter:</li>
+        </ol>
+        <div class="code-box"><span class="code-comment"># Navegar até a pasta do projeto</span>
+<span class="code-cmd">cd</span> <span class="code-param">"C:\Users\Flaviana Pina\OneDrive\Área de Trabalho\qa-audit-toolkit"</span></div>
+    </div>
+
+    <!-- 2. O Comando de Ouro -->
+    <h2><span class="step-num">2</span> O Comando de Ouro: Como Auditar Qualquer Site de Cliente</h2>
+    <div class="card success">
+        <p><strong>Este é o comando mais importante do seu negócio.</strong> Ele roda todos os 9 pilares de auditoria, tira prints automáticos, aciona a IA e gera o relatório completo para o site que você indicar:</p>
+        <div class="code-box"><span class="code-comment"># Substitua a URL pelo site do cliente:</span>
+<span class="code-cmd">mvn test</span> <span class="code-param">-DtargetUrl="https://site-do-cliente.com.br"</span></div>
+        <p><em>Exemplo real auditando o seu próprio portfólio:</em></p>
+        <div class="code-box"><span class="code-cmd">mvn test</span> <span class="code-param">-DtargetUrl="https://flavianapina.com.br"</span></div>
+        <p><strong>Tempo de execução estimado:</strong> de 40 a 90 segundos. O Playwright abrirá as abas em segundo plano, executará todos os testes e consolidará os resultados.</p>
+    </div>
+
+    <!-- 3. O que o Toolkit Audita Automaticamente -->
+    <h2><span class="step-num">3</span> Os 9 Pilares Auditados Automaticamente</h2>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 25%;">Pilar de Auditoria</th>
+                <th style="width: 45%;">O que a Automação Faz</th>
+                <th style="width: 30%;">Valor para o Cliente</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>1. Acessibilidade (A11y)</strong></td>
+                <td>Varredura completa com Axe-Core (WCAG 2.1 A e AA), listando seletores violados e impacto.</td>
+                <td>Evita processos jurídicos e garante inclusão digital.</td>
+            </tr>
+            <tr>
+                <td><strong>2. Estrutura Semântica</strong></td>
+                <td>Verifica tags <code>&lt;html lang&gt;</code>, landmarks <code>&lt;main&gt;</code> e hierarquia.</td>
+                <td>Permite navegação correta por leitores de tela.</td>
+            </tr>
+            <tr>
+                <td><strong>3. Headings & Inicial</strong></td>
+                <td>Garante presença correta de <code>&lt;title&gt;</code>, <code>&lt;h1&gt;</code> e estrutura de cabeçalhos.</td>
+                <td>Boas práticas de engenharia de software.</td>
+            </tr>
+            <tr>
+                <td><strong>4. Imagens & Textos Alt</strong></td>
+                <td>Localiza todas as tags <code>&lt;img&gt;</code> sem descrição alternativa (alt).</td>
+                <td>Melhora indexação no Google e acessibilidade.</td>
+            </tr>
+            <tr>
+                <td><strong>5. Links Quebrados</strong></td>
+                <td>Varre todos os links <code>&lt;a&gt;</code> e detecta rotas quebradas ou links vazios.</td>
+                <td>Elimina erros 404 e melhora retenção de usuários.</td>
+            </tr>
+            <tr>
+                <td><strong>6. SEO Técnico</strong></td>
+                <td>Inspeciona meta description, canonical, robots.txt, sitemap e Open Graph.</td>
+                <td>Aumenta o tráfego orgânico e cliques no Google.</td>
+            </tr>
+            <tr>
+                <td><strong>7. Segurança Web</strong></td>
+                <td>Audita cabeçalhos HTTP (HSTS, CSP, X-Frame-Options) e Reverse Tabnabbing.</td>
+                <td>Protege contra ataques de Clickjacking e Phishing.</td>
+            </tr>
+            <tr>
+                <td><strong>8. Performance Web Vitals</strong></td>
+                <td>Coleta TTFB (resposta do servidor), FCP e tempo total de carregamento via API.</td>
+                <td>Acelera o site e reduz taxa de rejeição (*churn*).</td>
+            </tr>
+            <tr>
+                <td><strong>9. Regressão Visual</strong></td>
+                <td>Compara screenshots pixel a pixel contra baselines com mapa de diffs.</td>
+                <td>Garante que atualizações não quebrem o layout.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="page-break"></div>
+
+    <!-- 4. Onde Fica o Relatório e Como Entregar -->
+    <h2><span class="step-num">4</span> Onde Fica o Relatório e Como Entregar ao Cliente</h2>
+    <div class="card highlight">
+        <p>Assim que o comando <code>mvn test</code> termina, os arquivos de entrega são gerados em:</p>
+        <div class="code-box">C:\Users\Flaviana Pina\OneDrive\Área de Trabalho\qa-audit-toolkit\target\test-reports\</div>
+        
+        <p><strong>Os 2 ativos principais gerados:</strong></p>
+        <ul>
+            <li><strong>Arquivo HTML do Relatório Executivo:</strong> Tem o nome no formato:<br>
+            <code>Auditoria_Website_DD-MM-YYYY_HH-mm-ss.html</code><br>
+            <em>(Basta dar 2 cliques nele para abrir no navegador Edge ou Chrome).</em></li>
+            <li><strong>Pasta de Screenshots:</strong><br>
+            <code>target\test-reports\screenshots\</code><br>
+            <em>(Contém prints automáticos de tela cheia com todas as evidências visuais coletadas).</em></li>
+        </ul>
+
+        <p><strong>Como enviar para o seu cliente:</strong></p>
+        <ol>
+            <li><strong>Opção 1 (Mais Recomendada - Arquivo HTML Completo):</strong> Compacte o arquivo HTML e envie por e-mail ou WhatsApp. O relatório é 100% autossuficiente (todos os gráficos e prints já estão embutidos em Base64 dentro dele, não depende de internet para abrir).</li>
+            <li><strong>Opção 2 (PDF Executivo):</strong> Abra o arquivo HTML no seu navegador (Google Chrome), aperte <strong>Ctrl + P</strong>, selecione <strong>"Salvar como PDF"</strong> e envie o PDF pronto e assinado para o cliente.</li>
+        </ol>
+    </div>
+
+    <!-- 5. Cheat Sheet de Comandos Especiais -->
+    <h2><span class="step-num">5</span> Cheat Sheet de Comandos Especiais</h2>
+    <div class="card">
+        <p>Comandos úteis para situações específicas do dia a dia:</p>
+
+        <p><strong>A) Ver o navegador abrindo na sua tela (Modo com interface visual):</strong></p>
+        <div class="code-box"><span class="code-cmd">mvn test</span> <span class="code-param">-Dheadless=false -DtargetUrl="https://site-do-cliente.com.br"</span></div>
+
+        <p><strong>B) Rodar apenas a Auditoria de Acessibilidade com Axe-Core:</strong></p>
+        <div class="code-box"><span class="code-cmd">mvn test</span> <span class="code-param">-Dtest=AuditTest#auditarAcessibilidadeAxe -DtargetUrl="https://site-do-cliente.com.br"</span></div>
+
+        <p><strong>C) Rodar apenas a Auditoria de Segurança de Cabeçalhos HTTP:</strong></p>
+        <div class="code-box"><span class="code-cmd">mvn test</span> <span class="code-param">-Dtest=AuditTest#auditarHeadersSeguranca -DtargetUrl="https://site-do-cliente.com.br"</span></div>
+
+        <p><strong>D) Atualizar a Foto de Referência para Teste Visual (Criar Novo Baseline):</strong></p>
+        <div class="code-box"><span class="code-cmd">mvn test</span> <span class="code-param">-Dtest=AuditTest#auditarConsistenciaVisual -Dupdate.snapshots=true -DtargetUrl="https://site-do-cliente.com.br"</span></div>
+
+        <p><strong>E) Ativar o Consultor de IA Google Gemini (Recomendações Automáticas de Código):</strong></p>
+        <div class="code-box"><span class="code-comment"># No PowerShell, antes de rodar o teste, defina sua chave da API:</span>
+<span class="code-cmd">$env:GEMINI_API_KEY</span> = <span class="code-param">"sua-chave-gemini-aqui"</span>
+<span class="code-cmd">mvn test</span> <span class="code-param">-DtargetUrl="https://site-do-cliente.com.br"</span></div>
+    </div>
+
+    <!-- 6. Playbook dos 4 Serviços Comerciais -->
+    <h2><span class="step-num">6</span> Playbook de Entrega dos seus 4 Pacotes Comerciais</h2>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 25%;">Pacote</th>
+                <th style="width: 20%;">Preço & Modelo</th>
+                <th style="width: 55%;">Passo a Passo da Entrega</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>START: QA Express</strong></td>
+                <td><strong>R$ 690</strong><br>Pontual (3-5 dias)</td>
+                <td>
+                    1. Execute <code>mvn test -DtargetUrl="..."</code> para colher o diagnóstico técnico em 2 min.<br>
+                    2. Acesse a aplicação manualmente e explore 10 cenários críticos de fluxo.<br>
+                    3. Compile os bugs em um relatório executivo priorizado (Crítico x Moderado).<br>
+                    4. Faça uma call de 30min apresentando os achados e o relatório HTML.
+                </td>
+            </tr>
+            <tr>
+                <td><strong>BUSINESS: QA + BA</strong></td>
+                <td><strong>R$ 1.290</strong><br>Pontual (7-10 dias)</td>
+                <td>
+                    1. Reunião de briefing de 45min com o cliente para entender as regras de negócio.<br>
+                    2. Escreva as User Stories no padrão INVEST com Critérios de Aceite em Gherkin.<br>
+                    3. Desenhe o fluxo de telas e monte o Plano de Testes (Matriz de Rastreabilidade).<br>
+                    4. Valide a funcionalidade entregue pelos desenvolvedores antes do Go-Live.
+                </td>
+            </tr>
+            <tr>
+                <td><strong>AUTOMATION: E2E</strong></td>
+                <td><strong>R$ 2.490</strong><br>Escopo Fechado (15 dias)</td>
+                <td>
+                    1. Defina os 5 fluxos mais críticos da aplicação com o cliente (ex: Login, Checkout).<br>
+                    2. Clone a estrutura base do seu Playwright criando as classes de Page Objects.<br>
+                    3. Adicione asserções claras e relatórios de prints a cada passo.<br>
+                    4. Configure a pipeline no GitHub Actions para rodar a cada commit e entregue o repositório.
+                </td>
+            </tr>
+            <tr>
+                <td><strong>PARTNER: Contínuo</strong></td>
+                <td><strong>R$ 1.800/mês</strong><br>Recorrente (Até 10h/mês)</td>
+                <td>
+                    1. Alinhe com o time de desenvolvimento as datas de release (sprints quinzenais).<br>
+                    2. Rode o regression suite automatizado antes de cada deploy em produção.<br>
+                    3. Registre e trie eventuais bugs diretamente no Jira ou Trello do cliente.<br>
+                    4. No final do mês, envie o Relatório Executivo de Saúde da Aplicação.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- 7. Se Algo Der Errado -->
+    <h2><span class="step-num">7</span> Solução de Problemas Comuns (Troubleshooting)</h2>
+    <div class="card warning">
+        <p><strong>1. Erro: "Playwright browsers not found"</strong><br>
+        Se você formatar ou rodar em outro computador, instale os navegadores com um único comando:<br>
+        <code>mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install --with-deps"</code></p>
+        
+        <p><strong>2. Erro de versão do Java</strong><br>
+        O seu projeto exige Java 17+. Você já possui o <strong>Java 21</strong> instalado perfeitamente no seu computador. Para conferir, digite: <code>mvn -version</code>.</p>
+    </div>
+
+    <div class="footer-note">
+        <strong>Flaviana Pina</strong> • QA Engineer & Business Analyst Solutions • Documento de Uso Pessoal & Operacional • flavianapina.com.br
+    </div>
+
+</body>
+</html>
