@@ -1163,6 +1163,42 @@ html.a11y-highlight-links a, html.a11y-highlight-links button { text-decoration:
 }
 
 /* --- Estilos da Seção de Serviços & Pacotes Comerciais --- */
+.services-carousel-container {
+    position: relative;
+    width: 100%;
+    max-width: 860px;
+    margin: 25px auto 0;
+    padding: 10px 50px 0;
+    box-sizing: border-box;
+}
+
+.services-carousel-wrapper {
+    overflow: hidden;
+    padding-top: 16px;
+    padding-bottom: 15px;
+}
+
+.services-carousel-track {
+    display: flex;
+    gap: 20px;
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.services-carousel-track .service-card {
+    flex: 0 0 calc(50% - 10px);
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .services-carousel-container {
+        padding: 10px 42px 0;
+    }
+    .services-carousel-track .service-card {
+        flex: 0 0 100%;
+    }
+}
+
 .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));

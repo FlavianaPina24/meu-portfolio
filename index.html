@@ -216,9 +216,12 @@
                 Qualidade de software, automação e análise de requisitos sob medida para startups, agências e empresas que precisam entregar software confiável e sem bugs, sem o custo de contratar uma equipe inteira.
             </p>
 
-            <div class="services-grid">
-                <!-- Pacote 1: START — QA Express -->
-                <div class="service-card">
+            <!-- Início do Carrossel de Serviços -->
+            <div class="services-carousel-container">
+                <div class="services-carousel-wrapper">
+                    <div class="services-carousel-track">
+                        <!-- Pacote 1: START — QA Express -->
+                        <div class="service-card">
                     <div class="service-header">
                         <div class="service-tier-name">PACOTE DE ENTRADA</div>
                         <h3 class="service-title"><i class="fas fa-bolt" style="color: #eab308;"></i> START: QA Express</h3>
@@ -331,8 +334,14 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <button class="carousel-btn prev" aria-label="Pacote Anterior"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-btn next" aria-label="Próximo Pacote"><i class="fas fa-chevron-right"></i></button>
+        <div class="services-carousel-dots carousel-dots"></div>
+    </div>
+    <!-- Fim do Carrossel de Serviços -->
 
-            <!-- Card de Escopo Customizado / Proposta Especial -->
+    <!-- Card de Escopo Customizado / Proposta Especial -->
             <div style="margin-top: 35px; background: rgba(15, 23, 42, 0.85); border: 1px solid #1e293b; border-radius: 8px; padding: 25px 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
                 <div>
                     <h4 style="margin: 0 0 6px 0; color: #38bdf8; font-size: 1.15rem; display: flex; align-items: center; gap: 8px;">
@@ -2103,6 +2112,88 @@
 
         // Inicializa os dots
         createDots();
+    }
+
+    // --- Lógica para o Carrossel de Serviços ---
+    const servicesTrack = document.querySelector('.services-carousel-track');
+    if (servicesTrack) {
+        const servicesPrevBtn = document.querySelector('.services-carousel-container .prev');
+        const servicesNextBtn = document.querySelector('.services-carousel-container .next');
+        const servicesCards = Array.from(servicesTrack.children);
+        const servicesDotsNav = document.querySelector('.services-carousel-dots');
+        let serviceCardWidth = servicesCards.length > 0 ? servicesCards[0].getBoundingClientRect().width + 20 : 0;
+        let serviceCurrentIndex = 0;
+        let serviceDots = [];
+
+        const createServiceDots = () => {
+            if (!servicesDotsNav) return;
+            servicesDotsNav.innerHTML = '';
+            const cardsToShow = window.innerWidth <= 768 ? 1 : 2;
+            const numDots = servicesCards.length > cardsToShow ? servicesCards.length - cardsToShow + 1 : 0;
+
+            for (let i = 0; i < numDots; i++) {
+                const dot = document.createElement('button');
+                dot.classList.add('carousel-dot');
+                if (i === serviceCurrentIndex) dot.classList.add('active');
+                servicesDotsNav.appendChild(dot);
+            }
+            serviceDots = Array.from(servicesDotsNav.children);
+        };
+
+        const updateServiceDots = () => {
+            if (serviceDots.length === 0) return;
+            serviceDots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === serviceCurrentIndex);
+            });
+        };
+
+        if (servicesDotsNav) {
+            servicesDotsNav.addEventListener('click', e => {
+                const targetDot = e.target.closest('button.carousel-dot');
+                if (!targetDot) return;
+                const targetIndex = serviceDots.findIndex(dot => dot === targetDot);
+                serviceCurrentIndex = targetIndex;
+                updateServiceCarousel();
+            });
+        }
+
+        function updateServiceCarousel() {
+            if (servicesCards.length > 0) {
+                const w = servicesCards[0].getBoundingClientRect().width;
+                if (w > 0) serviceCardWidth = w + 20;
+            }
+            if (servicesTrack) servicesTrack.style.transform = `translateX(-${serviceCurrentIndex * serviceCardWidth}px)`;
+            updateServiceDots();
+        }
+
+        if (servicesNextBtn) {
+            servicesNextBtn.addEventListener('click', () => {
+                const cardsToShow = window.innerWidth <= 768 ? 1 : 2;
+                const maxIndex = servicesCards.length - cardsToShow;
+                if (serviceCurrentIndex < maxIndex) {
+                    serviceCurrentIndex++;
+                    updateServiceCarousel();
+                }
+            });
+        }
+
+        if (servicesPrevBtn) {
+            servicesPrevBtn.addEventListener('click', () => {
+                if (serviceCurrentIndex > 0) {
+                    serviceCurrentIndex--;
+                    updateServiceCarousel();
+                }
+            });
+        }
+
+        window.addEventListener('resize', () => {
+            if (servicesCards.length > 0) serviceCardWidth = servicesCards[0].getBoundingClientRect().width + 20;
+            serviceCurrentIndex = 0;
+            createServiceDots();
+            updateServiceCarousel();
+        });
+
+        createServiceDots();
     }
     </script>
 </body>
