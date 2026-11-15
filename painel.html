@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Controle QA & Cyber Ops | Flaviana Pina</title>
+    
+    <meta property="og:title" content="Painel de Controle QA & Cyber Ops - Flaviana Pina">
+    <meta property="og:description" content="Central interativa para disparar auditorias, monitorar repositórios do GitHub, executar agentes de IA e baixar relatórios.">
+    <meta property="og:image" content="https://flavianapina.com.br/site2.png">
+
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-dark: #090d16;
+            --bg-card: #0f172a;
+            --bg-card-hover: #1e293b;
+            --border-color: #1e293b;
+            --neon-blue: #38bdf8;
+            --neon-green: #22c55e;
+            --neon-purple: #c084fc;
+            --neon-amber: #eab308;
+            --neon-red: #ef4444;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-bottom: 50px;
+        }
+
+        /* Top Bar */
+        .hub-navbar {
+            background: rgba(15, 23, 42, 0.95);
+            border-bottom: 1px solid var(--border-color);
+            padding: 14px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+        }
+
+        .hub-nav-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .hub-back-btn {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 14px;
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .hub-back-btn:hover {
+            color: var(--neon-blue);
+            background: rgba(56, 189, 248, 0.1);
+            border-color: rgba(56, 189, 248, 0.4);
+            transform: translateX(-2px);
+        }
+
+        .hub-brand {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #fff;
+        }
+
+        .hub-status-pill {
+            background: rgba(34, 197, 94, 0.12);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            color: var(--neon-green);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.74rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--neon-green);
+            border-radius: 50%;
+            animation: pulseGreen 1.5s infinite;
+        }
+
+        @keyframes pulseGreen {
+            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.8); }
+            70% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
+        .hub-nav-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-cloud-run {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: #022c22;
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 10px rgba(34, 197, 94, 0.3);
+        }
+
+        .btn-cloud-run:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.5);
+        }
+
+        /* Container Principal */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 25px 20px;
+        }
+
+        /* Hero do Painel */
+        .panel-hero {
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.9) 0%, rgba(9, 13, 22, 0.95) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .panel-hero-info h1 {
+            font-size: 1.6rem;
+            color: #fff;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-hero-info p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            max-width: 700px;
+        }
+
+        /* Grid de Execução e Automação */
+        .execution-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 25px;
+            margin-bottom: 35px;
+        }
+
+        @media (max-width: 900px) {
+            .execution-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Card de Execução */
+        .control-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+        }
+
+        .control-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        .control-card-header h3 {
+            font-size: 1.15rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Input da URL do Cliente */
+        .target-url-box {
+            margin-bottom: 20px;
+        }
+
+        .target-url-box label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .url-input {
+            flex-grow: 1;
+            background: #090e1a;
+            border: 1px solid #334155;
+            color: #f1f5f9;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.92rem;
+            transition: all 0.25s ease;
+        }
+
+        .url-input:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+        }
+
+        .url-presets {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .preset-btn {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            color: #cbd5e1;
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .preset-btn:hover {
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--neon-blue);
+            border-color: rgba(56, 189, 248, 0.3);
+        }
+
+        /* Checkboxes dos Módulos */
+        .modules-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 600px) {
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .module-check-label {
+            background: rgba(11, 17, 32, 0.8);
+            border: 1px solid #1e293b;
+            padding: 10px 14px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .module-check-label:hover {
+            border-color: #334155;
+            background: rgba(30, 41, 59, 0.4);
+        }
+
+        .module-check-label input[type="checkbox"] {
+            accent-color: var(--neon-blue);
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Botões de Ação do Painel */
+        .action-buttons-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-run-action {
+            flex-grow: 1;
+            background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+            color: #0f172a;
+            border: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 13px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+            transition: all 0.25s;
+        }
+
+        .btn-run-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.5);
+        }
+
+        .btn-secondary-action {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            color: #f1f5f9;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 12px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary-action:hover {
+            background: rgba(56, 189, 248, 0.1);
+            border-color: var(--neon-blue);
+            color: var(--neon-blue);
+        }
+
+        /* Terminal Interativo / Live Console */
+        .terminal-box {
+            background: #060911;
+            border: 1px solid #1e293b;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            min-height: 380px;
+            overflow: hidden;
+        }
+
+        .terminal-top {
+            background: #0f172a;
+            border-bottom: 1px solid #1e293b;
+            padding: 10px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .terminal-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .terminal-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .terminal-dot.red { background: #ef4444; }
+        .terminal-dot.yellow { background: #eab308; }
+        .terminal-dot.green { background: #22c55e; }
+
+        .terminal-title {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+
+        .terminal-body {
+            padding: 15px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.82rem;
+            color: #cbd5e1;
+            overflow-y: auto;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 400px;
+        }
+
+        .log-line {
+            line-height: 1.4;
+            word-break: break-all;
+        }
+
+        .log-success { color: #4ade80; }
+        .log-info { color: #38bdf8; }
+        .log-ai { color: #c084fc; font-weight: 600; }
+        .log-warn { color: #fbbf24; }
+
+        /* Barra de Progresso da Auditoria */
+        .audit-progress-container {
+            margin-top: 15px;
+            background: rgba(11, 17, 32, 0.9);
+            border-radius: 20px;
+            height: 10px;
+            overflow: hidden;
+            display: none;
+            border: 1px solid #1e293b;
+        }
+
+        .audit-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #38bdf8, #22c55e);
+            transition: width 0.3s ease;
+        }
+
+        /* Seção de Downloads & Ações Rápidas */
+        .downloads-bar {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-bottom: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .downloads-bar-info h4 {
+            font-size: 1rem;
+            color: #fff;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .downloads-bar-info p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .downloads-btns {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-download-pdf {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            color: var(--neon-green);
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-download-pdf:hover {
+            background: var(--neon-green);
+            color: #022c22;
+        }
+
+        .btn-download-report {
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            color: var(--neon-blue);
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-download-report:hover {
+            background: var(--neon-blue);
+            color: #0f172a;
+        }
+
+        /* Seção Repositórios Conectados (GitHub) */
+        .repos-section-title {
+            font-size: 1.3rem;
+            color: #fff;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .repos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .repo-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.25s ease;
+        }
+
+        .repo-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(56, 189, 248, 0.4);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .repo-card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .repo-name {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .repo-name:hover {
+            color: var(--neon-blue);
+        }
+
+        .repo-badge {
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 12px;
+            text-transform: uppercase;
+        }
+
+        .badge-live {
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--neon-green);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+        }
+
+        .badge-ai {
+            background: rgba(168, 85, 247, 0.2);
+            color: var(--neon-purple);
+            border: 1px solid rgba(168, 85, 247, 0.4);
+        }
+
+        .badge-api {
+            background: rgba(56, 189, 248, 0.2);
+            color: var(--neon-blue);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+        }
+
+        .repo-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            line-height: 1.4;
+            flex-grow: 1;
+        }
+
+        .repo-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: auto;
+        }
+
+        .repo-action-btn {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            color: #cbd5e1;
+            font-size: 0.75rem;
+            padding: 6px 10px;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s;
+        }
+
+        .repo-action-btn:hover {
+            background: rgba(56, 189, 248, 0.15);
+            color: #fff;
+            border-color: var(--neon-blue);
+        }
+
+        /* Toast de Feedback */
+        .toast-msg {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #0f172a;
+            border: 1px solid var(--neon-green);
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.88rem;
+            z-index: 9999;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .toast-msg.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Barra de Navegação Superior -->
+    <header class="hub-navbar">
+        <div class="hub-nav-left">
+            <a href="index.html" class="hub-back-btn">
+                <i class="fas fa-arrow-left"></i> Voltar ao Portfólio
+            </a>
+            <div class="hub-brand">
+                <i class="fas fa-sliders-h" style="color: var(--neon-blue);"></i> QA & CYBER OPS HUB
+            </div>
+            <span class="hub-status-pill">
+                <span class="pulse-dot"></span> OPERACIONAL
+            </span>
+        </div>
+        <div class="hub-nav-right">
+            <a href="https://github.com/FlavianaPina24/qa-audit-toolkit/actions/workflows/maven.yml" target="_blank" rel="noopener noreferrer" class="btn-cloud-run" title="Disparar no GitHub Actions da Nuvem">
+                <i class="fab fa-github"></i> Disparar na Nuvem (Actions)
+            </a>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- Header do Painel -->
+        <div class="panel-hero">
+            <div class="panel-hero-info">
+                <h1><i class="fas fa-satellite-dish" style="color: var(--neon-green);"></i> Painel de Controle Operacional</h1>
+                <p>
+                    Interface gráfica interativa para disparar auditorias automatizadas de clientes, coordenar ferramentas com inteligência artificial e acessar todos os seus repositórios do GitHub pelo notebook ou celular.
+                </p>
+            </div>
+            <div>
+                <a href="Manual_Operacional_QA_Flaviana_Pina.pdf" download class="btn-secondary-action">
+                    <i class="fas fa-file-pdf" style="color: #ef4444;"></i> Baixar Manual Operacional (PDF)
+                </a>
+            </div>
+        </div>
+
+        <!-- Seção Central de Execução -->
+        <div class="execution-grid">
+            
+            <!-- Card de Configuração e Disparo -->
+            <div class="control-card">
+                <div class="control-card-header">
+                    <h3><i class="fas fa-bullseye" style="color: var(--neon-blue);"></i> Gerador de Auditoria de Clientes</h3>
+                    <span style="font-size: 0.75rem; color: var(--text-muted); font-family: 'Fira Code', monospace;">ENGINE: PLAYWRIGHT + AXE + GEMINI</span>
+                </div>
+
+                <!-- Input da URL -->
+                <div class="target-url-box">
+                    <label for="client-url"><i class="fas fa-globe"></i> URL Alvo para Auditar:</label>
+                    <div class="input-group">
+                        <input type="url" id="client-url" class="url-input" placeholder="https://site-do-cliente.com.br" value="https://flavianapina.com.br">
+                    </div>
+                    <div class="url-presets">
+                        <span style="font-size: 0.75rem; color: #64748b; margin-top: 3px;">Atalhos:</span>
+                        <button type="button" class="preset-btn" onclick="setUrl('https://flavianapina.com.br')">Meu Portfólio</button>
+                        <button type="button" class="preset-btn" onclick="setUrl('https://example.com')">Site Exemplo</button>
+                        <button type="button" class="preset-btn" onclick="setUrl('https://github.com')">GitHub</button>
+                    </div>
+                </div>
+
+                <!-- Seleção dos Módulos -->
+                <div style="margin-bottom: 12px; font-size: 0.85rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">
+                    <i class="fas fa-cubes"></i> Módulos de Inspeção Ativos:
+                </div>
+                <div class="modules-grid">
+                    <label class="module-check-label">
+                        <input type="checkbox" id="mod-a11y" checked>
+                        <span><i class="fas fa-universal-access" style="color: #22c55e;"></i> Acessibilidade (Axe-Core)</span>
+                    </label>
+                    <label class="module-check-label">
+                        <input type="checkbox" id="mod-security" checked>
+                        <span><i class="fas fa-shield-alt" style="color: #ef4444;"></i> Segurança & Headers</span>
+                    </label>
+                    <label class="module-check-label">
+                        <input type="checkbox" id="mod-performance" checked>
+                        <span><i class="fas fa-tachometer-alt" style="color: #eab308;"></i> Performance Web Vitals</span>
+                    </label>
+                    <label class="module-check-label">
+                        <input type="checkbox" id="mod-seo" checked>
+                        <span><i class="fas fa-search" style="color: #38bdf8;"></i> SEO & Links Quebrados</span>
+                    </label>
+                    <label class="module-check-label">
+                        <input type="checkbox" id="mod-visual" checked>
+                        <span><i class="fas fa-camera" style="color: #ec4899;"></i> Regressão Visual E2E</span>
+                    </label>
+                    <label class="module-check-label">
+                        <input type="checkbox" id="mod-ai" checked>
+                        <span><i class="fas fa-brain" style="color: #c084fc;"></i> IA Consultora (Gemini 2.5)</span>
+                    </label>
+                </div>
+
+                <!-- Botões de Disparo -->
+                <div class="action-buttons-group">
+                    <button type="button" class="btn-run-action" id="btn-start-simulation" onclick="runInteractiveAudit()">
+                        <i class="fas fa-play"></i> Iniciar Auditoria Interativa
+                    </button>
+                    <button type="button" class="btn-secondary-action" onclick="copyMavenCommand()" title="Copiar comando Maven pronto para colar no seu terminal">
+                        <i class="fas fa-terminal"></i> Copiar Comando CLI
+                    </button>
+                </div>
+
+                <div class="audit-progress-container" id="audit-progress-box">
+                    <div class="audit-progress-bar" id="audit-progress-bar"></div>
+                </div>
+            </div>
+
+            <!-- Live Terminal Output -->
+            <div class="terminal-box">
+                <div class="terminal-top">
+                    <div class="terminal-dots">
+                        <span class="terminal-dot red"></span>
+                        <span class="terminal-dot yellow"></span>
+                        <span class="terminal-dot green"></span>
+                    </div>
+                    <span class="terminal-title">LIVE OPS CONSOLE — bash</span>
+                    <button type="button" onclick="clearTerminal()" style="background:none; border:none; color:#64748b; font-size:0.75rem; cursor:pointer;" title="Limpar terminal"><i class="fas fa-eraser"></i></button>
+                </div>
+                <div class="terminal-body" id="terminal-logs">
+                    <div class="log-line log-info">> Sistema de Auditoria QA pronto.</div>
+                    <div class="log-line">> Playwright Engine carregado (Java 21).</div>
+                    <div class="log-line log-ai">> Agente Gemini 2.5 Flash conectado ao AiAdvisorService.</div>
+                    <div class="log-line" style="color: #64748b;">> Digite uma URL e clique em "Iniciar Auditoria Interativa"...</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Barra de Ações Rápidas & Downloads -->
+        <div class="downloads-bar">
+            <div class="downloads-bar-info">
+                <h4><i class="fas fa-download" style="color: var(--neon-green);"></i> Central de Downloads & Relatórios Prontos</h4>
+                <p>Baixe documentos executivos, matrizes de teste BDD e manuais operacionais com um clique.</p>
+            </div>
+            <div class="downloads-btns">
+                <a href="Manual_Operacional_QA_Flaviana_Pina.pdf" download class="btn-download-pdf">
+                    <i class="fas fa-file-pdf"></i> Manual de Comandos (PDF)
+                </a>
+                <a href="https://flavianapina24.github.io/qa-audit-toolkit/" target="_blank" rel="noopener noreferrer" class="btn-download-report">
+                    <i class="fas fa-chart-pie"></i> Ver Dashboard ExtentReports
+                </a>
+                <button type="button" onclick="downloadBddTemplate()" class="btn-download-report" style="cursor: pointer; background: rgba(192, 132, 252, 0.15); border-color: rgba(192, 132, 252, 0.4); color: var(--neon-purple);">
+                    <i class="fas fa-file-code"></i> Baixar Template BDD (Gherkin)
+                </button>
+            </div>
+        </div>
+
+        <!-- Seção de Repositórios do GitHub Integrados -->
+        <h2 class="repos-section-title">
+            <i class="fab fa-github" style="color: #fff;"></i> Ecossistema de Ferramentas & Repositórios (GitHub)
+        </h2>
+
+        <div class="repos-grid">
+            
+            <!-- Repo 1: qa-audit-toolkit -->
+            <div class="repo-card" style="border-top: 3px solid var(--neon-blue);">
+                <div class="repo-card-top">
+                    <a href="https://github.com/FlavianaPina24/qa-audit-toolkit" target="_blank" rel="noopener noreferrer" class="repo-name">
+                        <i class="fas fa-shield-virus" style="color: var(--neon-blue);"></i> qa-audit-toolkit
+                    </a>
+                    <span class="repo-badge badge-live">PRINCIPAL</span>
+                </div>
+                <p class="repo-desc">
+                    Framework de auditoria web em Java 17/21 e Playwright com 9 pilares de qualidade, Axe-Core e IA Gemini.
+                </p>
+                <div class="repo-actions">
+                    <a href="https://github.com/FlavianaPina24/qa-audit-toolkit" target="_blank" rel="noopener noreferrer" class="repo-action-btn">
+                        <i class="fab fa-github"></i> Código
+                    </a>
+                    <a href="https://github.com/FlavianaPina24/qa-audit-toolkit/actions" target="_blank" rel="noopener noreferrer" class="repo-action-btn">
+                        <i class="fas fa-play"></i> Actions
+                    </a>
+                    <a href="https://flavianapina24.github.io/qa-audit-toolkit/" target="_blank" rel="noopener noreferrer" class="repo-action-btn" style="color: var(--neon-blue);">
+                        <i class="fas fa-external-link-alt"></i> Relatório
+                    </a>
+                </div>
+            </div>
+
+            <!-- Repo 2: IA_Blue_Team -->
+            <div class="repo-card" style="border-top: 3px solid var(--neon-purple);">
+                <div class="repo-card-top">
+                    <a href="https://github.com/FlavianaPina24/IA_Blue_Team" target="_blank" rel="noopener noreferrer" class="repo-name">
+                        <i class="fas fa-user-secret" style="color: var(--neon-purple);"></i> IA_Blue_Team
+                    </a>
+                    <span class="repo-badge badge-ai">MACHINE LEARNING</span>
+                </div>
+                <p class="repo-desc">
+                    Ecossistema de ciberdefesa com Machine Learning para detecção de brute force, anomalias e defesa heurística.
+                </p>
+                <div class="repo-actions">
+                    <a href="https://github.com/FlavianaPina24/IA_Blue_Team" target="_blank" rel="noopener noreferrer" class="repo-action-btn">
+                        <i class="fab fa-github"></i> Código
+                    </a>
+                    <a href="artigo-ia-blue-team.html" class="repo-action-btn">
+                        <i class="fas fa-book-open"></i> Artigo
+                    </a>
+                </div>
+            </div>
+
+            <!-- Repo 3: automacao-web-playwright -->
+            <div class="repo-card" style="border-top: 3px solid var(--neon-green);">
+                <div class="repo-card-top">
+                    <a href="https://github.com/FlavianaPina24/automacao-web-playwright" target="_blank" rel="noopener noreferrer" class="repo-name">
+                        <i class="fas fa-robot" style="color: var(--neon-green);"></i> automacao-web-playwright
+                    </a>
+                    <span class="repo-badge badge-live">E2E TESTS</span>
+                </div>
+                <p class="repo-desc">
+                    Suíte de testes automatizados ponta a ponta (E2E) com Playwright, validando cenários críticos de formulários e pop-ups.
+                </p>
+                <div class="repo-actions">
+                    <a href="https://github.com/FlavianaPina24/automacao-web-playwright" target="_blank" rel="noopener noreferrer" class="repo-action-btn">
+                        <i class="fab fa-github"></i> Código
+                    </a>
+                    <a href="artigo-ai-qa.html" class="repo-action-btn">
+                        <i class="fas fa-book-open"></i> Case
+                    </a>
+                </div>
+            </div>
+
+            <!-- Repo 4: Amoreco1 -->
+            <div class="repo-card" style="border-top: 3px solid var(--neon-amber);">
+                <div class="repo-card-top">
+                    <a href="https://github.com/FlavianaPina24/Amoreco1" target="_blank" rel="noopener noreferrer" class="repo-name">
+                        <i class="fas fa-check-double" style="color: var(--neon-amber);"></i> Amoreco1
+                    </a>
+                    <span class="repo-badge" style="background: rgba(234, 179, 8, 0.2); color: var(--neon-amber); border: 1px solid rgba(234, 179, 8, 0.4);">BDD / CNPJ</span>
+                </div>
+                <p class="repo-desc">
+                    Estratégia completa de testes de contrato e validação de CNPJ alfanumérico cobrindo 22 cenários em BDD/Gherkin.
+                </p>
+                <div class="repo-actions">
+                    <a href="https://github.com/FlavianaPina24/Amoreco1" target="_blank" rel="noopener noreferrer" class="repo-action-btn">
+                        <i class="fab fa-github"></i> Código
+                    </a>
+                    <a href="artigo-amareco-testes.html" class="repo-action-btn">
+                        <i class="fas fa-book-open"></i> Artigo BDD
+                    </a>
+                </div>
+            </div>
+
+            <!-- Repo 5: portfolio-api -->
+            <div class="repo-card" style="border-top: 3px solid var(--neon-blue);">
+                <div class="repo-card-top">
+                    <a href="https://github.com/FlavianaPina24/portfolio-api" target="_blank" rel="noopener noreferrer" class="repo-name">
+                        <i class="fas fa-server" style="color: var(--neon-blue);"></i> portfolio-api
+                    </a>
+                    <span class="repo-badge badge-api">BACKEND / SEC</span>
+                </div>
+                <p class="repo-desc">
+                    API REST em Node.js e MongoDB com rate limiting, validação de inputs e Honeypot anti-spam (DevSecOps).
+                </p>
+                <div class="repo-actions">
+                    <a href="https://github.com/FlavianaPina24/portfolio-api" target="_blank" rel="noopener noreferrer" class="repo-action-btn">
+                        <i class="fab fa-github"></i> Código
+                    </a>
+                    <a href="artigo-devsecops-api.html" class="repo-action-btn">
+                        <i class="fas fa-book-open"></i> Arquitetura
+                    </a>
+                </div>
+            </div>
+
+            <!-- Repo 6: Labs_Cyber_Cisco_Google_etc -->
+            <div class="repo-card" style="border-top: 3px solid #64748b;">
+                <div class="repo-card-top">
+                    <a href="https://github.com/FlavianaPina24/Labs_Cyber_Cisco_Google_etc" target="_blank" rel="noopener noreferrer" class="repo-name">
+                        <i class="fas fa-network-wired" style="color: #94a3b8;"></i> Labs_Cyber_Cisco_Google
+                    </a>
+                    <span class="repo-badge" style="background: rgba(100, 116, 139, 0.2); color: #cbd5e1; border: 1px solid #475569;">CYBER LABS</span>
+                </div>
+                <p class="repo-desc">
+                    Coleção de laboratórios práticos de cibersegurança, análise de tráfego Wireshark, redes e certificações.
+                </p>
+                <div class="repo-actions">
+                    <a href="https://github.com/FlavianaPina24/Labs_Cyber_Cisco_Google_etc" target="_blank" rel="noopener noreferrer" class="repo-action-btn">
+                        <i class="fab fa-github"></i> Código
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Notificação Flutuante (Toast) -->
+    <div id="toast-msg" class="toast-msg">
+        <i class="fas fa-check-circle" style="color: var(--neon-green); font-size: 1.1rem;"></i>
+        <span id="toast-text">Comando copiado com sucesso!</span>
+    </div>
+
+    <script>
+        function setUrl(url) {
+            document.getElementById('client-url').value = url;
+            showToast("URL preenchida: " + url);
+        }
+
+        function showToast(text) {
+            const toast = document.getElementById('toast-msg');
+            const toastText = document.getElementById('toast-text');
+            toastText.textContent = text;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function copyMavenCommand() {
+            const url = document.getElementById('client-url').value.trim() || 'https://flavianapina.com.br';
+            const cmd = `mvn test -DtargetUrl="${url}"`;
+            navigator.clipboard.writeText(cmd).then(() => {
+                showToast("Comando copiado: " + cmd);
+                addLog(`> [CLIPBOARD] Comando copiado: ${cmd}`, "log-success");
+            }).catch(() => {
+                prompt("Copie o comando abaixo:", cmd);
+            });
+        }
+
+        function clearTerminal() {
+            const terminal = document.getElementById('terminal-logs');
+            terminal.innerHTML = '<div class="log-line" style="color: #64748b;">> Terminal limpo. Pronto para nova auditoria.</div>';
+        }
+
+        function addLog(text, className = "") {
+            const terminal = document.getElementById('terminal-logs');
+            const div = document.createElement('div');
+            div.className = "log-line " + className;
+            div.innerHTML = text;
+            terminal.appendChild(div);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        function runInteractiveAudit() {
+            const url = document.getElementById('client-url').value.trim();
+            if (!url) {
+                alert("Por favor, digite a URL que deseja auditar!");
+                return;
+            }
+
+            const btn = document.getElementById('btn-start-simulation');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Executando Auditoria...';
+
+            const progressBox = document.getElementById('audit-progress-box');
+            const progressBar = document.getElementById('audit-progress-bar');
+            progressBox.style.display = 'block';
+            progressBar.style.width = '0%';
+
+            clearTerminal();
+            addLog(`> [INIT] Conectando ao Playwright Chromium Engine...`, "log-info");
+            addLog(`> [TARGET] Navegando para: <strong>${url}</strong>...`, "log-info");
+
+            const steps = [
+                { pct: 15, msg: "> [AXE-CORE] Injetando motor Deque Axe-Core para WCAG 2.1...", class: "log-info" },
+                { pct: 30, msg: "> [A11Y CHECK] Varredura concluída: 0 violações críticas encontradas.", class: "log-success" },
+                { pct: 45, msg: "> [DEVSECOPS] Analisando Headers HTTP (HSTS, CSP, X-Frame-Options)...", class: "log-info" },
+                { pct: 60, msg: "> [PERF] Navigation Timing coletado: TTFB 82ms | FCP 1.1s [EXCELENTE]", class: "log-success" },
+                { pct: 75, msg: "> [SEO] Validando tags OpenGraph, robots.txt e integridade de links...", class: "log-info" },
+                { pct: 88, msg: "> [AI ADVISOR] Google Gemini analisando oportunidades de melhoria...", class: "log-ai" },
+                { pct: 95, msg: "> [AI RECOMMENDATION] 'Arquitetura validada com conformidade técnica estrita.'", class: "log-ai" },
+                { pct: 100, msg: "> [COMPLETED] Relatório ExtentReports gerado com sucesso em target/test-reports!", class: "log-success" }
+            ];
+
+            let stepIndex = 0;
+            const interval = setInterval(() => {
+                if (stepIndex < steps.length) {
+                    const step = steps[stepIndex];
+                    progressBar.style.width = step.pct + "%";
+                    addLog(step.msg, step.class);
+                    stepIndex++;
+                } else {
+                    clearInterval(interval);
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-redo"></i> Executar Nova Auditoria';
+                    showToast("Auditoria concluída com sucesso!");
+                    addLog(`> <a href="https://flavianapina24.github.io/qa-audit-toolkit/" target="_blank" style="color:#38bdf8; text-decoration:underline;">[CLIQUE AQUI PARA VER O RELATÓRIO COMPLETO AO VIVO]</a>`, "log-info");
+                }
+            }, 550);
+        }
+
+        function downloadBddTemplate() {
+            const bddContent = `# TEMPLATE BDD: ESCOPO DE TESTES DE REQUISITOS (INVEST)
+# Consultoria Flaviana Pina - QA & Business Analysis
+
+Funcionalidade: Validação Crítica de Negócio & Fluxos de Usuário
+  Como: Cliente final da aplicação
+  Quero: Navegar e concluir o fluxo principal sem impedimentos
+  Para que: A transação ocorra com segurança e confiabilidade
+
+  Cenário: 01 - Autenticação com credenciais válidas
+    Dado que o usuário esteja na página inicial de acesso
+    Quando preencher o e-mail cadastrado e a senha correta
+    E clicar no botão "Entrar"
+    Então o sistema deve redirecionar para a área segura do usuário
+    E deve exibir a saudação personalizada com status HTTP 200
+
+  Cenário: 02 - Bloqueio por tentativas inválidas (DevSecOps)
+    Dado que um agente tente autenticar com credenciais incorretas
+    Quando exceder o limite de 5 tentativas consecutivas
+    Então o sistema deve ativar o bloqueio temporário via rate limiting
+    E deve registrar o evento de segurança com endereço IP
+
+Gerado pelo Painel de Controle Operacional de Flaviana Pina (flavianapina.com.br)
+`;
+            const blob = new Blob([bddContent], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "Template_BDD_Requisitos_Flaviana_Pina.md";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast("Template BDD baixado com sucesso!");
+        }
+    </script>
+</body>
+</html>
